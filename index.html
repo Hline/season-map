@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+  <title>2026 전국 단풍 절정 지도 (SeasonMap)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #f5f2ec;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      color: #2c3e50;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #ffffff;
+      padding: 14px 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border-bottom: 1px solid #eadcd0;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #b33924;
+      margin-bottom: 4px;
+    }
+    .legend-bar {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+    }
+    .hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* 메인 레이아웃 */
+    .main-layout {
+      flex: 1;
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    /* 좌측 지역 필터 패널 */
+    .filter-panel {
+      width: 220px;
+      background: #ffffff;
+      border: 1px solid #e1d2be;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      flex-shrink: 0;
+      position: sticky;
+      top: 90px;
+    }
+    .filter-panel h2 {
+      font-size: 14px;
+      font-weight: 800;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .filter-btn-toggle {
+      font-size: 11px;
+      color: #b33924;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .filter-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #34495e;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background 0.15s ease;
+    }
+    .filter-item:hover {
+      background: #f8f4ed;
+    }
+    .filter-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #b33924;
+      cursor: pointer;
+    }
+    .filter-count {
+      margin-left: auto;
+      font-size: 11px;
+      color: #95a5a6;
+      font-weight: 500;
+    }
+
+    /* 지도 뷰포트 */
+    .viewport {
+      flex: 1;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      background: #ffffff;
+      border: 1px solid #e1d2be;
+      border-radius: 16px;
+      padding: 16px 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .map-canvas {
+      position: relative;
+      width: 820px;
+      height: 980px;
+      margin: 0 auto;
+      background: #fdfbf7;
+    }
+    .korea-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* 행정구역 폴리곤 */
+    .province {
+      stroke: #c8b7a4;
+      stroke-width: 1.5;
+      stroke-linejoin: round;
+      fill-opacity: 0.9;
+    }
+    .p-gyeonggi { fill: #faebd7; }
+    .p-gangwon   { fill: #fde2cd; }
+    .p-chungbuk  { fill: #fdf1d6; }
+    .p-chungnam  { fill: #faedd7; }
+    .p-gyeongbuk { fill: #fde8d4; }
+    .p-gyeongnam { fill: #fce1cb; }
+    .p-jeonbuk   { fill: #f8ecd5; }
+    .p-jeonnam   { fill: #faebd2; }
+    .p-jeju      { fill: #fae8d2; }
+
+    .region-label {
+      font-size: 18px;
+      font-weight: 900;
+      fill: #997e68;
+      opacity: 0.45;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    /* 마커 핀 */
+    .pin {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+    .pin.hidden {
+      display: none !important;
+    }
+    .pin-title {
+      background: #2c3e50;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      white-space: nowrap;
+      margin-bottom: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .pin-data {
+      background: #ffffff;
+      border: 1px solid #d4c4b0;
+      border-radius: 6px;
+      padding: 1.5px 5px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .pin-dot {
+      width: 5px;
+      height: 5px;
+      background: #b33924;
+      border-radius: 50%;
+      margin-top: 1px;
+    }
+
+    /* 푸터 */
+    footer {
+      background: #ffffff;
+      border-top: 1px solid #ebdcd0;
+      padding: 20px 16px;
+      text-align: center;
+      font-size: 13px;
+      color: #636e72;
+      line-height: 1.6;
+    }
+    footer .author {
+      font-weight: 600;
+      color: #2d3436;
+    }
+    footer .author a {
+      color: #b33924;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    footer .source {
+      font-size: 11px;
+      color: #b2bec3;
+      margin-top: 4px;
+    }
+
+    /* 모바일 반응형 레이아웃 */
+    @media (max-width: 860px) {
+      .main-layout {
+        flex-direction: column;
+        padding: 10px;
+        gap: 12px;
+      }
+      .filter-panel {
+        width: 100%;
+        position: static;
+        padding: 12px 14px;
+      }
+      .filter-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 6px;
+      }
+      .viewport {
+        padding: 8px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>2026 전국 단풍·은행·참나무 통합 예측 지도</h1>
+  <div class="legend-bar">
+    <span>🍁 단풍</span>
+    <span>🍂 은행</span>
+    <span>🌰 참나무</span>
+  </div>
+  <div class="hint">모바일은 두 손가락으로 지도를 확대/축소할 수 있습니다.</div>
+</header>
+
+<div class="main-layout">
+  <!-- 좌측 필터 패널 -->
+  <aside class="filter-panel">
+    <h2>
+      <span>지역별 필터</span>
+      <button type="button" class="filter-btn-toggle" id="toggleAllBtn" onclick="toggleAllFilters()">전체 해제</button>
+    </h2>
+    <ul class="filter-list">
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="gyeonggi" checked onchange="filterPins()">
+          <span>경기·서울</span>
+          <span class="filter-count">8곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="gangwon" checked onchange="filterPins()">
+          <span>강원</span>
+          <span class="filter-count">4곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="chungbuk" checked onchange="filterPins()">
+          <span>충북</span>
+          <span class="filter-count">3곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="chungnam" checked onchange="filterPins()">
+          <span>충남·세종</span>
+          <span class="filter-count">3곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="gyeongbuk" checked onchange="filterPins()">
+          <span>경북·대구</span>
+          <span class="filter-count">5곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="gyeongnam" checked onchange="filterPins()">
+          <span>경남</span>
+          <span class="filter-count">1곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="jeonbuk" checked onchange="filterPins()">
+          <span>전북</span>
+          <span class="filter-count">3곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="jeonnam" checked onchange="filterPins()">
+          <span>전남</span>
+          <span class="filter-count">5곳</span>
+        </label>
+      </li>
+      <li>
+        <label class="filter-item">
+          <input type="checkbox" value="jeju" checked onchange="filterPins()">
+          <span>제주</span>
+          <span class="filter-count">3곳</span>
+        </label>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- 우측 지도 영역 -->
+  <main class="viewport">
+    <div class="map-canvas">
+      <svg class="korea-svg" viewBox="0 0 820 980">
+        <!-- 1. 경기 / 서울 -->
+        <polygon class="province p-gyeonggi" points="280,150 375,145 390,280 330,390 250,395 205,320 225,240" />
+        <!-- 2. 강원도 -->
+        <polygon class="province p-gangwon" points="375,145 530,115 610,230 615,340 510,330 390,280" />
+        <!-- 3. 충청북도 -->
+        <polygon class="province p-chungbuk" points="390,280 510,330 480,440 420,500 350,430 330,390" />
+        <!-- 4. 충청남도 / 세종 -->
+        <polygon class="province p-chungnam" points="250,395 330,390 350,430 420,500 360,520 270,520 195,440" />
+        <!-- 5. 경상북도 / 대구 -->
+        <polygon class="province p-gyeongbuk" points="510,330 615,340 635,470 610,590 450,590 420,500 480,440" />
+        <!-- 6. 전북특별자치도 -->
+        <polygon class="province p-jeonbuk" points="270,520 360,520 420,500 450,590 430,640 220,640 205,540" />
+        <!-- 7. 경상남도 -->
+        <polygon class="province p-gyeongnam" points="450,590 610,590 585,710 440,720 430,640" />
+        <!-- 8. 전라남도 -->
+        <polygon class="province p-jeonnam" points="220,640 430,640 440,720 380,770 250,780 180,690" />
+        <!-- 9. 제주 -->
+        <ellipse class="province p-jeju" cx="280" cy="880" rx="75" ry="38" />
+
+        <!-- 배경 라벨 -->
+        <text x="250" y="270" class="region-label">경기·서울</text>
+        <text x="490" y="210" class="region-label">강원</text>
+        <text x="240" y="465" class="region-label">충남</text>
+        <text x="390" y="365" class="region-label">충북</text>
+        <text x="540" y="440" class="region-label">경북</text>
+        <text x="250" y="585" class="region-label">전북</text>
+        <text x="525" y="660" class="region-label">경남</text>
+        <text x="250" y="705" class="region-label">전남</text>
+        <text x="260" y="885" class="region-label">제주</text>
+      </svg>
+
+      <!-- [경기 / 서울] -->
+      <div class="pin" data-region="gyeonggi" style="top: 170px; left: 325px;">
+        <span class="pin-title">화악산</span>
+        <div class="pin-data"><span>🍁10.20</span><span>🍂10.21</span><span>🌰10.23</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeonggi" style="top: 220px; left: 295px;">
+        <span class="pin-title">소리봉(포천)</span>
+        <div class="pin-data"><span>🍁10.30</span><span>🍂10.30</span><span>🌰10.31</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeonggi" style="top: 260px; left: 285px;">
+        <span class="pin-title">국립수목원</span>
+        <div class="pin-data"><span>🍁10.29</span><span>🍂10.31</span><span>🌰11.02</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeonggi" style="top: 310px; left: 245px;">
+        <span class="pin-title">서울식물원</span>
+        <div class="pin-data"><span>🍁11.02</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeonggi" style="top: 235px; left: 365px;">
+        <span class="pin-title">축령산</span>
+        <div class="pin-data"><span>🍁10.26</span><span>🍂10.25</span><span>🌰10.25</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeonggi" style="top: 290px; left: 360px;">
+        <span class="pin-title">용문산</span>
+        <div class="pin-data"><span>🍁10.23</span><span>🍂10.29</span><span>🌰10.24</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeonggi" style="top: 345px; left: 285px;">
+        <span class="pin-title">수리산</span>
+        <div class="pin-data"><span>🍁11.02</span><span>🍂11.04</span><span>🌰11.03</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeonggi" style="top: 380px; left: 285px;">
+        <span class="pin-title">물향기수목원</span>
+        <div class="pin-data"><span>🍁11.06</span><span>🍂11.06</span><span>🌰11.04</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [강원] -->
+      <div class="pin" data-region="gangwon" style="top: 130px; left: 430px;">
+        <span class="pin-title">광덕산</span>
+        <div class="pin-data"><span>🍁10.22</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gangwon" style="top: 135px; left: 515px;">
+        <span class="pin-title">설악산</span>
+        <div class="pin-data"><span>🍁10.20</span><span>🌰10.25</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gangwon" style="top: 195px; left: 535px;">
+        <span class="pin-title">점봉산</span>
+        <div class="pin-data"><span>🍁10.21</span><span>🌰10.21</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gangwon" style="top: 255px; left: 470px;">
+        <span class="pin-title">강원도립화목원</span>
+        <div class="pin-data"><span>🍁10.28</span><span>🍂10.27</span><span>🌰10.31</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [충북] -->
+      <div class="pin" data-region="chungbuk" style="top: 335px; left: 485px;">
+        <span class="pin-title">소백산</span>
+        <div class="pin-data"><span>🍁10.20</span><span>🌰10.16</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="chungbuk" style="top: 435px; left: 425px;">
+        <span class="pin-title">속리산</span>
+        <div class="pin-data"><span>🍁10.28</span><span>🍂10.23</span><span>🌰10.30</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="chungbuk" style="top: 405px; left: 350px;">
+        <span class="pin-title">미동산수목원</span>
+        <div class="pin-data"><span>🍁10.27</span><span>🍂10.29</span><span>🌰10.31</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [충남 / 세종] -->
+      <div class="pin" data-region="chungnam" style="top: 415px; left: 240px;">
+        <span class="pin-title">가야산(충남)</span>
+        <div class="pin-data"><span>🍁10.31</span><span>🍂10.26</span><span>🌰10.31</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="chungnam" style="top: 465px; left: 265px;">
+        <span class="pin-title">계룡산</span>
+        <div class="pin-data"><span>🍁11.01</span><span>🍂10.25</span><span>🌰10.28</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="chungnam" style="top: 460px; left: 350px;">
+        <span class="pin-title">금강수목원</span>
+        <div class="pin-data"><span>🍁11.02</span><span>🍂11.04</span><span>🌰11.03</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [경북 / 대구] -->
+      <div class="pin" data-region="gyeongbuk" style="top: 380px; left: 595px;">
+        <span class="pin-title">주왕산</span>
+        <div class="pin-data"><span>🍁10.26</span><span>🍂10.29</span><span>🌰11.06</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeongbuk" style="top: 485px; left: 565px;">
+        <span class="pin-title">팔공산</span>
+        <div class="pin-data"><span>🍁10.30</span><span>🌰11.01</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeongbuk" style="top: 540px; left: 560px;">
+        <span class="pin-title">대구수목원</span>
+        <div class="pin-data"><span>🍁11.06</span><span>🍂11.04</span><span>🌰11.14</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeongbuk" style="top: 545px; left: 470px;">
+        <span class="pin-title">가야산(경북)</span>
+        <div class="pin-data"><span>🍁10.28</span><span>🌰10.21</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="gyeongbuk" style="top: 590px; left: 445px;">
+        <span class="pin-title">금원산</span>
+        <div class="pin-data"><span>🍁10.25</span><span>🍂10.16</span><span>🌰10.26</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [경남] -->
+      <div class="pin" data-region="gyeongnam" style="top: 660px; left: 505px;">
+        <span class="pin-title">경남수목원</span>
+        <div class="pin-data"><span>🍁11.08</span><span>🍂11.05</span><span>🌰11.16</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [전북] -->
+      <div class="pin" data-region="jeonbuk" style="top: 535px; left: 340px;">
+        <span class="pin-title">대아수목원</span>
+        <div class="pin-data"><span>🍁11.01</span><span>🍂11.02</span><span>🌰11.04</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeonbuk" style="top: 565px; left: 240px;">
+        <span class="pin-title">변산반도</span>
+        <div class="pin-data"><span>🍁11.04</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeonbuk" style="top: 615px; left: 310px;">
+        <span class="pin-title">내장산</span>
+        <div class="pin-data"><span>🍁11.04</span><span>🌰10.26</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [전남] -->
+      <div class="pin" data-region="jeonnam" style="top: 635px; left: 405px;">
+        <span class="pin-title">지리산</span>
+        <div class="pin-data"><span>🍁10.27</span><span>🍂10.26</span><span>🌰10.25</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeonnam" style="top: 690px; left: 300px;">
+        <span class="pin-title">월출산</span>
+        <div class="pin-data"><span>🍁11.09</span><span>🍂10.28</span><span>🌰11.11</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeonnam" style="top: 735px; left: 275px;">
+        <span class="pin-title">두륜산</span>
+        <div class="pin-data"><span>🍁11.11</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeonnam" style="top: 765px; left: 320px;">
+        <span class="pin-title">완도수목원</span>
+        <div class="pin-data"><span>🍁11.09</span><span>🍂11.12</span><span>🌰11.16</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeonnam" style="top: 750px; left: 380px;">
+        <span class="pin-title">상왕봉</span>
+        <div class="pin-data"><span>🍁11.11</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- [제주] -->
+      <div class="pin" data-region="jeju" style="top: 855px; left: 240px;">
+        <span class="pin-title">한라산(1100도로)</span>
+        <div class="pin-data"><span>🍁11.06</span><span>🌰10.25</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeju" style="top: 830px; left: 310px;">
+        <span class="pin-title">한라수목원</span>
+        <div class="pin-data"><span>🍁11.19</span><span>🍂11.16</span><span>🌰11.16</span></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin" data-region="jeju" style="top: 885px; left: 325px;">
+        <span class="pin-title">교래곶자왈</span>
+        <div class="pin-data"><span>🍁11.02</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="author">Made by <a href="https://github.com/Hline" target="_blank" rel="noopener noreferrer">Hline</a></div>
+  <div class="source">데이터 출처: 산림청 국립산림과학원·국립수목원 2026 단풍 절정 예측 지도</div>
+</footer>
+
+<script>
+  function filterPins() {
+    const checked = Array.from(document.querySelectorAll('.filter-item input[type="checkbox"]:checked')).map(cb => cb.value);
+    document.querySelectorAll('.pin').forEach(pin => {
+      pin.classList.toggle('hidden', !checked.includes(pin.getAttribute('data-region')));
+    });
+    document.getElementById('toggleAllBtn').textContent = checked.length === 0 ? '전체 선택' : '전체 해제';
+  }
+
+  function toggleAllFilters() {
+    const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allChecked);
+    filterPins();
+  }
+</script>
+
+</body>
+</html>
