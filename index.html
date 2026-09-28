@@ -20,7 +20,7 @@
       top: 0;
       z-index: 100;
       background: #ffffff;
-      padding: 14px 16px;
+      padding: 12px 16px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
       border-bottom: 1px solid #eadcd0;
       text-align: center;
@@ -30,6 +30,7 @@
       font-weight: 800;
       color: #b33924;
       margin-bottom: 4px;
+      letter-spacing: -0.3px;
     }
     .legend-bar {
       display: flex;
@@ -41,7 +42,7 @@
     }
     .hint {
       font-size: 11px;
-      color: #888;
+      color: #7f8c8d;
       margin-top: 4px;
     }
 
@@ -49,17 +50,17 @@
     .main-layout {
       flex: 1;
       display: flex;
-      max-width: 1200px;
+      max-width: 1300px;
       width: 100%;
       margin: 0 auto;
       padding: 16px;
-      gap: 20px;
+      gap: 16px;
       align-items: flex-start;
     }
 
-    /* 좌측 지역 필터 패널 */
-    .filter-panel {
-      width: 220px;
+    /* 좌측 사이드 패널 (필터 + 명소 목록) */
+    .sidebar-panel {
+      width: 300px;
       background: #ffffff;
       border: 1px solid #e1d2be;
       border-radius: 14px;
@@ -67,16 +68,23 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.04);
       flex-shrink: 0;
       position: sticky;
-      top: 90px;
+      top: 80px;
+      height: calc(100vh - 110px);
+      max-height: 880px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
-    .filter-panel h2 {
-      font-size: 14px;
+
+    /* 지역 필터 구역 */
+    .filter-section h2, .spot-section h2 {
+      font-size: 13.5px;
       font-weight: 800;
       color: #2c3e50;
-      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 8px;
     }
     .filter-btn-toggle {
       font-size: 11px;
@@ -89,55 +97,188 @@
     }
     .filter-list {
       list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
     }
     .filter-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      gap: 5px;
+      font-size: 11.5px;
       font-weight: 600;
       color: #34495e;
       cursor: pointer;
       padding: 4px 6px;
       border-radius: 6px;
+      background: #faf7f2;
       transition: background 0.15s ease;
+      user-select: none;
     }
     .filter-item:hover {
-      background: #f8f4ed;
+      background: #f4ecdf;
     }
     .filter-item input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       accent-color: #b33924;
       cursor: pointer;
     }
     .filter-count {
       margin-left: auto;
-      font-size: 11px;
+      font-size: 10px;
       color: #95a5a6;
       font-weight: 500;
     }
 
-    /* 지도 뷰포트 */
+    /* 명소 리스트 구역 */
+    .spot-section {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #ebdcd0;
+      padding-top: 12px;
+    }
+    .spot-badge {
+      font-size: 11px;
+      background: #fdf1e8;
+      color: #b33924;
+      padding: 1.5px 7px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .spot-search-box {
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .spot-search-box svg {
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #95a5a6;
+      pointer-events: none;
+    }
+    .spot-search-box input {
+      width: 100%;
+      padding: 6px 10px 6px 28px;
+      font-size: 12px;
+      border: 1px solid #d4c4b0;
+      border-radius: 6px;
+      outline: none;
+      background: #faf8f5;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .spot-search-box input:focus {
+      border-color: #b33924;
+      background: #ffffff;
+    }
+    .spot-list-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .spot-list-wrapper::-webkit-scrollbar {
+      width: 5px;
+    }
+    .spot-list-wrapper::-webkit-scrollbar-thumb {
+      background: #dcd0c2;
+      border-radius: 4px;
+    }
+    .spot-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .spot-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #2c3e50;
+      cursor: pointer;
+      background: #ffffff;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .spot-item:hover {
+      background: #fcf4eb;
+      border-color: #ebdcd0;
+      transform: translateX(2px);
+    }
+    .spot-item.active {
+      background: #fdf1e8;
+      border-color: #b33924;
+      color: #b33924;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(179, 57, 36, 0.12);
+    }
+    .spot-item-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+    .spot-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .spot-region-tag {
+      font-size: 10px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: #eee5d8;
+      color: #7d6b5a;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .spot-date-tag {
+      font-size: 11px;
+      color: #b33924;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+
+    /* 지도 뷰포트 (Zoom & Pan 영역) */
     .viewport {
       flex: 1;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      background: #fdfbf7;
       border: 1px solid #e1d2be;
       border-radius: 16px;
-      padding: 16px 8px;
+      height: calc(100vh - 110px);
+      max-height: 880px;
+      min-height: 600px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: grab;
+      touch-action: none;
     }
+    .viewport.grabbing {
+      cursor: grabbing;
+    }
+
+    /* 캔버스 변환 레이어 */
     .map-canvas {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 820px;
       height: 980px;
-      margin: 0 auto;
-      background: #fdfbf7;
+      background: transparent;
+      transform-origin: 0 0;
+      will-change: transform;
+      pointer-events: auto;
     }
     .korea-svg {
       position: absolute;
@@ -181,11 +322,57 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      z-index: 2;
+      z-index: 5;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
     }
     .pin.hidden {
       display: none !important;
     }
+    .pin:hover {
+      z-index: 600 !important;
+    }
+    .pin:hover .pin-title {
+      background: #b33924;
+      transform: scale(1.08);
+    }
+    .pin:hover .pin-data {
+      border-color: #b33924;
+      transform: scale(1.08);
+      box-shadow: 0 4px 12px rgba(179, 57, 36, 0.2);
+    }
+
+    /* 활성화(선택)된 핀 하이라이트 */
+    .pin.active {
+      z-index: 1000 !important;
+    }
+    .pin.active .pin-title {
+      background: #b33924 !important;
+      transform: scale(1.15);
+      box-shadow: 0 0 14px rgba(179, 57, 36, 0.6);
+    }
+    .pin.active .pin-data {
+      border-color: #b33924 !important;
+      transform: scale(1.15);
+      box-shadow: 0 0 16px rgba(179, 57, 36, 0.4);
+    }
+    .pin.active .pin-dot {
+      background: #b33924;
+      transform: scale(1.8);
+      animation: pinPulseRing 1.5s infinite;
+    }
+    @keyframes pinPulseRing {
+      0% {
+        box-shadow: 0 0 0 0 rgba(179, 57, 36, 0.8);
+      }
+      70% {
+        box-shadow: 0 0 0 16px rgba(179, 57, 36, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(179, 57, 36, 0);
+      }
+    }
+
     .pin-title {
       background: #2c3e50;
       color: #fff;
@@ -196,6 +383,7 @@
       white-space: nowrap;
       margin-bottom: 2px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
     }
     .pin-data {
       background: #ffffff;
@@ -209,20 +397,74 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       font-size: 11px;
       font-weight: 700;
+      transition: all 0.2s ease;
     }
     .pin-dot {
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
       background: #b33924;
       border-radius: 50%;
-      margin-top: 1px;
+      margin-top: 2px;
+      transition: transform 0.2s ease;
+    }
+
+    /* 플로팅 줌 컨트롤러 */
+    .zoom-controls {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 120;
+    }
+    .zoom-btn {
+      width: 38px;
+      height: 38px;
+      background: #ffffff;
+      border: 1px solid #d4c4b0;
+      border-radius: 8px;
+      color: #2c3e50;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      padding: 0;
+    }
+    .zoom-btn:hover {
+      background: #fdf6ec;
+      color: #b33924;
+      border-color: #b33924;
+      transform: translateY(-1px);
+    }
+    .zoom-btn:active {
+      transform: translateY(0);
+      background: #faebd7;
+    }
+    .map-guide-badge {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px);
+      border: 1px solid #eadcd0;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #5d6d7e;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      pointer-events: none;
+      z-index: 120;
     }
 
     /* 푸터 */
     footer {
       background: #ffffff;
       border-top: 1px solid #ebdcd0;
-      padding: 20px 16px;
+      padding: 16px;
       text-align: center;
       font-size: 13px;
       color: #636e72;
@@ -250,18 +492,26 @@
         padding: 10px;
         gap: 12px;
       }
-      .filter-panel {
+      .sidebar-panel {
         width: 100%;
         position: static;
+        height: auto;
+        max-height: 380px;
         padding: 12px 14px;
       }
       .filter-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-        gap: 6px;
+        grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
       }
       .viewport {
-        padding: 8px 0;
+        height: 65vh;
+        min-height: 480px;
+        max-height: 680px;
+      }
+      .map-guide-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+        top: 10px;
+        right: 10px;
       }
     }
   </style>
@@ -275,86 +525,109 @@
     <span>🍂 은행</span>
     <span>🌰 참나무</span>
   </div>
-  <div class="hint">모바일은 두 손가락으로 지도를 확대/축소할 수 있습니다.</div>
+  <div class="hint">🔍 휠·핀치로 확대/축소하고 드래그하여 이동할 수 있습니다. 좌측 목록에서 산을 클릭하면 바로 이동합니다.</div>
 </header>
 
 <div class="main-layout">
-  <!-- 좌측 필터 패널 -->
-  <aside class="filter-panel">
-    <h2>
-      <span>지역별 필터</span>
-      <button type="button" class="filter-btn-toggle" id="toggleAllBtn" onclick="toggleAllFilters()">전체 해제</button>
-    </h2>
-    <ul class="filter-list">
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="gyeonggi" checked onchange="filterPins()">
-          <span>경기·서울</span>
-          <span class="filter-count">8곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="gangwon" checked onchange="filterPins()">
-          <span>강원</span>
-          <span class="filter-count">4곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="chungbuk" checked onchange="filterPins()">
-          <span>충북</span>
-          <span class="filter-count">3곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="chungnam" checked onchange="filterPins()">
-          <span>충남·세종</span>
-          <span class="filter-count">3곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="gyeongbuk" checked onchange="filterPins()">
-          <span>경북·대구</span>
-          <span class="filter-count">5곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="gyeongnam" checked onchange="filterPins()">
-          <span>경남</span>
-          <span class="filter-count">1곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="jeonbuk" checked onchange="filterPins()">
-          <span>전북</span>
-          <span class="filter-count">3곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="jeonnam" checked onchange="filterPins()">
-          <span>전남</span>
-          <span class="filter-count">5곳</span>
-        </label>
-      </li>
-      <li>
-        <label class="filter-item">
-          <input type="checkbox" value="jeju" checked onchange="filterPins()">
-          <span>제주</span>
-          <span class="filter-count">3곳</span>
-        </label>
-      </li>
-    </ul>
+  <!-- 좌측 사이드바 패널 (지역 필터 + 명소 바로가기) -->
+  <aside class="sidebar-panel">
+    <!-- 1. 지역별 필터 섹션 -->
+    <div class="filter-section">
+      <h2>
+        <span>지역별 필터</span>
+        <button type="button" class="filter-btn-toggle" id="toggleAllBtn" onclick="toggleAllFilters()">전체 해제</button>
+      </h2>
+      <ul class="filter-list">
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="gyeonggi" checked onchange="filterPins()">
+            <span>경기·서울</span>
+            <span class="filter-count">8곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="gangwon" checked onchange="filterPins()">
+            <span>강원</span>
+            <span class="filter-count">4곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="chungbuk" checked onchange="filterPins()">
+            <span>충북</span>
+            <span class="filter-count">3곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="chungnam" checked onchange="filterPins()">
+            <span>충남·세종</span>
+            <span class="filter-count">3곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="gyeongbuk" checked onchange="filterPins()">
+            <span>경북·대구</span>
+            <span class="filter-count">5곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="gyeongnam" checked onchange="filterPins()">
+            <span>경남</span>
+            <span class="filter-count">1곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="jeonbuk" checked onchange="filterPins()">
+            <span>전북</span>
+            <span class="filter-count">3곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="jeonnam" checked onchange="filterPins()">
+            <span>전남</span>
+            <span class="filter-count">5곳</span>
+          </label>
+        </li>
+        <li>
+          <label class="filter-item">
+            <input type="checkbox" value="jeju" checked onchange="filterPins()">
+            <span>제주</span>
+            <span class="filter-count">3곳</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 2. 명소 탐색 리스트 섹션 -->
+    <div class="spot-section">
+      <h2>
+        <span>명소 바로가기</span>
+        <span class="spot-badge" id="spotCountBadge">35곳</span>
+      </h2>
+      <div class="spot-search-box">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="spotSearchInput" placeholder="산·수목원 검색..." oninput="onSearchSpots(this.value)">
+      </div>
+      <div class="spot-list-wrapper">
+        <ul class="spot-list" id="spotList">
+          <!-- JS에서 동적으로 구성 -->
+        </ul>
+      </div>
+    </div>
   </aside>
 
   <!-- 우측 지도 영역 -->
-  <main class="viewport">
-    <div class="map-canvas">
+  <main class="viewport" id="viewport">
+    <div class="map-canvas" id="mapCanvas">
       <svg class="korea-svg" viewBox="0 0 820 980">
         <!-- 1. 경기 / 서울 -->
         <polygon class="province p-gyeonggi" points="280,150 375,145 390,280 330,390 250,395 205,320 225,240" />
@@ -388,198 +661,216 @@
       </svg>
 
       <!-- [경기 / 서울] -->
-      <div class="pin" data-region="gyeonggi" style="top: 170px; left: 325px;">
+      <div class="pin" id="pin-화악산" data-region="gyeonggi" style="top: 170px; left: 325px;">
         <span class="pin-title">화악산</span>
         <div class="pin-data"><span>🍁10.20</span><span>🍂10.21</span><span>🌰10.23</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeonggi" style="top: 220px; left: 295px;">
+      <div class="pin" id="pin-소리봉" data-region="gyeonggi" style="top: 220px; left: 295px;">
         <span class="pin-title">소리봉(포천)</span>
         <div class="pin-data"><span>🍁10.30</span><span>🍂10.30</span><span>🌰10.31</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeonggi" style="top: 260px; left: 285px;">
+      <div class="pin" id="pin-국립수목원" data-region="gyeonggi" style="top: 260px; left: 285px;">
         <span class="pin-title">국립수목원</span>
         <div class="pin-data"><span>🍁10.29</span><span>🍂10.31</span><span>🌰11.02</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeonggi" style="top: 310px; left: 245px;">
+      <div class="pin" id="pin-서울식물원" data-region="gyeonggi" style="top: 310px; left: 245px;">
         <span class="pin-title">서울식물원</span>
         <div class="pin-data"><span>🍁11.02</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeonggi" style="top: 235px; left: 365px;">
+      <div class="pin" id="pin-축령산" data-region="gyeonggi" style="top: 235px; left: 365px;">
         <span class="pin-title">축령산</span>
         <div class="pin-data"><span>🍁10.26</span><span>🍂10.25</span><span>🌰10.25</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeonggi" style="top: 290px; left: 360px;">
+      <div class="pin" id="pin-용문산" data-region="gyeonggi" style="top: 290px; left: 360px;">
         <span class="pin-title">용문산</span>
         <div class="pin-data"><span>🍁10.23</span><span>🍂10.29</span><span>🌰10.24</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeonggi" style="top: 345px; left: 285px;">
+      <div class="pin" id="pin-수리산" data-region="gyeonggi" style="top: 345px; left: 285px;">
         <span class="pin-title">수리산</span>
         <div class="pin-data"><span>🍁11.02</span><span>🍂11.04</span><span>🌰11.03</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeonggi" style="top: 380px; left: 285px;">
+      <div class="pin" id="pin-물향기수목원" data-region="gyeonggi" style="top: 380px; left: 285px;">
         <span class="pin-title">물향기수목원</span>
         <div class="pin-data"><span>🍁11.06</span><span>🍂11.06</span><span>🌰11.04</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [강원] -->
-      <div class="pin" data-region="gangwon" style="top: 130px; left: 430px;">
+      <div class="pin" id="pin-광덕산" data-region="gangwon" style="top: 130px; left: 430px;">
         <span class="pin-title">광덕산</span>
         <div class="pin-data"><span>🍁10.22</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gangwon" style="top: 135px; left: 515px;">
+      <div class="pin" id="pin-설악산" data-region="gangwon" style="top: 135px; left: 515px;">
         <span class="pin-title">설악산</span>
         <div class="pin-data"><span>🍁10.20</span><span>🌰10.25</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gangwon" style="top: 195px; left: 535px;">
+      <div class="pin" id="pin-점봉산" data-region="gangwon" style="top: 195px; left: 535px;">
         <span class="pin-title">점봉산</span>
         <div class="pin-data"><span>🍁10.21</span><span>🌰10.21</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gangwon" style="top: 255px; left: 470px;">
+      <div class="pin" id="pin-강원도립화목원" data-region="gangwon" style="top: 255px; left: 470px;">
         <span class="pin-title">강원도립화목원</span>
         <div class="pin-data"><span>🍁10.28</span><span>🍂10.27</span><span>🌰10.31</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [충북] -->
-      <div class="pin" data-region="chungbuk" style="top: 335px; left: 485px;">
+      <div class="pin" id="pin-소백산" data-region="chungbuk" style="top: 335px; left: 485px;">
         <span class="pin-title">소백산</span>
         <div class="pin-data"><span>🍁10.20</span><span>🌰10.16</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="chungbuk" style="top: 435px; left: 425px;">
+      <div class="pin" id="pin-속리산" data-region="chungbuk" style="top: 435px; left: 425px;">
         <span class="pin-title">속리산</span>
         <div class="pin-data"><span>🍁10.28</span><span>🍂10.23</span><span>🌰10.30</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="chungbuk" style="top: 405px; left: 350px;">
+      <div class="pin" id="pin-미동산수목원" data-region="chungbuk" style="top: 405px; left: 350px;">
         <span class="pin-title">미동산수목원</span>
         <div class="pin-data"><span>🍁10.27</span><span>🍂10.29</span><span>🌰10.31</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [충남 / 세종] -->
-      <div class="pin" data-region="chungnam" style="top: 415px; left: 240px;">
+      <div class="pin" id="pin-가야산-충남" data-region="chungnam" style="top: 415px; left: 240px;">
         <span class="pin-title">가야산(충남)</span>
         <div class="pin-data"><span>🍁10.31</span><span>🍂10.26</span><span>🌰10.31</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="chungnam" style="top: 465px; left: 265px;">
+      <div class="pin" id="pin-계룡산" data-region="chungnam" style="top: 465px; left: 265px;">
         <span class="pin-title">계룡산</span>
         <div class="pin-data"><span>🍁11.01</span><span>🍂10.25</span><span>🌰10.28</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="chungnam" style="top: 460px; left: 350px;">
+      <div class="pin" id="pin-금강수목원" data-region="chungnam" style="top: 460px; left: 350px;">
         <span class="pin-title">금강수목원</span>
         <div class="pin-data"><span>🍁11.02</span><span>🍂11.04</span><span>🌰11.03</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [경북 / 대구] -->
-      <div class="pin" data-region="gyeongbuk" style="top: 380px; left: 595px;">
+      <div class="pin" id="pin-주왕산" data-region="gyeongbuk" style="top: 380px; left: 595px;">
         <span class="pin-title">주왕산</span>
         <div class="pin-data"><span>🍁10.26</span><span>🍂10.29</span><span>🌰11.06</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeongbuk" style="top: 485px; left: 565px;">
+      <div class="pin" id="pin-팔공산" data-region="gyeongbuk" style="top: 485px; left: 565px;">
         <span class="pin-title">팔공산</span>
         <div class="pin-data"><span>🍁10.30</span><span>🌰11.01</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeongbuk" style="top: 540px; left: 560px;">
+      <div class="pin" id="pin-대구수목원" data-region="gyeongbuk" style="top: 540px; left: 560px;">
         <span class="pin-title">대구수목원</span>
         <div class="pin-data"><span>🍁11.06</span><span>🍂11.04</span><span>🌰11.14</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeongbuk" style="top: 545px; left: 470px;">
+      <div class="pin" id="pin-가야산-경북" data-region="gyeongbuk" style="top: 545px; left: 470px;">
         <span class="pin-title">가야산(경북)</span>
         <div class="pin-data"><span>🍁10.28</span><span>🌰10.21</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="gyeongbuk" style="top: 590px; left: 445px;">
+      <div class="pin" id="pin-금원산" data-region="gyeongbuk" style="top: 590px; left: 445px;">
         <span class="pin-title">금원산</span>
         <div class="pin-data"><span>🍁10.25</span><span>🍂10.16</span><span>🌰10.26</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [경남] -->
-      <div class="pin" data-region="gyeongnam" style="top: 660px; left: 505px;">
+      <div class="pin" id="pin-경남수목원" data-region="gyeongnam" style="top: 660px; left: 505px;">
         <span class="pin-title">경남수목원</span>
         <div class="pin-data"><span>🍁11.08</span><span>🍂11.05</span><span>🌰11.16</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [전북] -->
-      <div class="pin" data-region="jeonbuk" style="top: 535px; left: 340px;">
+      <div class="pin" id="pin-대아수목원" data-region="jeonbuk" style="top: 535px; left: 340px;">
         <span class="pin-title">대아수목원</span>
         <div class="pin-data"><span>🍁11.01</span><span>🍂11.02</span><span>🌰11.04</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeonbuk" style="top: 565px; left: 240px;">
+      <div class="pin" id="pin-변산반도" data-region="jeonbuk" style="top: 565px; left: 240px;">
         <span class="pin-title">변산반도</span>
         <div class="pin-data"><span>🍁11.04</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeonbuk" style="top: 615px; left: 310px;">
+      <div class="pin" id="pin-내장산" data-region="jeonbuk" style="top: 615px; left: 310px;">
         <span class="pin-title">내장산</span>
         <div class="pin-data"><span>🍁11.04</span><span>🌰10.26</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [전남] -->
-      <div class="pin" data-region="jeonnam" style="top: 635px; left: 405px;">
+      <div class="pin" id="pin-지리산" data-region="jeonnam" style="top: 635px; left: 405px;">
         <span class="pin-title">지리산</span>
         <div class="pin-data"><span>🍁10.27</span><span>🍂10.26</span><span>🌰10.25</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeonnam" style="top: 690px; left: 300px;">
+      <div class="pin" id="pin-월출산" data-region="jeonnam" style="top: 690px; left: 300px;">
         <span class="pin-title">월출산</span>
         <div class="pin-data"><span>🍁11.09</span><span>🍂10.28</span><span>🌰11.11</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeonnam" style="top: 735px; left: 275px;">
+      <div class="pin" id="pin-두륜산" data-region="jeonnam" style="top: 735px; left: 275px;">
         <span class="pin-title">두륜산</span>
         <div class="pin-data"><span>🍁11.11</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeonnam" style="top: 765px; left: 320px;">
+      <div class="pin" id="pin-완도수목원" data-region="jeonnam" style="top: 765px; left: 320px;">
         <span class="pin-title">완도수목원</span>
         <div class="pin-data"><span>🍁11.09</span><span>🍂11.12</span><span>🌰11.16</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeonnam" style="top: 750px; left: 380px;">
+      <div class="pin" id="pin-상왕봉" data-region="jeonnam" style="top: 750px; left: 380px;">
         <span class="pin-title">상왕봉</span>
         <div class="pin-data"><span>🍁11.11</span></div>
         <div class="pin-dot"></div>
       </div>
 
       <!-- [제주] -->
-      <div class="pin" data-region="jeju" style="top: 855px; left: 240px;">
+      <div class="pin" id="pin-한라산" data-region="jeju" style="top: 855px; left: 240px;">
         <span class="pin-title">한라산(1100도로)</span>
         <div class="pin-data"><span>🍁11.06</span><span>🌰10.25</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeju" style="top: 830px; left: 310px;">
+      <div class="pin" id="pin-한라수목원" data-region="jeju" style="top: 830px; left: 310px;">
         <span class="pin-title">한라수목원</span>
         <div class="pin-data"><span>🍁11.19</span><span>🍂11.16</span><span>🌰11.16</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin" data-region="jeju" style="top: 885px; left: 325px;">
+      <div class="pin" id="pin-교래곶자왈" data-region="jeju" style="top: 885px; left: 325px;">
         <span class="pin-title">교래곶자왈</span>
         <div class="pin-data"><span>🍁11.02</span></div>
         <div class="pin-dot"></div>
       </div>
 
+    </div>
+
+    <!-- 플로팅 줌 컨트롤러 -->
+    <div class="zoom-controls">
+      <button type="button" class="zoom-btn" id="zoomInBtn" title="지도 확대" aria-label="확대">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <button type="button" class="zoom-btn" id="zoomOutBtn" title="지도 축소" aria-label="축소">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <button type="button" class="zoom-btn" id="zoomResetBtn" title="전체보기 리셋" aria-label="리셋">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+      </button>
+    </div>
+
+    <!-- 조작 힌트 배지 -->
+    <div class="map-guide-badge">
+      <span>🔍 휠/핀치 확대 · 드래그 이동</span>
     </div>
   </main>
 </div>
@@ -590,11 +881,331 @@
 </footer>
 
 <script>
+  // 지역명 매핑
+  const REGION_NAMES = {
+    gyeonggi: '경기·서울',
+    gangwon: '강원',
+    chungbuk: '충북',
+    chungnam: '충남',
+    gyeongbuk: '경북',
+    gyeongnam: '경남',
+    jeonbuk: '전북',
+    jeonnam: '전남',
+    jeju: '제주'
+  };
+
+  // 줌 & 팬 상태 관리
+  const mapState = {
+    scale: 1,
+    panX: 0,
+    panY: 0,
+    minScale: 0.6,
+    maxScale: 2.8,
+    isDragging: false,
+    hasDragged: false,
+    startX: 0,
+    startY: 0,
+    startPanX: 0,
+    startPanY: 0,
+    fitScale: 1,
+    fitPanX: 0,
+    fitPanY: 0,
+    animFrame: null,
+    activeTouches: new Map(),
+    initialPinchDist: 0,
+    initialPinchScale: 1
+  };
+
+  const viewport = document.getElementById('viewport');
+  const mapCanvas = document.getElementById('mapCanvas');
+  const spotListEl = document.getElementById('spotList');
+  const spotCountBadge = document.getElementById('spotCountBadge');
+
+  // 지도 변환 적용 함수
+  function applyTransform() {
+    mapCanvas.style.transform = `translate(${mapState.panX}px, ${mapState.panY}px) scale(${mapState.scale})`;
+  }
+
+  // 뷰포트 크기에 맞춰 초기 전체보기 스케일 및 중앙 좌표 계산
+  function resetToFit(animate = false) {
+    const vpWidth = viewport.clientWidth;
+    const vpHeight = viewport.clientHeight;
+    const canvasWidth = 820;
+    const canvasHeight = 980;
+
+    // 패딩을 고려하여 한눈에 쏙 들어오는 fitScale 산출
+    const scaleX = (vpWidth - 20) / canvasWidth;
+    const scaleY = (vpHeight - 20) / canvasHeight;
+    const targetScale = Math.min(scaleX, scaleY, 1.0);
+
+    const targetPanX = (vpWidth - canvasWidth * targetScale) / 2;
+    const targetPanY = Math.max(10, (vpHeight - canvasHeight * targetScale) / 2);
+
+    mapState.fitScale = targetScale;
+    mapState.fitPanX = targetPanX;
+    mapState.fitPanY = targetPanY;
+
+    if (animate) {
+      animateTo(targetPanX, targetPanY, targetScale);
+    } else {
+      mapState.scale = targetScale;
+      mapState.panX = targetPanX;
+      mapState.panY = targetPanY;
+      applyTransform();
+    }
+  }
+
+  // 부드러운 이동/줌 애니메이션 (requestAnimationFrame)
+  function animateTo(targetPanX, targetPanY, targetScale, duration = 320) {
+    if (mapState.animFrame) cancelAnimationFrame(mapState.animFrame);
+
+    const startPanX = mapState.panX;
+    const startPanY = mapState.panY;
+    const startScale = mapState.scale;
+    const startTime = performance.now();
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutCubic
+      const ease = 1 - Math.pow(1 - progress, 3);
+
+      mapState.panX = startPanX + (targetPanX - startPanX) * ease;
+      mapState.panY = startPanY + (targetPanY - startPanY) * ease;
+      mapState.scale = startScale + (targetScale - startScale) * ease;
+      applyTransform();
+
+      if (progress < 1) {
+        mapState.animFrame = requestAnimationFrame(step);
+      } else {
+        mapState.animFrame = null;
+      }
+    }
+    mapState.animFrame = requestAnimationFrame(step);
+  }
+
+  // 특정 뷰포트 좌표 (vx, vy)를 중심으로 줌
+  function zoomAtPoint(vx, vy, factor) {
+    const oldScale = mapState.scale;
+    const newScale = Math.min(Math.max(oldScale * factor, mapState.minScale), mapState.maxScale);
+    if (oldScale === newScale) return;
+
+    // 수학적으로 마우스/터치 중심점을 유지하는 좌표 공식
+    mapState.panX = vx - (vx - mapState.panX) * (newScale / oldScale);
+    mapState.panY = vy - (vy - mapState.panY) * (newScale / oldScale);
+    mapState.scale = newScale;
+    applyTransform();
+  }
+
+  // 지도 특정 핀에 포커스 (사이드바 클릭 또는 핀 클릭)
+  function focusSpot(pinId, fromSidebar = false) {
+    const pin = document.getElementById(pinId);
+    if (!pin) return;
+
+    // 만약 해당 지역 체크박스가 해제되어 있으면 자동 활성화
+    const region = pin.getAttribute('data-region');
+    const checkbox = document.querySelector(`.filter-item input[value="${region}"]`);
+    if (checkbox && !checkbox.checked) {
+      checkbox.checked = true;
+      filterPins();
+    }
+
+    // 핀 하이라이트 활성화
+    document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
+    pin.classList.add('active');
+
+    // 사이드바 목록 아이템 하이라이트 & 스크롤
+    document.querySelectorAll('.spot-item.active').forEach(el => el.classList.remove('active'));
+    const spotItem = document.querySelector(`.spot-item[data-pin-id="${pinId}"]`);
+    if (spotItem) {
+      spotItem.classList.add('active');
+      spotItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 핀 좌표 추출 및 뷰포트 중앙 이동 계산
+    const pinLeft = parseFloat(pin.style.left);
+    const pinTop = parseFloat(pin.style.top);
+
+    // 겹치지 않고 또렷하게 보이도록 최소 1.35배 이상으로 줌인
+    const targetScale = Math.max(mapState.scale, 1.35);
+    const vpWidth = viewport.clientWidth;
+    const vpHeight = viewport.clientHeight;
+
+    const targetPanX = (vpWidth / 2) - (pinLeft * targetScale);
+    const targetPanY = (vpHeight / 2) - (pinTop * targetScale);
+
+    animateTo(targetPanX, targetPanY, targetScale);
+  }
+
+  // 1. 마우스 휠 이벤트 (커서 중심 확대/축소)
+  viewport.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const rect = viewport.getBoundingClientRect();
+    const vx = e.clientX - rect.left;
+    const vy = e.clientY - rect.top;
+    const factor = e.deltaY < 0 ? 1.15 : 0.87;
+    zoomAtPoint(vx, vy, factor);
+  }, { passive: false });
+
+  // 2. 마우스 / 터치 포인터 이벤트 (패닝 & 핀치 줌)
+  viewport.addEventListener('pointerdown', (e) => {
+    // 줌 버튼 클릭 등 UI 클릭 시 패닝 방지
+    if (e.target.closest('.zoom-controls')) return;
+
+    mapState.activeTouches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (mapState.activeTouches.size === 1) {
+      mapState.isDragging = true;
+      mapState.hasDragged = false;
+      mapState.startX = e.clientX;
+      mapState.startY = e.clientY;
+      mapState.startPanX = mapState.panX;
+      mapState.startPanY = mapState.panY;
+      viewport.classList.add('grabbing');
+      viewport.setPointerCapture(e.pointerId);
+    } else if (mapState.activeTouches.size === 2) {
+      // 2개 터치 시 핀치 줌 초기화
+      mapState.isDragging = false;
+      viewport.classList.remove('grabbing');
+      const touches = Array.from(mapState.activeTouches.values());
+      mapState.initialPinchDist = Math.hypot(touches[0].x - touches[1].x, touches[0].y - touches[1].y);
+      mapState.initialPinchScale = mapState.scale;
+    }
+  });
+
+  viewport.addEventListener('pointermove', (e) => {
+    if (mapState.activeTouches.has(e.pointerId)) {
+      mapState.activeTouches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    }
+
+    if (mapState.activeTouches.size === 1 && mapState.isDragging) {
+      const dx = e.clientX - mapState.startX;
+      const dy = e.clientY - mapState.startY;
+      if (Math.hypot(dx, dy) > 4) {
+        mapState.hasDragged = true;
+      }
+      mapState.panX = mapState.startPanX + dx;
+      mapState.panY = mapState.startPanY + dy;
+      applyTransform();
+    } else if (mapState.activeTouches.size === 2) {
+      const touches = Array.from(mapState.activeTouches.values());
+      const dist = Math.hypot(touches[0].x - touches[1].x, touches[0].y - touches[1].y);
+      if (mapState.initialPinchDist > 0) {
+        const factor = dist / mapState.initialPinchDist;
+        const rect = viewport.getBoundingClientRect();
+        const midX = ((touches[0].x + touches[1].x) / 2) - rect.left;
+        const midY = ((touches[0].y + touches[1].y) / 2) - rect.top;
+        zoomAtPoint(midX, midY, factor);
+        mapState.initialPinchDist = dist;
+      }
+    }
+  });
+
+  function endPointer(e) {
+    mapState.activeTouches.delete(e.pointerId);
+    if (mapState.activeTouches.size === 0) {
+      mapState.isDragging = false;
+      viewport.classList.remove('grabbing');
+      try { viewport.releasePointerCapture(e.pointerId); } catch(err) {}
+    }
+  }
+
+  viewport.addEventListener('pointerup', endPointer);
+  viewport.addEventListener('pointercancel', endPointer);
+
+  // 3. 플로팅 줌 컨트롤러 버튼 이벤트
+  document.getElementById('zoomInBtn').addEventListener('click', () => {
+    const vx = viewport.clientWidth / 2;
+    const vy = viewport.clientHeight / 2;
+    zoomAtPoint(vx, vy, 1.25);
+  });
+  document.getElementById('zoomOutBtn').addEventListener('click', () => {
+    const vx = viewport.clientWidth / 2;
+    const vy = viewport.clientHeight / 2;
+    zoomAtPoint(vx, vy, 0.8);
+  });
+  document.getElementById('zoomResetBtn').addEventListener('click', () => {
+    resetToFit(true);
+    document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.spot-item.active').forEach(i => i.classList.remove('active'));
+  });
+
+  // 4. 지도 핀 클릭 이벤트 (드래그 중 발생한 클릭 방지)
+  document.querySelectorAll('.pin').forEach(pin => {
+    pin.addEventListener('click', (e) => {
+      if (mapState.hasDragged) return; // 드래그 중 오작동 방지
+      e.stopPropagation();
+      focusSpot(pin.id);
+    });
+  });
+
+  // 5. 사이드바 명소 목록 동적 빌드
+  function buildSpotList() {
+    spotListEl.innerHTML = '';
+    const pins = Array.from(document.querySelectorAll('.pin'));
+    spotCountBadge.textContent = `${pins.length}곳`;
+
+    pins.forEach(pin => {
+      const pinId = pin.id;
+      const title = pin.querySelector('.pin-title').textContent.trim();
+      const region = pin.getAttribute('data-region');
+      const regionName = REGION_NAMES[region] || region;
+      
+      // 첫 번째 단풍(🍁) 날짜 추출
+      const firstSpan = pin.querySelector('.pin-data span');
+      const dateText = firstSpan ? firstSpan.textContent.trim() : '';
+
+      const li = document.createElement('li');
+      li.className = 'spot-item';
+      li.setAttribute('data-pin-id', pinId);
+      li.setAttribute('data-region', region);
+      li.setAttribute('data-title', title);
+      li.innerHTML = `
+        <div class="spot-item-left">
+          <span class="spot-region-tag">${regionName}</span>
+          <span class="spot-name">${title}</span>
+        </div>
+        <span class="spot-date-tag">${dateText}</span>
+      `;
+
+      li.addEventListener('click', () => {
+        focusSpot(pinId, true);
+      });
+
+      spotListEl.appendChild(li);
+    });
+  }
+
+  // 6. 명소 검색 필터 함수
+  function onSearchSpots(query) {
+    const q = query.trim().toLowerCase();
+    let count = 0;
+    document.querySelectorAll('.spot-item').forEach(item => {
+      const title = item.getAttribute('data-title').toLowerCase();
+      const region = (REGION_NAMES[item.getAttribute('data-region')] || '').toLowerCase();
+      const isMatch = !q || title.includes(q) || region.includes(q);
+      item.style.display = isMatch ? 'flex' : 'none';
+      if (isMatch) count++;
+    });
+    spotCountBadge.textContent = `${count}곳`;
+  }
+
+  // 7. 지역 체크박스 필터링 함수
   function filterPins() {
     const checked = Array.from(document.querySelectorAll('.filter-item input[type="checkbox"]:checked')).map(cb => cb.value);
+    
+    // 지도 핀 숨김/표시
     document.querySelectorAll('.pin').forEach(pin => {
-      pin.classList.toggle('hidden', !checked.includes(pin.getAttribute('data-region')));
+      const isVisible = checked.includes(pin.getAttribute('data-region'));
+      pin.classList.toggle('hidden', !isVisible);
     });
+
+    // 사이드바 목록도 해당 지역 상태에 따라 시각적 동기화
+    document.querySelectorAll('.spot-item').forEach(item => {
+      const isVisible = checked.includes(item.getAttribute('data-region'));
+      item.style.opacity = isVisible ? '1' : '0.4';
+    });
+
     document.getElementById('toggleAllBtn').textContent = checked.length === 0 ? '전체 선택' : '전체 해제';
   }
 
@@ -603,6 +1214,21 @@
     const allChecked = Array.from(checkboxes).every(cb => cb.checked);
     checkboxes.forEach(cb => cb.checked = !allChecked);
     filterPins();
+  }
+
+  // 창 크기 변경 시 fitScale 재계산
+  window.addEventListener('resize', () => {
+    resetToFit(false);
+  });
+
+  // 초기화 실행
+  document.addEventListener('DOMContentLoaded', () => {
+    buildSpotList();
+    resetToFit(false);
+  });
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    buildSpotList();
+    resetToFit(false);
   }
 </script>
 
