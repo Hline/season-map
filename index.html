@@ -257,6 +257,7 @@
     /* 지도 뷰포트 (Zoom & Pan 영역) */
     .viewport {
       flex: 1;
+      width: 100%;
       position: relative;
       overflow: hidden;
       background: #fdfbf7;
@@ -496,23 +497,27 @@
     @media (max-width: 860px) {
       .main-layout {
         flex-direction: column;
+        align-items: stretch;
         padding: 10px;
         gap: 12px;
       }
+      .viewport {
+        order: 1;
+        width: 100%;
+        height: 60vh;
+        min-height: 440px;
+        max-height: 580px;
+      }
       .sidebar-panel {
+        order: 2;
         width: 100%;
         position: static;
         height: auto;
-        max-height: 380px;
+        max-height: 480px;
         padding: 12px 14px;
       }
       .filter-list {
         grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-      }
-      .viewport {
-        height: 65vh;
-        min-height: 480px;
-        max-height: 680px;
       }
       .map-guide-badge {
         font-size: 10px;
@@ -935,15 +940,15 @@
 
   // 뷰포트 크기에 맞춰 초기 전체보기 스케일 및 중앙 좌표 계산
   function resetToFit(animate = false) {
-    const vpWidth = viewport.clientWidth;
-    const vpHeight = viewport.clientHeight;
+    const vpWidth = Math.max(viewport.clientWidth, 280);
+    const vpHeight = Math.max(viewport.clientHeight, 360);
     const canvasWidth = 820;
     const canvasHeight = 980;
 
     // 패딩을 고려하여 한눈에 쏙 들어오는 fitScale 산출
-    const scaleX = (vpWidth - 20) / canvasWidth;
-    const scaleY = (vpHeight - 20) / canvasHeight;
-    const targetScale = Math.min(scaleX, scaleY, 1.0);
+    const scaleX = (vpWidth - 16) / canvasWidth;
+    const scaleY = (vpHeight - 16) / canvasHeight;
+    const targetScale = Math.max(Math.min(scaleX, scaleY, 1.0), 0.3);
 
     const targetPanX = (vpWidth - canvasWidth * targetScale) / 2;
     const targetPanY = Math.max(10, (vpHeight - canvasHeight * targetScale) / 2);
