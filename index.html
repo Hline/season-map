@@ -219,6 +219,13 @@
       font-weight: 800;
       box-shadow: 0 2px 8px rgba(179, 57, 36, 0.12);
     }
+    .spot-empty-msg {
+      padding: 24px 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #95a5a6;
+      list-style: none;
+    }
     .spot-item-left {
       display: flex;
       align-items: center;
@@ -1139,6 +1146,15 @@
     });
   });
 
+  // 지도 빈 바탕 클릭 시 선택 해제
+  viewport.addEventListener('click', (e) => {
+    if (mapState.hasDragged) return;
+    if (!e.target.closest('.pin') && !e.target.closest('.zoom-controls')) {
+      document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.spot-item.active').forEach(i => i.classList.remove('active'));
+    }
+  });
+
   // 5. 사이드바 명소 목록 동적 빌드
   function buildSpotList() {
     spotListEl.innerHTML = '';
@@ -1188,6 +1204,19 @@
       if (isMatch) count++;
     });
     spotCountBadge.textContent = `${count}곳`;
+
+    let emptyEl = document.getElementById('spotEmptyMsg');
+    if (count === 0) {
+      if (!emptyEl) {
+        emptyEl = document.createElement('li');
+        emptyEl.id = 'spotEmptyMsg';
+        emptyEl.className = 'spot-empty-msg';
+        emptyEl.textContent = '일치하는 명소가 없습니다.';
+        spotListEl.appendChild(emptyEl);
+      }
+    } else if (emptyEl) {
+      emptyEl.remove();
+    }
   }
 
   // 7. 지역 체크박스 필터링 함수
