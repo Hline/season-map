@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
   <title>2026 전국 단풍 절정 지도 (SeasonMap)</title>
   <style>
+    :root {
+      --pin-scale: 1;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #f5f2ec;
@@ -196,6 +199,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 4px;
+    }
+    .sort-arrow {
+      font-size: 10px;
+      line-height: 1;
+      user-select: none;
     }
     .sort-chip:hover {
       background: #f4ecdf;
@@ -320,7 +329,6 @@
       height: 980px;
       background: transparent;
       transform-origin: 0 0;
-      will-change: transform;
       pointer-events: auto;
     }
     .korea-svg {
@@ -330,6 +338,8 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
+      shape-rendering: geometricPrecision;
+      text-rendering: geometricPrecision;
     }
 
     /* 행정구역 폴리곤 */
@@ -358,16 +368,17 @@
       pointer-events: none;
     }
 
-    /* 마커 핀 */
+    /* 마커 핀 (역스케일링 적용으로 고배율에서도 선명도 유지) */
     .pin {
       position: absolute;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(var(--pin-scale, 1));
+      transform-origin: 50% 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       z-index: 5;
       cursor: pointer;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
     }
     .pin.hidden {
       display: none !important;
@@ -388,6 +399,8 @@
     /* 활성화(선택)된 핀 하이라이트 */
     .pin.active {
       z-index: 1000 !important;
+      transform: translate(-50%, -50%) scale(calc(var(--pin-scale, 1) * 1.15));
+      transform-origin: 50% 100%;
     }
     .pin.active .pin-title {
       background: #b33924 !important;
@@ -665,9 +678,12 @@
         <input type="text" id="spotSearchInput" placeholder="산 이름, 지역, 날짜(예: 10월, 10.25) 검색..." oninput="onSearchSpots(this.value)">
       </div>
       <div class="spot-sort-bar">
-        <button type="button" class="sort-chip active" data-sort="fast" onclick="setSortMode('fast')">📅 빠른순</button>
-        <button type="button" class="sort-chip" data-sort="late" onclick="setSortMode('late')">📅 늦은순</button>
-        <button type="button" class="sort-chip" data-sort="region" onclick="setSortMode('region')">📍 지역순</button>
+        <button type="button" class="sort-chip active" id="sortDateBtn" data-sort="date" onclick="toggleSort('date')" title="절정 빠른순 (클릭 시 늦은순 변경)">
+          <span>시기</span> <span class="sort-arrow" id="sortDateArrow">🔺</span>
+        </button>
+        <button type="button" class="sort-chip" id="sortRegionBtn" data-sort="region" onclick="toggleSort('region')" title="지역순 정렬 (클릭 시 활성화)">
+          <span>지역</span> <span class="sort-arrow" id="sortRegionArrow">🔺🔻</span>
+        </button>
       </div>
       <div class="spot-list-wrapper">
         <ul class="spot-list" id="spotList">
@@ -680,7 +696,7 @@
   <!-- 우측 지도 영역 -->
   <main class="viewport" id="viewport">
     <div class="map-canvas" id="mapCanvas">
-      <svg class="korea-svg" viewBox="0 0 820 980">
+      <svg class="korea-svg" viewBox="0 0 820 980" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
         <!-- 1. 경기 / 서울 -->
         <polygon class="province p-gyeonggi" points="280,150 375,145 390,280 330,390 250,395 205,320 225,240" />
         <!-- 2. 강원도 -->
@@ -973,9 +989,11 @@
   const spotListEl = document.getElementById('spotList');
   const spotCountBadge = document.getElementById('spotCountBadge');
 
-  // 지도 변환 적용 함수
+  // 지도 변환 적용 함수 (역스케일링 변수로 핀 선명도 유지)
   function applyTransform() {
     mapCanvas.style.transform = `translate(${mapState.panX}px, ${mapState.panY}px) scale(${mapState.scale})`;
+    const pinScale = Math.min(Math.max(1 / mapState.scale, 0.45), 1.25);
+    document.documentElement.style.setProperty('--pin-scale', pinScale);
   }
 
   // 뷰포트 크기에 맞춰 초기 전체보기 스케일 및 중앙 좌표 계산
@@ -1200,29 +1218,69 @@
     }
   });
 
-  // 5. 정렬 및 사이드바 명소 목록 동적 빌드
-  let currentSortMode = 'fast';
+  // 5. 정렬 및 사이드바 명소 목록 동적 빌드 (시기🔺🔻, 지역🔺🔻 토글 지원)
+  const sortState = {
+    type: 'date',      // 'date' 또는 'region'
+    dateOrder: 'asc',  // 'asc' (빠른순 🔺) or 'desc' (늦은순 🔻)
+    regionOrder: 'asc' // 'asc' (북쪽순 🔺) or 'desc' (남쪽순 🔻)
+  };
 
-  function setSortMode(mode) {
-    currentSortMode = mode;
-    document.querySelectorAll('.sort-chip').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-sort') === mode);
-    });
+  function toggleSort(type) {
+    if (sortState.type === type) {
+      // 같은 기준 재클릭 시 정렬 방향 반전 (🔺 <-> 🔻)
+      if (type === 'date') {
+        sortState.dateOrder = sortState.dateOrder === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortState.regionOrder = sortState.regionOrder === 'asc' ? 'desc' : 'asc';
+      }
+    } else {
+      // 다른 기준 선택 시 활성화 전환 (초기 방향은 asc 유지)
+      sortState.type = type;
+    }
+    updateSortUI();
     sortSpotList();
+  }
+
+  function updateSortUI() {
+    const dateBtn = document.getElementById('sortDateBtn');
+    const regionBtn = document.getElementById('sortRegionBtn');
+    const dateArrow = document.getElementById('sortDateArrow');
+    const regionArrow = document.getElementById('sortRegionArrow');
+
+    if (!dateBtn || !regionBtn) return;
+
+    if (sortState.type === 'date') {
+      dateBtn.classList.add('active');
+      regionBtn.classList.remove('active');
+      const isAsc = sortState.dateOrder === 'asc';
+      dateArrow.textContent = isAsc ? '🔺' : '🔻';
+      dateBtn.title = isAsc ? '절정 빠른순 (클릭 시 늦은순 변경)' : '절정 늦은순 (클릭 시 빠른순 변경)';
+      regionArrow.textContent = '🔺🔻';
+      regionBtn.title = '지역순 정렬 (클릭 시 활성화)';
+    } else {
+      regionBtn.classList.add('active');
+      dateBtn.classList.remove('active');
+      const isAsc = sortState.regionOrder === 'asc';
+      regionArrow.textContent = isAsc ? '🔺' : '🔻';
+      regionBtn.title = isAsc ? '지역 북→남순 (클릭 시 남→북순 변경)' : '지역 남→북순 (클릭 시 북→남순 변경)';
+      dateArrow.textContent = '🔺🔻';
+      dateBtn.title = '시기순 정렬 (클릭 시 활성화)';
+    }
   }
 
   function sortSpotList() {
     const items = Array.from(spotListEl.querySelectorAll('.spot-item'));
     items.sort((a, b) => {
-      if (currentSortMode === 'fast') {
-        const diff = Number(a.getAttribute('data-date-score')) - Number(b.getAttribute('data-date-score'));
-        return diff !== 0 ? diff : Number(a.getAttribute('data-orig-index')) - Number(b.getAttribute('data-orig-index'));
-      } else if (currentSortMode === 'late') {
-        const diff = Number(b.getAttribute('data-date-score')) - Number(a.getAttribute('data-date-score'));
+      if (sortState.type === 'date') {
+        const scoreA = Number(a.getAttribute('data-date-score'));
+        const scoreB = Number(b.getAttribute('data-date-score'));
+        const diff = sortState.dateOrder === 'asc' ? scoreA - scoreB : scoreB - scoreA;
         return diff !== 0 ? diff : Number(a.getAttribute('data-orig-index')) - Number(b.getAttribute('data-orig-index'));
       } else {
-        // region: original DOM index
-        return Number(a.getAttribute('data-orig-index')) - Number(b.getAttribute('data-orig-index'));
+        // region: data-orig-index (0: 북쪽/경기 ~ 34: 남쪽/제주)
+        const idxA = Number(a.getAttribute('data-orig-index'));
+        const idxB = Number(b.getAttribute('data-orig-index'));
+        return sortState.regionOrder === 'asc' ? idxA - idxB : idxB - idxA;
       }
     });
     items.forEach(item => spotListEl.appendChild(item));
@@ -1280,6 +1338,7 @@
       spotListEl.appendChild(li);
     });
 
+    updateSortUI();
     sortSpotList();
   }
 
