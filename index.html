@@ -174,6 +174,41 @@
       border-color: #b33924;
       background: #ffffff;
     }
+    .spot-sort-bar {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+    .sort-chip {
+      flex: 1;
+      font-size: 11px;
+      font-weight: 600;
+      color: #636e72;
+      background: #faf7f2;
+      border: 1px solid #e1d2be;
+      border-radius: 6px;
+      padding: 5px 2px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      user-select: none;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sort-chip:hover {
+      background: #f4ecdf;
+      color: #2c3e50;
+      border-color: #d4c4b0;
+    }
+    .sort-chip.active {
+      background: #fdf1e8;
+      border-color: #b33924;
+      color: #b33924;
+      font-weight: 800;
+      box-shadow: 0 1px 4px rgba(179, 57, 36, 0.12);
+    }
     .spot-list-wrapper {
       flex: 1;
       overflow-y: auto;
@@ -627,7 +662,12 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="spotSearchInput" placeholder="산·수목원 검색..." oninput="onSearchSpots(this.value)">
+        <input type="text" id="spotSearchInput" placeholder="산 이름, 지역, 날짜(예: 10월, 10.25) 검색..." oninput="onSearchSpots(this.value)">
+      </div>
+      <div class="spot-sort-bar">
+        <button type="button" class="sort-chip active" data-sort="fast" onclick="setSortMode('fast')">📅 빠른순</button>
+        <button type="button" class="sort-chip" data-sort="late" onclick="setSortMode('late')">📅 늦은순</button>
+        <button type="button" class="sort-chip" data-sort="region" onclick="setSortMode('region')">📍 지역순</button>
       </div>
       <div class="spot-list-wrapper">
         <ul class="spot-list" id="spotList">
@@ -1160,27 +1200,71 @@
     }
   });
 
-  // 5. 사이드바 명소 목록 동적 빌드
+  // 5. 정렬 및 사이드바 명소 목록 동적 빌드
+  let currentSortMode = 'fast';
+
+  function setSortMode(mode) {
+    currentSortMode = mode;
+    document.querySelectorAll('.sort-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-sort') === mode);
+    });
+    sortSpotList();
+  }
+
+  function sortSpotList() {
+    const items = Array.from(spotListEl.querySelectorAll('.spot-item'));
+    items.sort((a, b) => {
+      if (currentSortMode === 'fast') {
+        const diff = Number(a.getAttribute('data-date-score')) - Number(b.getAttribute('data-date-score'));
+        return diff !== 0 ? diff : Number(a.getAttribute('data-orig-index')) - Number(b.getAttribute('data-orig-index'));
+      } else if (currentSortMode === 'late') {
+        const diff = Number(b.getAttribute('data-date-score')) - Number(a.getAttribute('data-date-score'));
+        return diff !== 0 ? diff : Number(a.getAttribute('data-orig-index')) - Number(b.getAttribute('data-orig-index'));
+      } else {
+        // region: original DOM index
+        return Number(a.getAttribute('data-orig-index')) - Number(b.getAttribute('data-orig-index'));
+      }
+    });
+    items.forEach(item => spotListEl.appendChild(item));
+
+    const emptyEl = document.getElementById('spotEmptyMsg');
+    if (emptyEl) spotListEl.appendChild(emptyEl);
+  }
+
   function buildSpotList() {
     spotListEl.innerHTML = '';
     const pins = Array.from(document.querySelectorAll('.pin'));
     spotCountBadge.textContent = `${pins.length}곳`;
 
-    pins.forEach(pin => {
+    pins.forEach((pin, idx) => {
       const pinId = pin.id;
       const title = pin.querySelector('.pin-title').textContent.trim();
       const region = pin.getAttribute('data-region');
       const regionName = REGION_NAMES[region] || region;
       
-      // 첫 번째 단풍(🍁) 날짜 추출
-      const firstSpan = pin.querySelector('.pin-data span');
-      const dateText = firstSpan ? firstSpan.textContent.trim() : '';
+      // 모든 수종 날짜 수집
+      const spans = Array.from(pin.querySelectorAll('.pin-data span'));
+      const allDatesText = spans.map(s => s.textContent.trim()).join(' ');
+
+      // 단풍(🍁) 기준 절정일 추출 (없으면 첫 번째 span)
+      const mapleSpan = spans.find(s => s.textContent.includes('🍁')) || spans[0];
+      const dateText = mapleSpan ? mapleSpan.textContent.trim() : '';
+
+      // 날짜 점수 계산 (예: 10.20 -> 1020, 11.02 -> 1102)
+      let dateScore = 9999;
+      const match = dateText.match(/(\d+)\.(\d+)/);
+      if (match) {
+        dateScore = parseInt(match[1], 10) * 100 + parseInt(match[2], 10);
+      }
 
       const li = document.createElement('li');
       li.className = 'spot-item';
       li.setAttribute('data-pin-id', pinId);
       li.setAttribute('data-region', region);
       li.setAttribute('data-title', title);
+      li.setAttribute('data-all-dates', allDatesText);
+      li.setAttribute('data-date-score', dateScore);
+      li.setAttribute('data-orig-index', idx);
       li.innerHTML = `
         <div class="spot-item-left">
           <span class="spot-region-tag">${regionName}</span>
@@ -1195,16 +1279,58 @@
 
       spotListEl.appendChild(li);
     });
+
+    sortSpotList();
   }
 
-  // 6. 명소 검색 필터 함수
+  // 6. 스마트 명소 검색 필터 (이름, 지역, 날짜 통합 지원)
+  function matchesSpot(item, q) {
+    if (!q) return true;
+
+    const title = item.getAttribute('data-title').toLowerCase();
+    const region = (REGION_NAMES[item.getAttribute('data-region')] || '').toLowerCase();
+    const allDates = item.getAttribute('data-all-dates') || '';
+    const cleanDates = allDates.replace(/[🍁🍂🌰\s]/g, '');
+    const score = Number(item.getAttribute('data-date-score'));
+    const month = Math.floor(score / 100);
+    const day = score % 100;
+
+    // 1. 산 이름 및 지역명 검색
+    if (title.includes(q) || region.includes(q)) return true;
+
+    // 2. 날짜 문자열 직접 매칭 (예: "10.20", "10.2", "11.02")
+    if (allDates.includes(q) || cleanDates.includes(q.replace(/\s/g, ''))) return true;
+
+    // 3. 월 단위 검색 ("10월", "11월")
+    if (q === '10월' && month === 10) return true;
+    if (q === '11월' && month === 11) return true;
+
+    // 4. 시기별 검색 ("10월 중순", "10월말", "11월초" 등)
+    if (q.includes('10월') || q.startsWith('10')) {
+      if ((q.includes('초순') || q.includes('초')) && month === 10 && day <= 10) return true;
+      if ((q.includes('중순') || q.includes('중')) && month === 10 && day >= 11 && day <= 20) return true;
+      if ((q.includes('하순') || q.includes('말')) && month === 10 && day >= 21) return true;
+    }
+    if (q.includes('11월') || q.startsWith('11')) {
+      if ((q.includes('초순') || q.includes('초')) && month === 11 && day <= 10) return true;
+      if ((q.includes('중순') || q.includes('중')) && month === 11 && day >= 11 && day <= 20) return true;
+      if ((q.includes('하순') || q.includes('말')) && month === 11 && day >= 21) return true;
+    }
+
+    // 5. 점 없는 4자리 숫자 ("1020" -> "10.20")
+    const numOnly = q.replace(/[^\d]/g, '');
+    if (numOnly.length >= 3) {
+      if (cleanDates.replace(/\./g, '').includes(numOnly)) return true;
+    }
+
+    return false;
+  }
+
   function onSearchSpots(query) {
     const q = query.trim().toLowerCase();
     let count = 0;
     document.querySelectorAll('.spot-item').forEach(item => {
-      const title = item.getAttribute('data-title').toLowerCase();
-      const region = (REGION_NAMES[item.getAttribute('data-region')] || '').toLowerCase();
-      const isMatch = !q || title.includes(q) || region.includes(q);
+      const isMatch = matchesSpot(item, q);
       item.style.display = isMatch ? 'flex' : 'none';
       if (isMatch) count++;
     });
