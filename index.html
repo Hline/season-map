@@ -198,6 +198,8 @@
       background: #faf7f2;
       transition: background 0.15s ease;
       user-select: none;
+      min-width: 0;
+      overflow: hidden;
     }
     .filter-item:hover {
       background: #f4ecdf;
@@ -207,12 +209,22 @@
       height: 14px;
       accent-color: var(--theme-primary);
       cursor: pointer;
+      flex-shrink: 0;
+    }
+    .filter-region-label {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.2px;
     }
     .filter-count {
       margin-left: auto;
       font-size: 10px;
       color: #95a5a6;
       font-weight: 500;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     /* 명소 리스트 구역 */
@@ -4147,14 +4159,36 @@
       countsByReg[r] = (countsByReg[r] || 0) + 1;
     });
 
+    const FILTER_LABEL_EN = {
+      gyeonggi: isKto ? 'Capital Area' : 'Seoul·GG',
+      gangwon: 'Gangwon',
+      chungbuk: 'Chungbuk',
+      chungnam: 'Chungnam',
+      gyeongbuk: 'Gyeongbuk',
+      gyeongnam: 'Gyeongnam',
+      jeonbuk: 'Jeonbuk',
+      jeonnam: 'Jeonnam',
+      jeju: 'Jeju'
+    };
+
     document.querySelectorAll('.filter-region-label').forEach(el => {
       const reg = el.getAttribute('data-reg');
-      if (isKto) {
-        el.textContent = REGION_NAMES_I18N[appState.lang][reg] || reg;
-      } else {
-        el.textContent = isEn
+      const c = countsByReg[reg] || 0;
+      const fullName = isKto
+        ? (REGION_NAMES_I18N[appState.lang][reg] || reg)
+        : (isEn
           ? (REGION_NAMES_I18N.en[reg] || reg)
-          : (reg === 'chungnam' ? '충남·세종' : reg === 'gyeongbuk' ? '경북·대구' : FOLIAGE_REGION_KO[reg]);
+          : (reg === 'chungnam' ? '충남·세종' : reg === 'gyeongbuk' ? '경북·대구' : FOLIAGE_REGION_KO[reg]));
+
+      if (isEn) {
+        el.textContent = FILTER_LABEL_EN[reg] || reg;
+      } else {
+        el.textContent = fullName;
+      }
+
+      const parentLabel = el.closest('.filter-item');
+      if (parentLabel) {
+        parentLabel.title = isEn ? `${fullName} (${c} spots)` : `${fullName} (${c}곳)`;
       }
     });
 
