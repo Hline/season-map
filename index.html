@@ -35,8 +35,8 @@
       top: 0;
       z-index: 100;
       background: #ffffff;
-      padding: 10px 16px 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      padding: 6px 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       border-bottom: 1px solid #eadcd0;
       text-align: center;
     }
@@ -44,9 +44,32 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 8px;
+      margin-bottom: 0;
+    }
+    .header-info-toggle {
+      border: 1px solid #e1d2be;
+      background: #faf7f2;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #5d6d7e;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .header-info-toggle:hover {
+      background: #f3ede4;
+      color: #2c3e50;
+    }
+    .header-details {
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed #eadcd0;
+    }
+    .header-details.collapsed {
+      display: none !important;
     }
     .layer-tabs {
       display: inline-flex;
@@ -59,9 +82,9 @@
     .layer-tab {
       border: none;
       background: transparent;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 800;
       color: #5d6d7e;
       cursor: pointer;
@@ -108,10 +131,10 @@
       box-shadow: 0 1px 4px rgba(0,0,0,0.18);
     }
     header h1 {
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--theme-primary);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       letter-spacing: -0.3px;
       transition: color 0.2s ease;
     }
@@ -119,7 +142,7 @@
       display: flex;
       justify-content: center;
       gap: 14px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
       color: #444;
       flex-wrap: wrap;
@@ -127,37 +150,37 @@
     .hint {
       font-size: 11px;
       color: #7f8c8d;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
-    /* 메인 레이아웃 */
+    /* 메인 레이아웃 (지도 영역이 넓게 나오도록 풀와이드 확장) */
     .main-layout {
       flex: 1;
       display: flex;
-      max-width: 1300px;
+      max-width: 100%;
       width: 100%;
       margin: 0 auto;
-      padding: 16px;
-      gap: 16px;
+      padding: 8px 12px;
+      gap: 12px;
       align-items: flex-start;
     }
 
     /* 좌측 사이드 패널 (필터 + 명소 목록) */
     .sidebar-panel {
-      width: 315px;
+      width: 285px;
       background: #ffffff;
       border: 1px solid var(--theme-border);
       border-radius: 14px;
-      padding: 16px;
+      padding: 12px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.04);
       flex-shrink: 0;
       position: sticky;
-      top: 96px;
-      height: calc(100vh - 125px);
-      max-height: 880px;
+      top: 52px;
+      height: calc(100vh - 64px);
+      max-height: none;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
     }
 
     /* 지역 필터 구역 */
@@ -399,7 +422,7 @@
       margin-left: 4px;
     }
 
-    /* 지도 뷰포트 (Zoom & Pan 영역) */
+    /* 지도 뷰포트 (Zoom & Pan 영역 - 넓고 시원하게 확장) */
     .viewport {
       flex: 1;
       width: 100%;
@@ -408,14 +431,15 @@
       background: #fdfbf7;
       border: 1px solid var(--theme-border);
       border-radius: 16px;
-      height: calc(100vh - 125px);
-      max-height: 880px;
-      min-height: 600px;
+      height: calc(100vh - 64px);
+      max-height: none;
+      min-height: 620px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
       user-select: none;
       -webkit-user-select: none;
       cursor: grab;
       touch-action: none;
+      outline: none;
     }
     body.mode-kto100 .viewport {
       background: #f7fbfe;
@@ -768,15 +792,15 @@
       .main-layout {
         flex-direction: column;
         align-items: stretch;
-        padding: 10px;
-        gap: 12px;
+        padding: 8px;
+        gap: 10px;
       }
       .viewport {
         order: 1;
         width: 100%;
-        height: 60vh;
-        min-height: 440px;
-        max-height: 580px;
+        height: 70vh;
+        min-height: 480px;
+        max-height: none;
       }
       .sidebar-panel {
         order: 2;
@@ -823,15 +847,22 @@
       <button type="button" class="lang-btn active" id="langKoBtn" onclick="setLanguage('ko')">한국어</button>
       <button type="button" class="lang-btn" id="langEnBtn" onclick="setLanguage('en')">ENG</button>
     </div>
+
+    <!-- 상단 타이틀/범례 접기·펼치기 토글 버튼 (기본 숨김) -->
+    <button type="button" class="header-info-toggle" id="headerInfoToggleBtn" onclick="toggleHeaderDetails()" aria-expanded="false">
+      <span id="headerInfoToggleLabel">ℹ️ 타이틀·범례 ▾</span>
+    </button>
   </div>
 
-  <h1 id="headerTitle">2026 전국 단풍·은행·참나무 통합 예측 지도</h1>
-  <div class="legend-bar" id="legendBar">
-    <span>🍁 단풍</span>
-    <span>🍂 은행</span>
-    <span>🌰 참나무</span>
+  <div class="header-details collapsed" id="headerDetails">
+    <h1 id="headerTitle">2026 전국 단풍·은행·참나무 통합 예측 지도</h1>
+    <div class="legend-bar" id="legendBar">
+      <span>🍁 단풍</span>
+      <span>🍂 은행</span>
+      <span>🌰 참나무</span>
+    </div>
+    <div class="hint" id="headerHint">🔍 휠·핀치로 확대/축소하고 드래그하여 이동할 수 있습니다. 좌측 목록에서 산을 클릭하면 바로 이동합니다.</div>
   </div>
-  <div class="hint" id="headerHint">🔍 휠·핀치로 확대/축소하고 드래그하여 이동할 수 있습니다. 좌측 목록에서 산을 클릭하면 바로 이동합니다.</div>
 </header>
 
 <div class="main-layout">
@@ -841,68 +872,68 @@
     <div class="filter-section">
       <h2>
         <span id="filterSectionTitle">지역별 필터</span>
-        <button type="button" class="filter-btn-toggle" id="toggleAllBtn" onclick="toggleAllFilters()">전체 해제</button>
+        <button type="button" class="filter-btn-toggle" id="toggleAllBtn" onclick="toggleAllFilters(true)">전체 해제</button>
       </h2>
       <ul class="filter-list">
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="gyeonggi" checked onchange="filterPins()">
+            <input type="checkbox" value="gyeonggi" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="gyeonggi">경기·서울</span>
             <span class="filter-count" data-count-reg="gyeonggi">8곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="gangwon" checked onchange="filterPins()">
+            <input type="checkbox" value="gangwon" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="gangwon">강원</span>
             <span class="filter-count" data-count-reg="gangwon">4곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="chungbuk" checked onchange="filterPins()">
+            <input type="checkbox" value="chungbuk" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="chungbuk">충북</span>
             <span class="filter-count" data-count-reg="chungbuk">3곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="chungnam" checked onchange="filterPins()">
+            <input type="checkbox" value="chungnam" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="chungnam">충남·세종</span>
             <span class="filter-count" data-count-reg="chungnam">3곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="gyeongbuk" checked onchange="filterPins()">
+            <input type="checkbox" value="gyeongbuk" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="gyeongbuk">경북·대구</span>
             <span class="filter-count" data-count-reg="gyeongbuk">5곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="gyeongnam" checked onchange="filterPins()">
+            <input type="checkbox" value="gyeongnam" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="gyeongnam">경남</span>
             <span class="filter-count" data-count-reg="gyeongnam">1곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="jeonbuk" checked onchange="filterPins()">
+            <input type="checkbox" value="jeonbuk" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="jeonbuk">전북</span>
             <span class="filter-count" data-count-reg="jeonbuk">3곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="jeonnam" checked onchange="filterPins()">
+            <input type="checkbox" value="jeonnam" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="jeonnam">전남</span>
             <span class="filter-count" data-count-reg="jeonnam">5곳</span>
           </label>
         </li>
         <li>
           <label class="filter-item">
-            <input type="checkbox" value="jeju" checked onchange="filterPins()">
+            <input type="checkbox" value="jeju" checked onchange="filterPins(true)">
             <span class="filter-region-label" data-reg="jeju">제주</span>
             <span class="filter-count" data-count-reg="jeju">3곳</span>
           </label>
@@ -940,7 +971,7 @@
   </aside>
 
   <!-- 우측 지도 영역 -->
-  <main class="viewport" id="viewport">
+  <main class="viewport" id="viewport" tabindex="-1">
     <div class="map-canvas" id="mapCanvas">
       <svg class="korea-svg" viewBox="0 0 820 980" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
         <!-- 1. 경기 / 서울 -->
@@ -4198,7 +4229,30 @@
       el.textContent = isEn ? `${c}` : `${c}곳`;
     });
 
+    updateHeaderToggleLabel();
     updateSortUI();
+  }
+
+  function updateHeaderToggleLabel() {
+    const detailsEl = document.getElementById('headerDetails');
+    const labelEl = document.getElementById('headerInfoToggleLabel');
+    const btnEl = document.getElementById('headerInfoToggleBtn');
+    if (!detailsEl || !labelEl || !btnEl) return;
+    const isCollapsed = detailsEl.classList.contains('collapsed');
+    const isEn = appState.lang === 'en';
+    btnEl.setAttribute('aria-expanded', String(!isCollapsed));
+    if (isEn) {
+      labelEl.textContent = isCollapsed ? 'ℹ️ Title & Legend ▾' : 'ℹ️ Hide Title ▴';
+    } else {
+      labelEl.textContent = isCollapsed ? 'ℹ️ 타이틀·범례 ▾' : 'ℹ️ 타이틀 숨김 ▴';
+    }
+  }
+
+  function toggleHeaderDetails() {
+    const detailsEl = document.getElementById('headerDetails');
+    if (!detailsEl) return;
+    detailsEl.classList.toggle('collapsed');
+    updateHeaderToggleLabel();
   }
 
   function formatSpotCount(n) {
@@ -4353,8 +4407,8 @@
     }
   }
 
-  // 7. 지역 체크박스 필터링 함수
-  function filterPins() {
+  // 7. 지역 체크박스 필터링 함수 (지역 선택 시 포커스를 지도 영역 #viewport로 이동)
+  function filterPins(fromUserAction = false) {
     const checked = Array.from(document.querySelectorAll('.filter-item input[type="checkbox"]:checked')).map(cb => cb.value);
     const isEn = appState.lang === 'en';
 
@@ -4373,13 +4427,21 @@
     document.getElementById('toggleAllBtn').textContent = checked.length === 0
       ? (isEn ? 'Select All' : '전체 선택')
       : (isEn ? 'Deselect All' : '전체 해제');
+
+    if (fromUserAction) {
+      if (document.activeElement && document.activeElement.closest('.filter-section')) {
+        document.activeElement.blur();
+      }
+      viewport.focus({ preventScroll: true });
+      viewport.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 
-  function toggleAllFilters() {
+  function toggleAllFilters(fromUserAction = false) {
     const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
     const allChecked = Array.from(checkboxes).every(cb => cb.checked);
     checkboxes.forEach(cb => cb.checked = !allChecked);
-    filterPins();
+    filterPins(fromUserAction);
   }
 
   // 창 크기 변경 시 fitScale 재계산
@@ -4391,7 +4453,7 @@
   function initApp() {
     updateI18nUI();
     buildSpotList();
-    filterPins();
+    filterPins(false);
     resetToFit(false);
   }
 
