@@ -312,18 +312,20 @@
     }
     .spot-sort-bar {
       display: flex;
-      gap: 5px;
+      align-items: center;
+      gap: 4px;
       margin-bottom: 8px;
+      flex-wrap: wrap;
     }
     .sort-chip {
-      flex: 1;
+      flex: 0 0 auto;
       font-size: 11px;
       font-weight: 600;
       color: #636e72;
       background: #faf7f2;
       border: 1px solid #e1d2be;
       border-radius: 6px;
-      padding: 5px 2px;
+      padding: 5px 7px;
       cursor: pointer;
       text-align: center;
       transition: all 0.15s ease;
@@ -332,7 +334,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
     }
     .sort-arrow {
       font-size: 10px;
@@ -350,6 +352,43 @@
       color: var(--theme-primary);
       font-weight: 800;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    /* 방안 A-1: 상단 고정 선택 명소 구글 검색 버튼 */
+    .google-search-bar-btn {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      padding: 5px 7px;
+      cursor: not-allowed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: all 0.18s ease;
+    }
+    .google-search-bar-btn .gs-btn-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .google-search-bar-btn.has-selection {
+      color: #ffffff;
+      background: #1a73e8;
+      border: 1px solid #1557b0;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.25);
+    }
+    .google-search-bar-btn.has-selection:hover {
+      background: #1557b0;
+      transform: translateY(-1px);
     }
     .spot-list-wrapper {
       flex: 1;
@@ -431,12 +470,43 @@
       background: #e3eef6;
       color: #2b5c7a;
     }
+    .spot-item-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
     .spot-date-tag {
       font-size: 11px;
       color: var(--theme-primary);
       font-weight: 700;
       flex-shrink: 0;
-      margin-left: 4px;
+    }
+    /* 방안 A-2: 선택된 명소 행(.spot-item.active) 인라인 구글 검색 미니 버튼 */
+    .spot-item-google-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      background: #1a73e8;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(26, 115, 232, 0.3);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .spot-item.active .spot-item-google-btn,
+    .spot-item:hover .spot-item-google-btn {
+      display: inline-flex;
+    }
+    .spot-item-google-btn:hover {
+      background: #1557b0;
+      transform: scale(1.05);
     }
 
     /* 지도 뷰포트 (Zoom & Pan 영역 - 넓고 시원하게 확장) */
@@ -645,19 +715,21 @@
       background: #1a6b9c;
     }
 
-    /* 한국관광 100선 상세 정보 플로팅 카드 */
+    /* 방안 B: 우측 하단 줌버튼(+) 위쪽 통합 미니 플로팅 칩 (단풍 명소 & 한국관광 100선 공통, 모바일 최적화) */
     .spot-detail-card {
       position: absolute;
-      left: 16px;
-      bottom: 16px;
-      width: 340px;
-      max-width: calc(100% - 80px);
+      right: 16px;
+      bottom: 152px;
+      left: auto;
+      width: auto;
+      min-width: 210px;
+      max-width: min(300px, calc(100% - 28px));
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(8px);
       border: 1.5px solid var(--theme-primary);
-      border-radius: 14px;
-      padding: 14px 16px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.16);
+      border-radius: 12px;
+      padding: 10px 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.16);
       z-index: 200;
       display: none;
       animation: cardSlideUp 0.2s ease-out;
@@ -666,7 +738,7 @@
       display: block;
     }
     @keyframes cardSlideUp {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .detail-card-header {
@@ -679,59 +751,85 @@
     .detail-card-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 4px;
+      gap: 3px;
+      margin-bottom: 3px;
     }
     .detail-badge-num {
       background: var(--theme-primary);
       color: #fff;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 800;
-      padding: 1.5px 6px;
-      border-radius: 6px;
+      padding: 1px 5px;
+      border-radius: 5px;
     }
     .detail-badge-cat {
       background: var(--theme-bg-light);
       color: var(--theme-primary);
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
-      padding: 1.5px 6px;
-      border-radius: 6px;
+      padding: 1px 5px;
+      border-radius: 5px;
     }
     .detail-badge-loc {
       background: #f0f3f5;
       color: #5d6d7e;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
-      padding: 1.5px 6px;
-      border-radius: 6px;
+      padding: 1px 5px;
+      border-radius: 5px;
     }
     .detail-card-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: #1e293b;
-      line-height: 1.35;
+      line-height: 1.3;
+      word-break: keep-all;
     }
     .detail-card-sub {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       color: #64748b;
-      margin-bottom: 6px;
+      margin-top: 1px;
     }
     .detail-card-desc {
-      font-size: 11.5px;
-      color: #334155;
-      line-height: 1.55;
-      max-height: 110px;
-      overflow-y: auto;
+      display: none;
+    }
+    .detail-chip-actions {
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .detail-google-btn {
+      width: 100%;
+      background: #1a73e8;
+      color: #ffffff;
+      border: none;
+      border-radius: 7px;
+      padding: 5.5px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.25);
+      transition: background 0.15s ease, transform 0.15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .detail-google-btn:hover {
+      background: #1557b0;
+      transform: translateY(-1px);
     }
     .detail-close-btn {
       background: #f1f5f9;
       border: none;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       color: #64748b;
       cursor: pointer;
@@ -854,11 +952,24 @@
         top: 10px;
         right: 10px;
       }
-      .spot-detail-card {
-        left: 10px;
+      .zoom-controls {
+        right: 10px;
         bottom: 10px;
-        width: calc(100% - 68px);
-        padding: 10px 12px;
+      }
+      .spot-detail-card {
+        right: 10px;
+        bottom: 142px;
+        left: auto;
+        min-width: 185px;
+        max-width: min(260px, calc(100% - 20px));
+        padding: 8px 10px;
+      }
+      .detail-card-title {
+        font-size: 12px;
+      }
+      .detail-google-btn {
+        font-size: 10.5px;
+        padding: 4.5px 8px;
       }
     }
   </style>
@@ -995,6 +1106,9 @@
         </button>
         <button type="button" class="sort-chip" id="sortRegionBtn" data-sort="region" onclick="toggleSort('region')" title="지역순 정렬 (클릭 시 활성화)">
           <span id="sortRegionLabel">지역</span> <span class="sort-arrow" id="sortRegionArrow">🔺🔻</span>
+        </button>
+        <button type="button" class="google-search-bar-btn" id="googleSearchSelectedBtn" onclick="openGoogleSearchForSelected()" disabled title="명소를 선택한 뒤 클릭하면 새 창에서 구글 검색 결과를 표시합니다">
+          <span>🌐</span> <span class="gs-btn-text" id="googleSearchSelectedLabel">명소 선택 후 검색</span>
         </button>
       </div>
       <div class="spot-list-wrapper">
@@ -1743,7 +1857,7 @@
 
     </div>
 
-    <!-- 명소 상세 정보 카드 (핀 또는 목록 선택 시 표시) -->
+    <!-- 방안 B: 우측 하단 줌버튼(+) 위쪽 통합 미니 플로팅 칩 (단풍 명소 & 한국관광 100선 공통) -->
     <div class="spot-detail-card" id="spotDetailCard">
       <div class="detail-card-header">
         <div>
@@ -1751,9 +1865,14 @@
           <div class="detail-card-title" id="detailCardTitle"></div>
           <div class="detail-card-sub" id="detailCardSub"></div>
         </div>
-        <button type="button" class="detail-close-btn" onclick="closeDetailCard()" aria-label="닫기">✕</button>
+        <button type="button" class="detail-close-btn" onclick="clearSpotSelection()" aria-label="닫기">✕</button>
       </div>
       <div class="detail-card-desc" id="detailCardDesc"></div>
+      <div class="detail-chip-actions">
+        <button type="button" class="detail-google-btn" id="floatingGoogleSearchBtn" onclick="openGoogleSearchForSelected()">
+          <span>🌐</span> <span id="floatingGoogleSearchLabel">구글 검색 ↗</span>
+        </button>
+      </div>
     </div>
 
     <!-- 플로팅 줌 컨트롤러 -->
@@ -3781,7 +3900,77 @@
     applyTransform();
   }
 
-  // 상세 정보 카드 표시 (한국관광 100선 및 단풍 핀 모두 지원)
+  // 현재 선택된 핀의 구글 검색어(한/영) 추출 헬퍼
+  function getSpotSearchQuery(pin) {
+    if (!pin) return '';
+    const isEn = appState.lang === 'en';
+    const layer = pin.getAttribute('data-layer');
+    if (layer === 'kto100') {
+      return (isEn ? pin.getAttribute('data-name-en') : pin.getAttribute('data-name-ko')) || '';
+    } else {
+      const titleEl = pin.querySelector('.pin-title');
+      const koName = titleEl ? (titleEl.getAttribute('data-name-ko') || titleEl.textContent.trim()) : '';
+      const enName = pin.getAttribute('data-name-en') || koName;
+      return isEn ? enName : koName;
+    }
+  }
+
+  // 새 창에서 구글 검색 결과 열기
+  window.lastGoogleSearchUrl = '';
+  function openGoogleSearch(query) {
+    if (!query) return;
+    const cleanQuery = String(query).trim();
+    if (!cleanQuery) return;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(cleanQuery)}`;
+    window.lastGoogleSearchUrl = url;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  function openGoogleSearchForPin(pinId) {
+    const pin = document.getElementById(pinId);
+    if (!pin) return;
+    openGoogleSearch(getSpotSearchQuery(pin));
+  }
+
+  function openGoogleSearchForSelected() {
+    const activePin = document.querySelector('.pin.active:not(.hidden-layer)');
+    if (!activePin) return;
+    openGoogleSearch(getSpotSearchQuery(activePin));
+  }
+
+  // 상단 고정 구글 검색 버튼(방안 A) 및 우측하단 미니 플로팅 칩 구글 버튼(방안 B) 텍스트/상태 동기화
+  function updateGoogleSearchButtonsUI(activePin = null) {
+    const pin = activePin || document.querySelector('.pin.active:not(.hidden-layer)');
+    const isEn = appState.lang === 'en';
+    const barBtn = document.getElementById('googleSearchSelectedBtn');
+    const barLabel = document.getElementById('googleSearchSelectedLabel');
+    const floatLabel = document.getElementById('floatingGoogleSearchLabel');
+
+    if (pin) {
+      const query = getSpotSearchQuery(pin);
+      if (barBtn && barLabel) {
+        barBtn.disabled = false;
+        barBtn.classList.add('has-selection');
+        barLabel.textContent = isEn ? `Google '${query}' ↗` : `'${query}' 구글 검색 ↗`;
+        barBtn.title = isEn ? `Search "${query}" on Google (New Tab)` : `새 창에서 "${query}" 구글 검색 결과 표시`;
+      }
+      if (floatLabel) {
+        floatLabel.textContent = isEn ? `Google '${query}' ↗` : `'${query}' 구글 검색 ↗`;
+      }
+    } else {
+      if (barBtn && barLabel) {
+        barBtn.disabled = true;
+        barBtn.classList.remove('has-selection');
+        barLabel.textContent = isEn ? 'Select Spot to Search' : '명소 선택 후 검색';
+        barBtn.title = isEn ? 'Select a spot first to search on Google' : '명소를 선택한 뒤 클릭하면 새 창에서 구글 검색 결과를 표시합니다';
+      }
+      if (floatLabel) {
+        floatLabel.textContent = isEn ? 'Google Search ↗' : '구글 검색 ↗';
+      }
+    }
+  }
+
+  // 우측하단 줌버튼(+) 위쪽 통합 미니 플로팅 칩 표시 (한국관광 100선 및 단풍 명소 35선 공통)
   function showDetailCard(pin) {
     const card = document.getElementById('spotDetailCard');
     const badgesEl = document.getElementById('detailCardBadges');
@@ -3806,13 +3995,35 @@
       descEl.textContent = isEn ? ktoData.descEn : ktoData.descKo;
       card.classList.add('visible');
     } else {
-      // 단풍 핀 선택 시에는 카드를 닫아 기존 단풍 지도 UX 그대로 유지
-      card.classList.remove('visible');
+      const region = pin.getAttribute('data-region');
+      const titleElPin = pin.querySelector('.pin-title');
+      const koName = titleElPin ? (titleElPin.getAttribute('data-name-ko') || titleElPin.textContent.trim()) : '';
+      const enName = pin.getAttribute('data-name-en') || koName;
+      const spans = Array.from(pin.querySelectorAll('.pin-data span')).map(s => s.textContent.trim()).join(' · ');
+      const regLabel = isEn ? (REGION_NAMES_I18N.en[region] || region) : (FOLIAGE_REGION_KO[region] || region);
+
+      badgesEl.innerHTML = `
+        <span class="detail-badge-cat">🍁 ${isEn ? 'Autumn Foliage' : '단풍 명소'}</span>
+        <span class="detail-badge-loc">📍 ${regLabel}</span>
+      `;
+      titleEl.textContent = isEn ? enName : koName;
+      subEl.textContent = spans ? `${isEn ? koName : enName} · ${spans}` : (isEn ? koName : enName);
+      descEl.textContent = spans;
+      card.classList.add('visible');
     }
+
+    updateGoogleSearchButtonsUI(pin);
   }
 
   function closeDetailCard() {
     document.getElementById('spotDetailCard').classList.remove('visible');
+    updateGoogleSearchButtonsUI(null);
+  }
+
+  function clearSpotSelection() {
+    document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.spot-item.active').forEach(i => i.classList.remove('active'));
+    closeDetailCard();
   }
 
   // 지도 특정 핀에 포커스 (사이드바 클릭 또는 핀 클릭)
@@ -3853,7 +4064,7 @@
       viewport.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    // 상세 정보 카드 업데이트
+    // 우측하단 통합 미니 플로팅 칩 및 구글 검색 버튼 업데이트
     showDetailCard(pin);
 
     // 핀 좌표 추출 및 뷰포트 중앙 이동 계산
@@ -3959,9 +4170,7 @@
   });
   document.getElementById('zoomResetBtn').addEventListener('click', () => {
     resetToFit(true);
-    document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.spot-item.active').forEach(i => i.classList.remove('active'));
-    closeDetailCard();
+    clearSpotSelection();
   });
 
   // 4. 지도 핀 클릭 이벤트 (드래그 중 발생한 클릭 방지)
@@ -3977,9 +4186,7 @@
   viewport.addEventListener('click', (e) => {
     if (mapState.hasDragged) return;
     if (!e.target.closest('.pin') && !e.target.closest('.zoom-controls') && !e.target.closest('.spot-detail-card')) {
-      document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.spot-item.active').forEach(i => i.classList.remove('active'));
-      closeDetailCard();
+      clearSpotSelection();
     }
   });
 
@@ -4142,6 +4349,8 @@
     const activePin = document.querySelector('.pin.active:not(.hidden-layer)');
     if (activePin) {
       showDetailCard(activePin);
+    } else {
+      updateGoogleSearchButtonsUI(null);
     }
 
     // 검색어가 입력되어 있었다면 재검색
@@ -4342,6 +4551,7 @@
 
     updateHeaderToggleLabel();
     updateSortUI();
+    updateGoogleSearchButtonsUI();
   }
 
   function updateHeaderToggleLabel() {
@@ -4449,8 +4659,19 @@
           <span class="spot-region-tag">${regionTagText}</span>
           <span class="spot-name" title="${displayTitle.replace(/"/g, '&quot;')}">${displayTitle}</span>
         </div>
-        <span class="spot-date-tag">${rightBadgeText}</span>
+        <div class="spot-item-right">
+          <span class="spot-date-tag">${rightBadgeText}</span>
+          <button type="button" class="spot-item-google-btn" title="${isEn ? 'Search on Google (New Tab)' : '새 창에서 구글 검색'}">🌐↗</button>
+        </div>
       `;
+
+      const inlineGoogleBtn = li.querySelector('.spot-item-google-btn');
+      if (inlineGoogleBtn) {
+        inlineGoogleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openGoogleSearchForPin(pinId);
+        });
+      }
 
       li.addEventListener('click', () => {
         focusSpot(pinId, true);
