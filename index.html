@@ -312,20 +312,18 @@
     }
     .spot-sort-bar {
       display: flex;
-      align-items: center;
-      gap: 4px;
+      gap: 5px;
       margin-bottom: 8px;
-      flex-wrap: wrap;
     }
     .sort-chip {
-      flex: 0 0 auto;
+      flex: 1;
       font-size: 11px;
       font-weight: 600;
       color: #636e72;
       background: #faf7f2;
       border: 1px solid #e1d2be;
       border-radius: 6px;
-      padding: 5px 7px;
+      padding: 5px 2px;
       cursor: pointer;
       text-align: center;
       transition: all 0.15s ease;
@@ -334,7 +332,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 4px;
     }
     .sort-arrow {
       font-size: 10px;
@@ -352,43 +350,6 @@
       color: var(--theme-primary);
       font-weight: 800;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    }
-    /* 방안 A-1: 상단 고정 선택 명소 구글 검색 버튼 */
-    .google-search-bar-btn {
-      flex: 1 1 auto;
-      min-width: 0;
-      font-size: 11px;
-      font-weight: 700;
-      color: #94a3b8;
-      background: #f8fafc;
-      border: 1px dashed #cbd5e1;
-      border-radius: 6px;
-      padding: 5px 7px;
-      cursor: not-allowed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: all 0.18s ease;
-    }
-    .google-search-bar-btn .gs-btn-text {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .google-search-bar-btn.has-selection {
-      color: #ffffff;
-      background: #1a73e8;
-      border: 1px solid #1557b0;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.25);
-    }
-    .google-search-bar-btn.has-selection:hover {
-      background: #1557b0;
-      transform: translateY(-1px);
     }
     .spot-list-wrapper {
       flex: 1;
@@ -715,21 +676,20 @@
       background: #1a6b9c;
     }
 
-    /* 방안 B: 우측 하단 줌버튼(+) 위쪽 통합 미니 플로팅 칩 (단풍 명소 & 한국관광 100선 공통, 모바일 최적화) */
+    /* 좌측 하단 통합 플로팅 윈도우 (단풍 명소 & 한국관광 100선 공통, 한국관광 100선 설명 포함) */
     .spot-detail-card {
       position: absolute;
-      right: 16px;
-      bottom: 152px;
-      left: auto;
-      width: auto;
-      min-width: 210px;
-      max-width: min(300px, calc(100% - 28px));
+      left: 16px;
+      bottom: 16px;
+      right: auto;
+      width: 340px;
+      max-width: calc(100% - 76px);
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(8px);
       border: 1.5px solid var(--theme-primary);
-      border-radius: 12px;
-      padding: 10px 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.16);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.16);
       z-index: 200;
       display: none;
       animation: cardSlideUp 0.2s ease-out;
@@ -738,7 +698,7 @@
       display: block;
     }
     @keyframes cardSlideUp {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .detail-card-header {
@@ -751,48 +711,54 @@
     .detail-card-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 3px;
-      margin-bottom: 3px;
+      gap: 4px;
+      margin-bottom: 4px;
     }
     .detail-badge-num {
       background: var(--theme-primary);
       color: #fff;
-      font-size: 9.5px;
+      font-size: 10px;
       font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 5px;
+      padding: 1.5px 6px;
+      border-radius: 6px;
     }
     .detail-badge-cat {
       background: var(--theme-bg-light);
       color: var(--theme-primary);
-      font-size: 9.5px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 1px 5px;
-      border-radius: 5px;
+      padding: 1.5px 6px;
+      border-radius: 6px;
     }
     .detail-badge-loc {
       background: #f0f3f5;
       color: #5d6d7e;
-      font-size: 9.5px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 1px 5px;
-      border-radius: 5px;
+      padding: 1.5px 6px;
+      border-radius: 6px;
     }
     .detail-card-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       color: #1e293b;
-      line-height: 1.3;
+      line-height: 1.35;
       word-break: keep-all;
     }
     .detail-card-sub {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 600;
       color: #64748b;
-      margin-top: 1px;
+      margin-top: 2px;
+      margin-bottom: 4px;
     }
     .detail-card-desc {
-      display: none;
+      font-size: 11.5px;
+      color: #334155;
+      line-height: 1.55;
+      max-height: 100px;
+      overflow-y: auto;
+      margin-bottom: 6px;
     }
     .detail-chip-actions {
       display: flex;
@@ -805,8 +771,8 @@
       color: #ffffff;
       border: none;
       border-radius: 7px;
-      padding: 5.5px 10px;
-      font-size: 11px;
+      padding: 6px 10px;
+      font-size: 11.5px;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
@@ -826,10 +792,10 @@
     .detail-close-btn {
       background: #f1f5f9;
       border: none;
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       color: #64748b;
       cursor: pointer;
@@ -957,19 +923,23 @@
         bottom: 10px;
       }
       .spot-detail-card {
-        right: 10px;
-        bottom: 142px;
-        left: auto;
-        min-width: 185px;
-        max-width: min(260px, calc(100% - 20px));
-        padding: 8px 10px;
+        left: 10px;
+        bottom: 10px;
+        right: auto;
+        width: calc(100% - 70px);
+        max-width: 290px;
+        padding: 10px 12px;
       }
       .detail-card-title {
-        font-size: 12px;
+        font-size: 13px;
+      }
+      .detail-card-desc {
+        font-size: 11px;
+        max-height: 76px;
       }
       .detail-google-btn {
-        font-size: 10.5px;
-        padding: 4.5px 8px;
+        font-size: 11px;
+        padding: 5px 8px;
       }
     }
   </style>
@@ -1106,9 +1076,6 @@
         </button>
         <button type="button" class="sort-chip" id="sortRegionBtn" data-sort="region" onclick="toggleSort('region')" title="지역순 정렬 (클릭 시 활성화)">
           <span id="sortRegionLabel">지역</span> <span class="sort-arrow" id="sortRegionArrow">🔺🔻</span>
-        </button>
-        <button type="button" class="google-search-bar-btn" id="googleSearchSelectedBtn" onclick="openGoogleSearchForSelected()" disabled title="명소를 선택한 뒤 클릭하면 새 창에서 구글 검색 결과를 표시합니다">
-          <span>🌐</span> <span class="gs-btn-text" id="googleSearchSelectedLabel">명소 선택 후 검색</span>
         </button>
       </div>
       <div class="spot-list-wrapper">
@@ -1857,7 +1824,7 @@
 
     </div>
 
-    <!-- 방안 B: 우측 하단 줌버튼(+) 위쪽 통합 미니 플로팅 칩 (단풍 명소 & 한국관광 100선 공통) -->
+    <!-- 좌측 하단 통합 플로팅 윈도우 (단풍 명소 & 한국관광 100선 공통) -->
     <div class="spot-detail-card" id="spotDetailCard">
       <div class="detail-card-header">
         <div>
@@ -3938,39 +3905,29 @@
     openGoogleSearch(getSpotSearchQuery(activePin));
   }
 
-  // 상단 고정 구글 검색 버튼(방안 A) 및 우측하단 미니 플로팅 칩 구글 버튼(방안 B) 텍스트/상태 동기화
+  // 좌측하단 플로팅 윈도우 내 구글 검색 버튼 텍스트/상태 동기화
   function updateGoogleSearchButtonsUI(activePin = null) {
     const pin = activePin || document.querySelector('.pin.active:not(.hidden-layer)');
     const isEn = appState.lang === 'en';
-    const barBtn = document.getElementById('googleSearchSelectedBtn');
-    const barLabel = document.getElementById('googleSearchSelectedLabel');
     const floatLabel = document.getElementById('floatingGoogleSearchLabel');
+    const floatBtn = document.getElementById('floatingGoogleSearchBtn');
 
     if (pin) {
       const query = getSpotSearchQuery(pin);
-      if (barBtn && barLabel) {
-        barBtn.disabled = false;
-        barBtn.classList.add('has-selection');
-        barLabel.textContent = isEn ? `Google '${query}' ↗` : `'${query}' 구글 검색 ↗`;
-        barBtn.title = isEn ? `Search "${query}" on Google (New Tab)` : `새 창에서 "${query}" 구글 검색 결과 표시`;
-      }
       if (floatLabel) {
         floatLabel.textContent = isEn ? `Google '${query}' ↗` : `'${query}' 구글 검색 ↗`;
       }
-    } else {
-      if (barBtn && barLabel) {
-        barBtn.disabled = true;
-        barBtn.classList.remove('has-selection');
-        barLabel.textContent = isEn ? 'Select Spot to Search' : '명소 선택 후 검색';
-        barBtn.title = isEn ? 'Select a spot first to search on Google' : '명소를 선택한 뒤 클릭하면 새 창에서 구글 검색 결과를 표시합니다';
+      if (floatBtn) {
+        floatBtn.title = isEn ? `Search "${query}" on Google (New Tab)` : `새 창에서 "${query}" 구글 검색 결과 표시`;
       }
+    } else {
       if (floatLabel) {
         floatLabel.textContent = isEn ? 'Google Search ↗' : '구글 검색 ↗';
       }
     }
   }
 
-  // 우측하단 줌버튼(+) 위쪽 통합 미니 플로팅 칩 표시 (한국관광 100선 및 단풍 명소 35선 공통)
+  // 좌측하단 통합 플로팅 윈도우 표시 (한국관광 100선 설명 포함 & 단풍 명소 35선 공통)
   function showDetailCard(pin) {
     const card = document.getElementById('spotDetailCard');
     const badgesEl = document.getElementById('detailCardBadges');
@@ -3993,6 +3950,7 @@
       titleEl.textContent = isEn ? ktoData.nameEn : ktoData.nameKo;
       subEl.textContent = isEn ? ktoData.nameKo : ktoData.nameEn;
       descEl.textContent = isEn ? ktoData.descEn : ktoData.descKo;
+      descEl.style.display = 'block';
       card.classList.add('visible');
     } else {
       const region = pin.getAttribute('data-region');
@@ -4008,7 +3966,8 @@
       `;
       titleEl.textContent = isEn ? enName : koName;
       subEl.textContent = spans ? `${isEn ? koName : enName} · ${spans}` : (isEn ? koName : enName);
-      descEl.textContent = spans;
+      descEl.textContent = '';
+      descEl.style.display = 'none';
       card.classList.add('visible');
     }
 
