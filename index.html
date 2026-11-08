@@ -80,31 +80,48 @@
       gap: 4px;
     }
     .layer-tab {
-      border: none;
-      background: transparent;
-      padding: 5px 12px;
+      border: 1px solid transparent;
+      background: #ebe3d5;
+      padding: 5px 11px;
       border-radius: 8px;
       font-size: 12px;
       font-weight: 800;
-      color: #5d6d7e;
+      color: #636e72;
       cursor: pointer;
       transition: all 0.18s ease;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      opacity: 0.78;
     }
     .layer-tab:hover {
       color: #2c3e50;
+      opacity: 1;
     }
     .layer-tab.active[data-layer-btn="foliage"] {
       background: #b33924;
       color: #ffffff;
+      opacity: 1;
       box-shadow: 0 2px 6px rgba(179, 57, 36, 0.28);
     }
     .layer-tab.active[data-layer-btn="kto100"] {
       background: #1a6b9c;
       color: #ffffff;
+      opacity: 1;
       box-shadow: 0 2px 6px rgba(26, 107, 156, 0.28);
+    }
+    .layer-state-pill {
+      font-size: 9.5px;
+      font-weight: 900;
+      padding: 1px 5px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.12);
+      color: #555;
+      letter-spacing: 0.3px;
+    }
+    .layer-tab.active .layer-state-pill {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
     }
     .lang-switch {
       display: inline-flex;
@@ -516,13 +533,19 @@
       z-index: 600 !important;
     }
     .pin:hover .pin-title {
-      background: var(--theme-primary);
+      background: #b33924;
       transform: scale(1.08);
     }
     .pin:hover .pin-data {
-      border-color: var(--theme-primary);
+      border-color: #b33924;
       transform: scale(1.08);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+    .kto-pin:hover .pin-title {
+      background: #1a6b9c;
+    }
+    .kto-pin:hover .pin-data {
+      border-color: #1a6b9c;
     }
 
     /* 활성화(선택)된 핀 하이라이트 */
@@ -532,19 +555,28 @@
       transform-origin: 50% 50%;
     }
     .pin.active .pin-title {
-      background: var(--theme-primary) !important;
+      background: #b33924 !important;
       transform: scale(1.15);
       box-shadow: 0 0 14px rgba(0, 0, 0, 0.45);
     }
     .pin.active .pin-data {
-      border-color: var(--theme-primary) !important;
+      border-color: #b33924 !important;
       transform: scale(1.15);
       box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
     }
     .pin.active .pin-dot {
-      background: var(--theme-primary);
+      background: #b33924;
       transform: scale(1.8);
       animation: pinPulseRing 1.5s infinite;
+    }
+    .kto-pin.active .pin-title {
+      background: #1a6b9c !important;
+    }
+    .kto-pin.active .pin-data {
+      border-color: #1a6b9c !important;
+    }
+    .kto-pin.active .pin-dot {
+      background: #1a6b9c;
     }
     @keyframes pinPulseRing {
       0% {
@@ -604,10 +636,13 @@
     .pin-dot {
       width: 6px;
       height: 6px;
-      background: var(--theme-primary);
+      background: #b33924;
       border-radius: 50%;
       margin-top: 2px;
       transition: transform 0.2s ease;
+    }
+    .kto-pin .pin-dot {
+      background: #1a6b9c;
     }
 
     /* 한국관광 100선 상세 정보 플로팅 카드 */
@@ -832,13 +867,13 @@
 
 <header>
   <div class="header-top-bar">
-    <!-- 레이어(단풍 정보 / 한국관광 100선) 전환 탭 -->
-    <div class="layer-tabs" role="tablist" aria-label="지도 테마 선택">
-      <button type="button" class="layer-tab active" id="tabFoliageBtn" data-layer-btn="foliage" onclick="switchLayer('foliage')">
-        <span>🍁</span> <span id="tabFoliageLabel">단풍 정보 (35선)</span>
+    <!-- 레이어(단풍 정보 / 한국관광 100선) ON/OFF 다중 오버레이 토글 -->
+    <div class="layer-tabs" role="group" aria-label="지도 레이어 ON/OFF 오버레이 선택">
+      <button type="button" class="layer-tab active" id="tabFoliageBtn" data-layer-btn="foliage" aria-pressed="true" onclick="toggleLayer('foliage')">
+        <span>🍁</span> <span id="tabFoliageLabel">단풍 정보 (35선)</span> <span class="layer-state-pill" id="foliageStatePill">ON</span>
       </button>
-      <button type="button" class="layer-tab" id="tabKto100Btn" data-layer-btn="kto100" onclick="switchLayer('kto100')">
-        <span>🇰🇷</span> <span id="tabKto100Label">한국관광 100선 (25-26)</span>
+      <button type="button" class="layer-tab" id="tabKto100Btn" data-layer-btn="kto100" aria-pressed="false" onclick="toggleLayer('kto100')">
+        <span>🇰🇷</span> <span id="tabKto100Label">한국관광 100선 (25-26)</span> <span class="layer-state-pill" id="kto100StatePill">OFF</span>
       </button>
     </div>
 
@@ -1210,17 +1245,17 @@
         <div class="pin-data"><span class="kto-pin-num">#1</span><span class="kto-pin-cat">🏯 역사·문화</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-002" data-layer="kto100" data-region="gyeonggi" data-kto-num="2" data-name-ko="N서울타워" data-name-en="N Seoul Tower" data-short-ko="N서울타워" data-short-en="N Seoul Tower" data-sub-ko="서울 용산구" data-sub-en="Yongsan-gu, Seoul" data-cat-ko="랜드마크" data-cat-en="Landmark" data-icon="🗼" style="top: 270px; left: 288px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-002" data-layer="kto100" data-region="gyeonggi" data-kto-num="2" data-name-ko="N서울타워" data-name-en="N Seoul Tower" data-short-ko="N서울타워" data-short-en="N Seoul Tower" data-sub-ko="서울 용산구" data-sub-en="Yongsan-gu, Seoul" data-cat-ko="랜드마크" data-cat-en="Landmark" data-icon="🗼" style="top: 274px; left: 292px;">
         <span class="pin-title">N서울타워</span>
         <div class="pin-data"><span class="kto-pin-num">#2</span><span class="kto-pin-cat">🗼 랜드마크</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-003" data-layer="kto100" data-region="gyeonggi" data-kto-num="3" data-name-ko="광화문광장·청계광장" data-name-en="Gwanghwamun Square / Cheonggye Plaza" data-short-ko="광화문광장·청계광장" data-short-en="Gwanghwamun & Cheonggye" data-sub-ko="서울 종로·중구" data-sub-en="Jongno/Jung-gu, Seoul" data-cat-ko="도심·광장" data-cat-en="Plaza" data-icon="🏛️" style="top: 256px; left: 274px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-003" data-layer="kto100" data-region="gyeonggi" data-kto-num="3" data-name-ko="광화문광장·청계광장" data-name-en="Gwanghwamun Square / Cheonggye Plaza" data-short-ko="광화문광장·청계광장" data-short-en="Gwanghwamun & Cheonggye" data-sub-ko="서울 종로·중구" data-sub-en="Jongno/Jung-gu, Seoul" data-cat-ko="도심·광장" data-cat-en="Plaza" data-icon="🏛️" style="top: 254px; left: 272px;">
         <span class="pin-title">광화문광장·청계광장</span>
         <div class="pin-data"><span class="kto-pin-num">#3</span><span class="kto-pin-cat">🏛️ 도심·광장</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-004" data-layer="kto100" data-region="gyeonggi" data-kto-num="4" data-name-ko="국립중앙박물관" data-name-en="National Museum of Korea" data-short-ko="국립중앙박물관" data-short-en="National Museum of Korea" data-sub-ko="서울 용산구" data-sub-en="Yongsan-gu, Seoul" data-cat-ko="박물관·예술" data-cat-en="Museum" data-icon="🏺" style="top: 290px; left: 284px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-004" data-layer="kto100" data-region="gyeonggi" data-kto-num="4" data-name-ko="국립중앙박물관" data-name-en="National Museum of Korea" data-short-ko="국립중앙박물관" data-short-en="National Museum of Korea" data-sub-ko="서울 용산구" data-sub-en="Yongsan-gu, Seoul" data-cat-ko="박물관·예술" data-cat-en="Museum" data-icon="🏺" style="top: 292px; left: 284px;">
         <span class="pin-title">국립중앙박물관</span>
         <div class="pin-data"><span class="kto-pin-num">#4</span><span class="kto-pin-cat">🏺 박물관·예술</span></div>
         <div class="pin-dot"></div>
@@ -1280,7 +1315,7 @@
         <div class="pin-data"><span class="kto-pin-num">#15</span><span class="kto-pin-cat">🦇 동굴·테마</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-016" data-layer="kto100" data-region="gyeonggi" data-kto-num="16" data-name-ko="수원화성" data-name-en="Suwon Hwaseong Fortress" data-short-ko="수원화성" data-short-en="Suwon Hwaseong Fortress" data-sub-ko="경기 수원시" data-sub-en="Suwon-si, Gyeonggi-do" data-cat-ko="유네스코 유산" data-cat-en="UNESCO Heritage" data-icon="🏯" style="top: 334px; left: 282px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-016" data-layer="kto100" data-region="gyeonggi" data-kto-num="16" data-name-ko="수원화성" data-name-en="Suwon Hwaseong Fortress" data-short-ko="수원화성" data-short-en="Suwon Hwaseong Fortress" data-sub-ko="경기 수원시" data-sub-en="Suwon-si, Gyeonggi-do" data-cat-ko="유네스코 유산" data-cat-en="UNESCO Heritage" data-icon="🏯" style="top: 330px; left: 282px;">
         <span class="pin-title">수원화성</span>
         <div class="pin-data"><span class="kto-pin-num">#16</span><span class="kto-pin-cat">🏯 유네스코 유산</span></div>
         <div class="pin-dot"></div>
@@ -1380,22 +1415,22 @@
         <div class="pin-data"><span class="kto-pin-num">#35</span><span class="kto-pin-cat">🌺 수목원·온실</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-036" data-layer="kto100" data-region="chungbuk" data-kto-num="36" data-name-ko="도담삼봉" data-name-en="Dodamsambong Peaks" data-short-ko="도담삼봉" data-short-en="Dodamsambong Peaks" data-sub-ko="충북 단양군" data-sub-en="Danyang-gun, Chungbuk" data-cat-ko="자연명승" data-cat-en="Scenic Spot" data-icon="⛰️" style="top: 342px; left: 482px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-036" data-layer="kto100" data-region="chungbuk" data-kto-num="36" data-name-ko="도담삼봉" data-name-en="Dodamsambong Peaks" data-short-ko="도담삼봉" data-short-en="Dodamsambong Peaks" data-sub-ko="충북 단양군" data-sub-en="Danyang-gun, Chungbuk" data-cat-ko="자연명승" data-cat-en="Scenic Spot" data-icon="⛰️" style="top: 344px; left: 468px;">
         <span class="pin-title">도담삼봉</span>
         <div class="pin-data"><span class="kto-pin-num">#36</span><span class="kto-pin-cat">⛰️ 자연명승</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-037" data-layer="kto100" data-region="chungbuk" data-kto-num="37" data-name-ko="만천하 스카이워크·단양강 잔도" data-name-en="Mancheonha Skywalk / Danyanggang Jando Trail" data-short-ko="만천하 스카이워크·단양강 잔도" data-short-en="Mancheonha Skywalk & Jando" data-sub-ko="충북 단양군" data-sub-en="Danyang-gun, Chungbuk" data-cat-ko="전망·트레킹" data-cat-en="Skywalk/Trail" data-icon="🌉" style="top: 368px; left: 468px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-037" data-layer="kto100" data-region="chungbuk" data-kto-num="37" data-name-ko="만천하 스카이워크·단양강 잔도" data-name-en="Mancheonha Skywalk / Danyanggang Jando Trail" data-short-ko="만천하 스카이워크·단양강 잔도" data-short-en="Mancheonha Skywalk & Jando" data-sub-ko="충북 단양군" data-sub-en="Danyang-gun, Chungbuk" data-cat-ko="전망·트레킹" data-cat-en="Skywalk/Trail" data-icon="🌉" style="top: 372px; left: 456px;">
         <span class="pin-title">만천하 스카이워크·단양강 잔도</span>
         <div class="pin-data"><span class="kto-pin-num">#37</span><span class="kto-pin-cat">🌉 전망·트레킹</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-038" data-layer="kto100" data-region="chungbuk" data-kto-num="38" data-name-ko="보은 법주사·속리산테마파크" data-name-en="Beopjusa Temple / Songnisan Theme Park" data-short-ko="보은 법주사·속리산테마파크" data-short-en="Beopjusa & Songnisan Park" data-sub-ko="충북 보은군" data-sub-en="Boeun-gun, Chungbuk" data-cat-ko="유네스코 유산·테마" data-cat-en="UNESCO/Theme" data-icon="🛕" style="top: 422px; left: 428px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-038" data-layer="kto100" data-region="chungbuk" data-kto-num="38" data-name-ko="보은 법주사·속리산테마파크" data-name-en="Beopjusa Temple / Songnisan Theme Park" data-short-ko="보은 법주사·속리산테마파크" data-short-en="Beopjusa & Songnisan Park" data-sub-ko="충북 보은군" data-sub-en="Boeun-gun, Chungbuk" data-cat-ko="유네스코 유산·테마" data-cat-en="UNESCO/Theme" data-icon="🛕" style="top: 418px; left: 428px;">
         <span class="pin-title">보은 법주사·속리산테마파크</span>
         <div class="pin-data"><span class="kto-pin-num">#38</span><span class="kto-pin-cat">🛕 유네스코 유산·테마</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-039" data-layer="kto100" data-region="chungbuk" data-kto-num="39" data-name-ko="청풍호" data-name-en="Cheongpungho Lake" data-short-ko="청풍호" data-short-en="Cheongpungho Lake" data-sub-ko="충북 제천시" data-sub-en="Jecheon-si, Chungbuk" data-cat-ko="호수·케이블카" data-cat-en="Lake/Cable Car" data-icon="🛥️" style="top: 334px; left: 442px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-039" data-layer="kto100" data-region="chungbuk" data-kto-num="39" data-name-ko="청풍호" data-name-en="Cheongpungho Lake" data-short-ko="청풍호" data-short-en="Cheongpungho Lake" data-sub-ko="충북 제천시" data-sub-en="Jecheon-si, Chungbuk" data-cat-ko="호수·케이블카" data-cat-en="Lake/Cable Car" data-icon="🛥️" style="top: 332px; left: 432px;">
         <span class="pin-title">청풍호</span>
         <div class="pin-data"><span class="kto-pin-num">#39</span><span class="kto-pin-cat">🛥️ 호수·케이블카</span></div>
         <div class="pin-dot"></div>
@@ -1410,7 +1445,7 @@
         <div class="pin-data"><span class="kto-pin-num">#41</span><span class="kto-pin-cat">👑 유네스코 유산</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-042" data-layer="kto100" data-region="chungnam" data-kto-num="42" data-name-ko="대천해수욕장" data-name-en="Daecheon Beach" data-short-ko="대천해수욕장" data-short-en="Daecheon Beach" data-sub-ko="충남 보령시" data-sub-en="Boryeong-si, Chungnam" data-cat-ko="해변·축제" data-cat-en="Beach/Festival" data-icon="🏖️" style="top: 474px; left: 256px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-042" data-layer="kto100" data-region="chungnam" data-kto-num="42" data-name-ko="대천해수욕장" data-name-en="Daecheon Beach" data-short-ko="대천해수욕장" data-short-en="Daecheon Beach" data-sub-ko="충남 보령시" data-sub-en="Boryeong-si, Chungnam" data-cat-ko="해변·축제" data-cat-en="Beach/Festival" data-icon="🏖️" style="top: 472px; left: 254px;">
         <span class="pin-title">대천해수욕장</span>
         <div class="pin-data"><span class="kto-pin-num">#42</span><span class="kto-pin-cat">🏖️ 해변·축제</span></div>
         <div class="pin-dot"></div>
@@ -1420,7 +1455,7 @@
         <div class="pin-data"><span class="kto-pin-num">#43</span><span class="kto-pin-cat">🪷 유네스코 유산</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-044" data-layer="kto100" data-region="chungnam" data-kto-num="44" data-name-ko="서산 해미읍성" data-name-en="Haemieupseong Walled Town" data-short-ko="서산 해미읍성" data-short-en="Haemieupseong Walled Town" data-sub-ko="충남 서산시" data-sub-en="Seosan-si, Chungnam" data-cat-ko="역사·성곽" data-cat-en="Historic Fortress" data-icon="🏯" style="top: 416px; left: 246px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-044" data-layer="kto100" data-region="chungnam" data-kto-num="44" data-name-ko="서산 해미읍성" data-name-en="Haemieupseong Walled Town" data-short-ko="서산 해미읍성" data-short-en="Haemieupseong Walled Town" data-sub-ko="충남 서산시" data-sub-en="Seosan-si, Chungnam" data-cat-ko="역사·성곽" data-cat-en="Historic Fortress" data-icon="🏯" style="top: 414px; left: 256px;">
         <span class="pin-title">서산 해미읍성</span>
         <div class="pin-data"><span class="kto-pin-num">#44</span><span class="kto-pin-cat">🏯 역사·성곽</span></div>
         <div class="pin-dot"></div>
@@ -1465,7 +1500,7 @@
         <div class="pin-data"><span class="kto-pin-num">#52</span><span class="kto-pin-cat">🥋 생태·무예체험</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-053" data-layer="kto100" data-region="jeonbuk" data-kto-num="53" data-name-ko="변산반도국립공원" data-name-en="Byeonsanbando National Park" data-short-ko="변산반도국립공원" data-short-en="Byeonsanbando National Park" data-sub-ko="전북 부안군" data-sub-en="Buan-gun, Jeonbuk" data-cat-ko="국립공원·해안" data-cat-en="National Park" data-icon="🌊" style="top: 568px; left: 238px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-053" data-layer="kto100" data-region="jeonbuk" data-kto-num="53" data-name-ko="변산반도국립공원" data-name-en="Byeonsanbando National Park" data-short-ko="변산반도국립공원" data-short-en="Byeonsanbando National Park" data-sub-ko="전북 부안군" data-sub-en="Buan-gun, Jeonbuk" data-cat-ko="국립공원·해안" data-cat-en="National Park" data-icon="🌊" style="top: 584px; left: 242px;">
         <span class="pin-title">변산반도국립공원</span>
         <div class="pin-data"><span class="kto-pin-num">#53</span><span class="kto-pin-cat">🌊 국립공원·해안</span></div>
         <div class="pin-dot"></div>
@@ -1475,7 +1510,7 @@
         <div class="pin-data"><span class="kto-pin-num">#54</span><span class="kto-pin-cat">🍁 산림·단풍</span></div>
         <div class="pin-dot"></div>
       </div>
-      <div class="pin kto-pin hidden-layer" id="pin-kto-055" data-layer="kto100" data-region="jeonbuk" data-kto-num="55" data-name-ko="오성한옥마을" data-name-en="Oseong Hanok Village" data-short-ko="오성한옥마을" data-short-en="Oseong Hanok Village" data-sub-ko="전북 완주군" data-sub-en="Wanju-gun, Jeonbuk" data-cat-ko="한옥·힐링" data-cat-en="Hanok Village" data-icon="🏡" style="top: 538px; left: 342px;">
+      <div class="pin kto-pin hidden-layer" id="pin-kto-055" data-layer="kto100" data-region="jeonbuk" data-kto-num="55" data-name-ko="오성한옥마을" data-name-en="Oseong Hanok Village" data-short-ko="오성한옥마을" data-short-en="Oseong Hanok Village" data-sub-ko="전북 완주군" data-sub-en="Wanju-gun, Jeonbuk" data-cat-ko="한옥·힐링" data-cat-en="Hanok Village" data-icon="🏡" style="top: 544px; left: 356px;">
         <span class="pin-title">오성한옥마을</span>
         <div class="pin-data"><span class="kto-pin-num">#55</span><span class="kto-pin-cat">🏡 한옥·힐링</span></div>
         <div class="pin-dot"></div>
@@ -1777,8 +1812,8 @@
     "catKo": "랜드마크",
     "catEn": "Landmark",
     "icon": "🗼",
-    "top": 270,
-    "left": 288,
+    "top": 274,
+    "left": 292,
     "descKo": "남산 정상에서 서울 도심과 한강 파노라마 전망을 한눈에 감상할 수 있는 서울의 대표 랜드마크입니다.",
     "num": 2,
     "nameEn": "N Seoul Tower",
@@ -1795,8 +1830,8 @@
     "catKo": "도심·광장",
     "catEn": "Plaza",
     "icon": "🏛️",
-    "top": 256,
-    "left": 274,
+    "top": 254,
+    "left": 272,
     "descKo": "북악산과 경복궁이 어우러진 역사문화 광장과 도심 속 수변 산책로인 청계천이 시작되는 시민 휴식 공간입니다.",
     "num": 3,
     "nameEn": "Gwanghwamun Square / Cheonggye Plaza",
@@ -1813,7 +1848,7 @@
     "catKo": "박물관·예술",
     "catEn": "Museum",
     "icon": "🏺",
-    "top": 290,
+    "top": 292,
     "left": 284,
     "descKo": "선사시대부터 근대까지 40만 점 이상의 국보급 유물을 소장한 대한민국 대표 역사·문화 박물관입니다.",
     "num": 4,
@@ -2029,7 +2064,7 @@
     "catKo": "유네스코 유산",
     "catEn": "UNESCO Heritage",
     "icon": "🏯",
-    "top": 334,
+    "top": 330,
     "left": 282,
     "descKo": "정조대왕의 효심과 실학 정신으로 축성된 유네스코 세계유산 성곽으로 화성행궁과 성곽 산책로, 야경이 아름답습니다.",
     "num": 16,
@@ -2389,8 +2424,8 @@
     "catKo": "자연명승",
     "catEn": "Scenic Spot",
     "icon": "⛰️",
-    "top": 342,
-    "left": 482,
+    "top": 344,
+    "left": 468,
     "descKo": "남한강 한가운데 우뚝 솟은 세 개의 기암 봉우리와 정자 삼도정이 어우러진 단양팔경 제1경의 절경입니다.",
     "num": 36,
     "nameEn": "Dodamsambong Peaks",
@@ -2407,8 +2442,8 @@
     "catKo": "전망·트레킹",
     "catEn": "Skywalk/Trail",
     "icon": "🌉",
-    "top": 368,
-    "left": 468,
+    "top": 372,
+    "left": 456,
     "descKo": "남한강 수면 위 80~90m 절벽 전망대 만천하 스카이워크와 강변 암벽을 따라 걷는 스릴 만점의 단양강 잔도길입니다.",
     "num": 37,
     "nameEn": "Mancheonha Skywalk / Danyanggang Jando Trail",
@@ -2425,7 +2460,7 @@
     "catKo": "유네스코 유산·테마",
     "catEn": "UNESCO/Theme",
     "icon": "🛕",
-    "top": 422,
+    "top": 418,
     "left": 428,
     "descKo": "유네스코 세계유산 산사 법주사와 모노레일·짚라인·말티재 전망대를 갖춘 속리산테마파크 복합 휴양단지입니다.",
     "num": 38,
@@ -2443,8 +2478,8 @@
     "catKo": "호수·케이블카",
     "catEn": "Lake/Cable Car",
     "icon": "🛥️",
-    "top": 334,
-    "left": 442,
+    "top": 332,
+    "left": 432,
     "descKo": "내륙의 바다라 불리는 광활한 호수로 청풍호반 케이블카, 유람선, 청풍문화재단지 등 사계절 수려한 호반 비경을 자랑합니다.",
     "num": 39,
     "nameEn": "Cheongpungho Lake",
@@ -2497,8 +2532,8 @@
     "catKo": "해변·축제",
     "catEn": "Beach/Festival",
     "icon": "🏖️",
-    "top": 474,
-    "left": 256,
+    "top": 472,
+    "left": 254,
     "descKo": "서해안 최대 규모의 패각분 백사장 해변으로 세계적인 보령 머드축제와 스카이바이크·짚트랙을 즐길 수 있습니다.",
     "num": 42,
     "nameEn": "Daecheon Beach",
@@ -2533,8 +2568,8 @@
     "catKo": "역사·성곽",
     "catEn": "Historic Fortress",
     "icon": "🏯",
-    "top": 416,
-    "left": 246,
+    "top": 414,
+    "left": 256,
     "descKo": "조선시대 원형이 가장 잘 보존된 평지 읍성으로 드넓은 잔디 광장과 소나무 숲, 역사 문화 체험이 어우러진 명소입니다.",
     "num": 44,
     "nameEn": "Haemieupseong Walled Town",
@@ -2695,8 +2730,8 @@
     "catKo": "국립공원·해안",
     "catEn": "National Park",
     "icon": "🌊",
-    "top": 568,
-    "left": 238,
+    "top": 584,
+    "left": 242,
     "descKo": "산과 바다가 어우러진 국내 유일 반도형 국립공원으로 수만 권의 책을 쌓은 듯한 채석강 해식절벽과 내소사 전나무숲이 유명합니다.",
     "num": 53,
     "nameEn": "Byeonsanbando National Park",
@@ -2731,8 +2766,8 @@
     "catKo": "한옥·힐링",
     "catEn": "Hanok Village",
     "icon": "🏡",
-    "top": 538,
-    "left": 342,
+    "top": 544,
+    "left": 356,
     "descKo": "종남산과 위봉산 자락 아래 고즈넉한 한옥들과 아원고택, 오성제 저수지, 감각적인 갤러리 카페가 어우러진 치유 마을입니다.",
     "num": 55,
     "nameEn": "Oseong Hanok Village",
@@ -3619,10 +3654,19 @@
     jeju: '제주'
   };
 
-  // 현재 앱 상태 (레이어 & 언어)
+  // 현재 앱 상태 (다중 레이어 ON/OFF 오버레이 & 언어)
   const appState = {
-    layer: 'foliage', // 'foliage' (단풍 정보) | 'kto100' (한국관광 100선)
-    lang: 'ko'        // 'ko' | 'en'
+    layers: {
+      foliage: true, // 단풍 정보 (35선) ON/OFF
+      kto100: false  // 한국관광 100선 (25-26) ON/OFF
+    },
+    get layer() {
+      if (this.layers.foliage && this.layers.kto100) return 'both';
+      if (this.layers.kto100) return 'kto100';
+      if (this.layers.foliage) return 'foliage';
+      return 'none';
+    },
+    lang: 'ko' // 'ko' | 'en'
   };
 
   // 줌 & 팬 상태 관리
@@ -3652,9 +3696,12 @@
   const spotListEl = document.getElementById('spotList');
   const spotCountBadge = document.getElementById('spotCountBadge');
 
-  // 현재 활성 레이어에 속한 핀들만 반환하는 헬퍼
+  // 현재 활성(ON) 상태인 레이어에 속한 핀들만 반환하는 헬퍼
   function getActiveLayerPins() {
-    return Array.from(document.querySelectorAll(`.pin[data-layer="${appState.layer}"]`));
+    return Array.from(document.querySelectorAll('.pin')).filter(pin => {
+      const pinLayer = pin.getAttribute('data-layer');
+      return Boolean(appState.layers[pinLayer]);
+    });
   }
 
   // 지도 변환 적용 함수 (역스케일링 변수로 핀 선명도 유지)
@@ -3769,28 +3816,41 @@
   }
 
   // 지도 특정 핀에 포커스 (사이드바 클릭 또는 핀 클릭)
+  // 지도에서 핀 클릭 시(fromSidebar === false) 하단/좌측 사이드바로 스크롤이나 포커스가 절대 이동하지 않도록 고정
   function focusSpot(pinId, fromSidebar = false) {
     const pin = document.getElementById(pinId);
     if (!pin) return;
 
-    // 만약 해당 지역 체크박스가 해제되어 있으면 자동 활성화
+    // 만약 해당 지역 체크박스가 해제되어 있으면 자동 활성화 (포커스 이동 없이 조용히 갱신)
     const region = pin.getAttribute('data-region');
     const checkbox = document.querySelector(`.filter-item input[value="${region}"]`);
     if (checkbox && !checkbox.checked) {
       checkbox.checked = true;
-      filterPins();
+      filterPins(false);
     }
 
     // 핀 하이라이트 활성화
     document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
     pin.classList.add('active');
 
-    // 사이드바 목록 아이템 하이라이트 & 스크롤
+    // 사이드바 목록 아이템 선택값(.active) 갱신 (단, window 스크롤을 유발하는 scrollIntoView는 호출하지 않고 내부 목록 박스만 조절)
     document.querySelectorAll('.spot-item.active').forEach(el => el.classList.remove('active'));
     const spotItem = document.querySelector(`.spot-item[data-pin-id="${pinId}"]`);
     if (spotItem) {
       spotItem.classList.add('active');
-      spotItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const wrapper = spotListEl.parentElement;
+      if (wrapper) {
+        const targetScrollTop = spotItem.offsetTop - wrapper.offsetTop - (wrapper.clientHeight / 2) + (spotItem.clientHeight / 2);
+        wrapper.scrollTo({ top: Math.max(0, targetScrollTop), behavior: 'smooth' });
+      }
+    }
+
+    // 포커스 유지 처리: 지도에서 타점을 클릭한 경우 지도(#viewport)에 포커스와 화면 스크롤을 그대로 유지
+    if (!fromSidebar) {
+      viewport.focus({ preventScroll: true });
+    } else {
+      viewport.focus({ preventScroll: true });
+      viewport.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     // 상세 정보 카드 업데이트
@@ -3909,7 +3969,7 @@
     pin.addEventListener('click', (e) => {
       if (mapState.hasDragged) return;
       e.stopPropagation();
-      focusSpot(pin.id);
+      focusSpot(pin.id, false);
     });
   });
 
@@ -3955,9 +4015,12 @@
     if (!dateBtn || !regionBtn) return;
 
     const isEn = appState.lang === 'en';
-    const isKto = appState.layer === 'kto100';
+    const hasFoliage = appState.layers.foliage;
+    const hasKto = appState.layers.kto100;
 
-    if (isKto) {
+    if (hasFoliage && hasKto) {
+      dateLabel.textContent = isEn ? 'Date·No.' : '시기·번호';
+    } else if (hasKto) {
       dateLabel.textContent = isEn ? 'No.' : '번호';
     } else {
       dateLabel.textContent = isEn ? 'Date' : '시기';
@@ -4005,32 +4068,60 @@
     if (emptyEl) spotListEl.appendChild(emptyEl);
   }
 
-  // 레이어 전환 함수 (단풍 정보 <-> 한국관광 100선)
-  function switchLayer(targetLayer) {
-    if (appState.layer === targetLayer) return;
-    appState.layer = targetLayer;
+  // 레이어 UI 및 핀 표시 상태 동기화
+  function syncLayersUI() {
+    const foliageBtn = document.getElementById('tabFoliageBtn');
+    const ktoBtn = document.getElementById('tabKto100Btn');
+    const foliagePill = document.getElementById('foliageStatePill');
+    const ktoPill = document.getElementById('kto100StatePill');
 
-    // 1. 탭 버튼 활성화 상태 변경
-    document.getElementById('tabFoliageBtn').classList.toggle('active', targetLayer === 'foliage');
-    document.getElementById('tabKto100Btn').classList.toggle('active', targetLayer === 'kto100');
-    document.body.classList.toggle('mode-kto100', targetLayer === 'kto100');
+    const isFoliageOn = Boolean(appState.layers.foliage);
+    const isKtoOn = Boolean(appState.layers.kto100);
 
-    // 2. 지도 내 핀 레이어 토글
+    if (foliageBtn) {
+      foliageBtn.classList.toggle('active', isFoliageOn);
+      foliageBtn.setAttribute('aria-pressed', String(isFoliageOn));
+    }
+    if (ktoBtn) {
+      ktoBtn.classList.toggle('active', isKtoOn);
+      ktoBtn.setAttribute('aria-pressed', String(isKtoOn));
+    }
+    if (foliagePill) foliagePill.textContent = isFoliageOn ? 'ON' : 'OFF';
+    if (ktoPill) ktoPill.textContent = isKtoOn ? 'ON' : 'OFF';
+
+    document.body.classList.toggle('mode-kto100', isKtoOn && !isFoliageOn);
+
+    // 각 레이어 ON/OFF 상태에 따라 지도 핀 표시/숨김
     document.querySelectorAll('.pin').forEach(pin => {
       const pinLayer = pin.getAttribute('data-layer');
-      pin.classList.toggle('hidden-layer', pinLayer !== targetLayer);
-      pin.classList.remove('active');
+      const isLayerOn = Boolean(appState.layers[pinLayer]);
+      pin.classList.toggle('hidden-layer', !isLayerOn);
+      if (!isLayerOn && pin.classList.contains('active')) {
+        pin.classList.remove('active');
+        closeDetailCard();
+      }
     });
 
-    // 3. 상세 카드 닫기 및 검색창 초기화
-    closeDetailCard();
-    const searchInput = document.getElementById('spotSearchInput');
-    if (searchInput) searchInput.value = '';
-
-    // 4. UI 텍스트 및 목록 재구성
     updateI18nUI();
     buildSpotList();
-    filterPins();
+    filterPins(false);
+
+    const searchInput = document.getElementById('spotSearchInput');
+    if (searchInput && searchInput.value.trim()) {
+      onSearchSpots(searchInput.value);
+    }
+  }
+
+  // 레이어 개별 ON/OFF 토글 함수 (선택하면 켜지고 다시 선택하면 꺼지는 다중 오버레이 방식)
+  function toggleLayer(targetLayer) {
+    if (!(targetLayer in appState.layers)) return;
+    appState.layers[targetLayer] = !appState.layers[targetLayer];
+    syncLayersUI();
+  }
+
+  // 하위 호환용 래퍼
+  function switchLayer(targetLayer) {
+    toggleLayer(targetLayer);
   }
 
   // 언어 전환 함수 (ko <-> en)
@@ -4045,7 +4136,7 @@
     updatePinLabelsForLang();
     updateI18nUI();
     buildSpotList();
-    filterPins();
+    filterPins(false);
 
     // 만약 활성화된 핀이 있으면 상세 카드도 새 언어로 갱신
     const activePin = document.querySelector('.pin.active:not(.hidden-layer)');
@@ -4126,7 +4217,10 @@
   // 헤더, 사이드바, 필터 카운트 등 다국어 및 레이어별 UI 업데이트
   function updateI18nUI() {
     const isEn = appState.lang === 'en';
-    const isKto = appState.layer === 'kto100';
+    const hasFoliage = Boolean(appState.layers.foliage);
+    const hasKto = Boolean(appState.layers.kto100);
+    const isBoth = hasFoliage && hasKto;
+    const isKto = hasKto && !hasFoliage;
 
     // 탭 버튼 텍스트
     document.getElementById('tabFoliageLabel').textContent = isEn ? 'Autumn Foliage (35)' : '단풍 정보 (35선)';
@@ -4138,7 +4232,20 @@
     const headerHint = document.getElementById('headerHint');
     const footerSource = document.getElementById('footerSource');
 
-    if (isKto) {
+    if (isBoth) {
+      headerTitle.textContent = isEn
+        ? '2026 Autumn Foliage (35) & 2025–2026 100 Must-Visit Spots Overlay Map'
+        : '2026 단풍 예측(35선) × 2025-2026 한국관광 100선 통합 오버레이 지도';
+      legendBar.innerHTML = isEn
+        ? '<span>🍁 Maple</span><span>🍂 Ginkgo</span><span>🌰 Oak</span><span>·</span><span>🏯 Heritage</span><span>⛰️ Nature</span><span>🏖️ Coast</span><span>🎡 City</span>'
+        : '<span>🍁 단풍</span><span>🍂 은행</span><span>🌰 참나무</span><span>·</span><span>🏯 역사·문화</span><span>⛰️ 자연·공원</span><span>🏖️ 해양·섬</span><span>🎡 도심·테마</span>';
+      headerHint.textContent = isEn
+        ? '🔍 Both Autumn Foliage (35) and 100 Must-Visit Spots (100) layers are ON. Toggle layer buttons above to turn each layer ON/OFF.'
+        : '🔍 단풍 정보(35곳)와 한국관광 100선(100곳)이 한 지도에 함께 표시 중입니다. 상단 버튼을 눌러 원하는 레이어를 켜거나 끌 수 있습니다.';
+      footerSource.textContent = isEn
+        ? 'Source: Korea Forest Service (2026 Foliage Forecast) & MCST · KTO (2025-2026 100 Must-Visit Tourist Spots)'
+        : '데이터 출처: 산림청 2026 단풍 절정 예측 지도 & 문화체육관광부·한국관광공사 2025~2026 한국관광 100선';
+    } else if (isKto) {
       headerTitle.textContent = isEn
         ? '2025–2026 100 Must-Visit Tourist Spots of Korea'
         : '2025-2026 한국관광 100선 (문화체육관광부·한국관광공사)';
@@ -4172,7 +4279,11 @@
     document.getElementById('mapGuideBadgeText').textContent = isEn ? '🔍 Wheel/Pinch Zoom · Drag to Pan' : '🔍 휠/핀치 확대 · 드래그 이동';
 
     const searchInput = document.getElementById('spotSearchInput');
-    if (isKto) {
+    if (isBoth) {
+      searchInput.placeholder = isEn
+        ? 'Search mountain, tourist spot (KR/EN), region, date...'
+        : '산 이름, 관광지명(한/영), 지역, 날짜·테마 통합 검색...';
+    } else if (isKto) {
       searchInput.placeholder = isEn
         ? 'Search spot name (KR/EN), city, theme...'
         : '관광지명(한/영), 지역, 테마(유네스코, 해변 등) 검색...';
@@ -4191,7 +4302,7 @@
     });
 
     const FILTER_LABEL_EN = {
-      gyeonggi: isKto ? 'Capital Area' : 'Seoul·GG',
+      gyeonggi: hasKto ? 'Capital Area' : 'Seoul·GG',
       gangwon: 'Gangwon',
       chungbuk: 'Chungbuk',
       chungnam: 'Chungnam',
@@ -4205,7 +4316,7 @@
     document.querySelectorAll('.filter-region-label').forEach(el => {
       const reg = el.getAttribute('data-reg');
       const c = countsByReg[reg] || 0;
-      const fullName = isKto
+      const fullName = hasKto
         ? (REGION_NAMES_I18N[appState.lang][reg] || reg)
         : (isEn
           ? (REGION_NAMES_I18N.en[reg] || reg)
@@ -4264,11 +4375,24 @@
     const pins = getActiveLayerPins();
     spotCountBadge.textContent = formatSpotCount(pins.length);
     const isEn = appState.lang === 'en';
-    const isKto = appState.layer === 'kto100';
+    const activePinEl = document.querySelector('.pin.active:not(.hidden-layer)');
+    const activePinId = activePinEl ? activePinEl.id : null;
+
+    if (pins.length === 0) {
+      const emptyEl = document.createElement('li');
+      emptyEl.id = 'spotEmptyMsg';
+      emptyEl.className = 'spot-empty-msg';
+      emptyEl.textContent = isEn ? 'Turn ON a layer above to view spots.' : '상단에서 표시할 지도 레이어를 켜주세요 (ON).';
+      spotListEl.appendChild(emptyEl);
+      updateSortUI();
+      return;
+    }
 
     pins.forEach((pin, idx) => {
       const pinId = pin.id;
       const region = pin.getAttribute('data-region');
+      const pinLayer = pin.getAttribute('data-layer');
+      const isPinKto = pinLayer === 'kto100';
 
       let displayTitle = '';
       let searchCorpus = '';
@@ -4276,7 +4400,7 @@
       let dateScore = 9999;
       let regionTagText = '';
 
-      if (isKto) {
+      if (isPinKto) {
         const num = Number(pin.getAttribute('data-kto-num'));
         const nameKo = pin.getAttribute('data-name-ko') || '';
         const nameEn = pin.getAttribute('data-name-en') || '';
@@ -4311,8 +4435,9 @@
       }
 
       const li = document.createElement('li');
-      li.className = 'spot-item';
+      li.className = 'spot-item' + (pinId === activePinId ? ' active' : '');
       li.setAttribute('data-pin-id', pinId);
+      li.setAttribute('data-layer', pinLayer);
       li.setAttribute('data-region', region);
       li.setAttribute('data-title', displayTitle);
       li.setAttribute('data-search-corpus', searchCorpus);
@@ -4348,12 +4473,12 @@
     // 1. 통합 코퍼스(한글명, 영문명, 지역명, 카테고리, 번호 등) 직접 포함 여부
     if (title.includes(q) || corpus.includes(q)) return true;
 
-    // 한국관광 100선 모드에서는 코퍼스 매칭으로 충분
-    if (appState.layer === 'kto100') {
+    // 한국관광 100선 아이템은 코퍼스 매칭으로 충분
+    if (item.getAttribute('data-layer') === 'kto100') {
       return false;
     }
 
-    // 단풍 모드 전용 날짜/시기 스마트 검색
+    // 단풍 아이템 전용 날짜/시기 스마트 검색
     const allDates = item.getAttribute('data-all-dates') || '';
     const cleanDates = corpus.replace(/[🍁🍂🌰\s]/g, '');
     const score = Number(item.getAttribute('data-date-score'));
@@ -4412,7 +4537,7 @@
     const checked = Array.from(document.querySelectorAll('.filter-item input[type="checkbox"]:checked')).map(cb => cb.value);
     const isEn = appState.lang === 'en';
 
-    // 현재 레이어의 지도 핀 숨김/표시
+    // 현재 활성 레이어의 지도 핀 숨김/표시
     getActiveLayerPins().forEach(pin => {
       const isVisible = checked.includes(pin.getAttribute('data-region'));
       pin.classList.toggle('hidden', !isVisible);
