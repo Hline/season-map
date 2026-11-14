@@ -991,56 +991,77 @@
     }
 
     /* Winter Spa Pin Styling */
-    .pin.winter-spa-pin {
-      background: #ffffff;
-      border: 2px solid #e67e22;
-      box-shadow: 0 3px 10px rgba(230, 126, 34, 0.45);
-    }
-    .pin.winter-spa-pin:hover, .pin.winter-spa-pin.active {
-      background: #e67e22;
-      color: #ffffff;
-      border-color: #d35400;
-      box-shadow: 0 6px 18px rgba(211, 84, 0, 0.6);
-      transform: translate(-50%, -50%) scale(1.15);
-      z-index: 45;
-    }
-    .pin.winter-spa-pin .pin-dot {
+    .winter-spa-pin .pin-title {
       background: #d35400;
-      border-color: #ffffff;
+      color: #ffffff;
     }
-    .pin.winter-spa-pin .spa-pin-badge {
+    .winter-spa-pin .pin-data {
+      border-color: #f5cba7;
+    }
+    .winter-spa-pin .pin-dot {
+      background: #e67e22;
+    }
+    .winter-spa-pin .spa-pin-badge {
       font-size: 10px;
       font-weight: 800;
       color: #d35400;
-      margin-left: 2px;
     }
-    .pin.winter-spa-pin:hover .spa-pin-badge,
-    .pin.winter-spa-pin.active .spa-pin-badge {
-      color: #ffffff;
+    .winter-spa-pin:hover .pin-title {
+      background: #e67e22;
+    }
+    .winter-spa-pin:hover .pin-data {
+      border-color: #e67e22;
+    }
+    .winter-spa-pin.active .pin-title {
+      background: #d35400 !important;
+    }
+    .winter-spa-pin.active .pin-data {
+      border-color: #d35400 !important;
+    }
+    .winter-spa-pin.active .pin-dot {
+      background: #d35400;
     }
 
     /* User Recommended Pin Styling */
-    .pin.user-pin {
-      background: #ffffff;
-      border: 2px solid #27ae60;
-      box-shadow: 0 3px 10px rgba(39, 174, 96, 0.45);
-    }
-    .pin.user-pin:hover, .pin.user-pin.active {
-      background: #27ae60;
+    .user-pin .pin-title {
+      background: #1e8449;
       color: #ffffff;
-      border-color: #1e8449;
-      box-shadow: 0 6px 18px rgba(30, 132, 73, 0.6);
-      transform: translate(-50%, -50%) scale(1.15);
-      z-index: 45;
     }
-    .pin.user-pin .pin-dot {
+    .user-pin .pin-data {
+      border-color: #a9dfbf;
+    }
+    .user-pin .pin-dot {
       background: #27ae60;
-      border-color: #ffffff;
+    }
+    .user-pin .spa-pin-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #27ae60;
+    }
+    .user-pin:hover .pin-title {
+      background: #27ae60;
+    }
+    .user-pin:hover .pin-data {
+      border-color: #27ae60;
+    }
+    .user-pin.active .pin-title {
+      background: #1e8449 !important;
+    }
+    .user-pin.active .pin-data {
+      border-color: #1e8449 !important;
+    }
+    .user-pin.active .pin-dot {
+      background: #1e8449;
     }
     .pin.user-pin.is-hidden-admin {
       opacity: 0.45;
+    }
+    .pin.user-pin.is-hidden-admin .pin-title {
+      background: #7f8c8d !important;
+    }
+    .pin.user-pin.is-hidden-admin .pin-data {
       border-style: dashed;
-      background: #f2f3f4;
+      border-color: #bdc3c7 !important;
     }
 
     /* Top Recommendation Button */
