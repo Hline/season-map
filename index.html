@@ -22,6 +22,44 @@
       max-width: 100vw;
     }
     .header-top-bar {
+      position: relative;
+    }
+    .layer-tabs.is-expanded {
+      flex-wrap: wrap !important;
+      overflow-x: visible !important;
+      max-height: none !important;
+      white-space: normal !important;
+    }
+    .layer-tabs-expand-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3ede4;
+      border: 1px solid #d5cbc0;
+      border-radius: 8px;
+      padding: 4px 7px;
+      font-size: 13px;
+      cursor: pointer;
+      flex-shrink: 0;
+      line-height: 1;
+      height: 28px;
+      margin-left: 2px;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+    .layer-tabs-expand-btn:hover {
+      background: #e8ded2;
+      border-color: #bfae9c;
+    }
+    .layer-tabs-expand-btn.active {
+      background: #e0d4c3;
+      border-color: #8c7b6d;
+    }
+    .header-recommend-btn.is-edit-mode {
+      background: linear-gradient(135deg, #e67e22, #d35400) !important;
+      border-color: #b94a00 !important;
+      box-shadow: 0 2px 6px rgba(230, 126, 34, 0.4) !important;
+    }
+    .header-top-bar-orig {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -1587,7 +1625,7 @@
 <header>
   <div class="header-top-bar">
     <!-- 레이어(단풍 정보 / 한국관광 100선) ON/OFF 다중 오버레이 토글 -->
-    <div class="layer-tabs" role="group" aria-label="지도 레이어 ON/OFF 오버레이 선택">
+    <div class="layer-tabs" id="layerTabs" role="group" aria-label="지도 레이어 ON/OFF 오버레이 선택">
       <button type="button" class="layer-tab active" id="tabFoliageBtn" data-layer-btn="foliage" aria-pressed="true" onclick="toggleLayer('foliage')">
         <span>🍁</span> <span id="tabFoliageLabel">단풍 정보 (35선)</span> <span class="layer-state-pill" id="foliageStatePill">ON</span>
       </button>
@@ -1604,6 +1642,9 @@
         <span>📍</span> <span id="tabUserPlacesLabel">추천 장소</span> <span class="layer-state-pill" id="userPlacesStatePill">ON</span>
       </button>
     </div>
+    <button type="button" class="layer-tabs-expand-btn" id="expandLayerTabsBtn" onclick="toggleExpandLayerTabs()" aria-label="카테고리 펼쳐보기/접기" title="카테고리 펼쳐보기/접기">
+      <span id="expandLayerTabsIcon">🔽</span>
+    </button>
 
     <!-- 장소 추천 모달 열기 버튼 -->
     <button type="button" class="header-recommend-btn" id="openRecommendModalBtn" onclick="openRecommendModal()" title="새로운 노천온천·사우나 등 명소 추천">
@@ -5034,23 +5075,131 @@
     jeju: { top: 910, left: 260, name: '제주' }
   };
 
-  function openRecommendModal() {
+  // 추천 팝업창 폼 및 프리뷰 완전 초기화 함수
+  function resetRecommendModalForm() {
+    editingPlaceId = null;
+    selectedSearchResult = null;
+
     const modal = document.getElementById('recommendModal');
-    if (modal) {
-      modal.classList.add('active');
-      const input = document.getElementById('placeSearchInput');
-      if (input) input.focus();
+    if (!modal) return;
+
+    const isEn = appState.lang === 'en';
+    const titleEl = document.getElementById('modalTitle');
+    if (titleEl) {
+      titleEl.innerHTML = `<span>📍</span> <span>${isEn ? 'Recommend Your Favorite Spot' : '나만의 장소 추천'}</span>`;
     }
+
+    const submitBtn = modal.querySelector('.btn-submit');
+    if (submitBtn) {
+      submitBtn.textContent = isEn ? 'Save Pin to Map' : '지도에 핀 저장하기';
+    }
+
+    const nameInput = document.getElementById('placeSearchInput');
+    const briefDescInput = document.getElementById('modalBriefDesc');
+    const reasonInput = document.getElementById('modalRecommendReason');
+    const catSelect = document.getElementById('modalCategorySelect');
+    const customCatInput = document.getElementById('modalCustomCategory');
+    const preview = document.getElementById('selectedPlacePreview');
+    const resultsBox = document.getElementById('searchResultsBox');
+
+    if (nameInput) nameInput.value = '';
+    if (briefDescInput) briefDescInput.value = '';
+    if (reasonInput) reasonInput.value = '';
+    if (catSelect) catSelect.selectedIndex = 0;
+    if (customCatInput) {
+      customCatInput.value = '';
+      customCatInput.style.display = 'none';
+    }
+    if (preview) {
+      preview.classList.remove('active');
+      const pName = document.getElementById('previewPlaceName');
+      const pAddr = document.getElementById('previewPlaceAddr');
+      const pReg = document.getElementById('previewPlaceRegion');
+      if (pName) pName.textContent = '-';
+      if (pAddr) pAddr.textContent = '-';
+      if (pReg) pReg.textContent = '-';
+    }
+    if (resultsBox) {
+      resultsBox.classList.remove('has-results');
+      resultsBox.innerHTML = '';
+    }
+  }
+
+  function openRecommendModal(editTargetId = null) {
+    const modal = document.getElementById('recommendModal');
+    if (!modal) return;
+
+    resetRecommendModalForm();
+
+    const isEn = appState.lang === 'en';
+    const submitBtn = modal.querySelector('.btn-submit');
+    const titleEl = document.getElementById('modalTitle');
+
+    if (editTargetId) {
+      const places = getUserPlaces();
+      const target = places.find(p => p.id === editTargetId);
+      if (target) {
+        editingPlaceId = target.id;
+        if (titleEl) titleEl.innerHTML = `<span>✏️</span> <span>${isEn ? 'Edit Recommended Spot' : '추천 장소 정보 수정'}</span>`;
+        if (submitBtn) submitBtn.textContent = isEn ? 'Save Changes' : '수정사항 저장하기';
+
+        const nameInput = document.getElementById('placeSearchInput');
+        const briefDescInput = document.getElementById('modalBriefDesc');
+        const reasonInput = document.getElementById('modalRecommendReason');
+        const catSelect = document.getElementById('modalCategorySelect');
+        const customCatInput = document.getElementById('modalCustomCategory');
+        const regSelect = document.getElementById('manualRegionSelect');
+
+        if (nameInput) nameInput.value = target.name;
+        if (briefDescInput) briefDescInput.value = target.desc || '';
+        if (reasonInput) reasonInput.value = target.reason || '';
+        if (regSelect && target.region) regSelect.value = target.region;
+
+        if (catSelect) {
+          let matched = false;
+          for (let i = 0; i < catSelect.options.length; i++) {
+            if (catSelect.options[i].value === target.category) {
+              catSelect.selectedIndex = i;
+              matched = true;
+              break;
+            }
+          }
+          if (!matched && customCatInput) {
+            catSelect.value = '__custom__';
+            customCatInput.value = target.category.replace(/🏷️|🧖|♨️|☕|🌿|🍁|🏛️/g, '').trim();
+            customCatInput.style.display = 'block';
+          }
+        }
+
+        const preview = document.getElementById('selectedPlacePreview');
+        if (preview) {
+          document.getElementById('previewPlaceName').textContent = target.name;
+          document.getElementById('previewPlaceAddr').textContent = target.address || '대한민국';
+          document.getElementById('previewPlaceRegion').textContent = REGION_NAMES_I18N.ko[target.region] || target.region;
+          preview.classList.add('active');
+        }
+
+        selectedSearchResult = {
+          name: target.name,
+          addr: target.address,
+          region: target.region,
+          top: target.top,
+          left: target.left
+        };
+      }
+    }
+
+    modal.classList.add('active');
+    const input = document.getElementById('placeSearchInput');
+    if (input) input.focus();
   }
 
   function closeRecommendModal() {
     const modal = document.getElementById('recommendModal');
-    if (modal) modal.classList.remove('active');
-    selectedSearchResult = null;
-    const preview = document.getElementById('selectedPlacePreview');
-    if (preview) preview.classList.remove('active');
-    const box = document.getElementById('searchResultsBox');
-    if (box) { box.classList.remove('has-results'); box.innerHTML = ''; }
+    if (modal) {
+      modal.classList.remove('active');
+    }
+    resetRecommendModalForm();
   }
 
   function onModalOverlayClick(event) {
@@ -5288,44 +5437,72 @@
       return;
     }
 
-    const newPlace = {
-      id: 'pin-user-' + Date.now(),
-      name: placeName,
-      nameEn: placeName,
-      category: category,
-      catEn: category,
-      address: address,
-      addressEn: address,
-      region: region,
-      top: top,
-      left: left,
-      desc: desc || reason.slice(0, 30),
-      descEn: desc || reason.slice(0, 30),
-      reason: reason,
-      reasonEn: reason,
-      upvotes: 0,
-      isHidden: false,
-      createdAt: new Date().toISOString()
-    };
-    if (descInput) descInput.value = '';
-
     const places = getUserPlaces();
-    places.unshift(newPlace);
-    saveUserPlaces(places);
+    let targetPlaceId = editingPlaceId;
 
+    if (editingPlaceId) {
+      // 수정 모드
+      const target = places.find(p => p.id === editingPlaceId);
+      if (target) {
+        target.name = placeName;
+        target.nameEn = placeName;
+        target.category = category;
+        target.catEn = category;
+        target.address = address;
+        target.addressEn = address;
+        target.region = region;
+        target.top = top;
+        target.left = left;
+        target.desc = desc || reason.slice(0, 30);
+        target.descEn = desc || reason.slice(0, 30);
+        target.reason = reason;
+        target.reasonEn = reason;
+      }
+    } else {
+      // 신규 등록 모드
+      targetPlaceId = 'pin-user-' + Date.now();
+      const newPlace = {
+        id: targetPlaceId,
+        name: placeName,
+        nameEn: placeName,
+        category: category,
+        catEn: category,
+        address: address,
+        addressEn: address,
+        region: region,
+        top: top,
+        left: left,
+        desc: desc || reason.slice(0, 30),
+        descEn: desc || reason.slice(0, 30),
+        reason: reason,
+        reasonEn: reason,
+        upvotes: 0,
+        isHidden: false,
+        createdAt: new Date().toISOString()
+      };
+      places.unshift(newPlace);
+      addMyRegisteredPlaceId(targetPlaceId);
+    }
+
+    saveUserPlaces(places);
     appState.layers.userPlaces = true;
     syncLayersUI();
     renderUserPins();
     buildSpotList();
     filterPins(false);
 
+    const isEditDone = Boolean(editingPlaceId);
     closeRecommendModal();
 
-    setTimeout(() => {
-      focusSpot(newPlace.id, true);
-    }, 250);
-
-    alert(`'[${placeName}]' 장소가 지도에 성공적으로 등록되었습니다! 🎉`);
+    if (isEditDone) {
+      setTimeout(() => {
+        focusSpot(targetPlaceId, true);
+      }, 200);
+      alert(`'[${placeName}]' 장소 정보가 성공적으로 수정되었습니다! ✨`);
+    } else {
+      clearSpotSelection();
+      alert(`'[${placeName}]' 장소가 지도에 성공적으로 등록되었습니다! 🎉`);
+    }
   }
 
   function toggleUpvoteForSelected() {
@@ -5473,19 +5650,25 @@
       const spa = WINTER_SPA_MAP.get(pin.id);
       if (!spa) return;
 
+      const displayFeature = isEn ? (spa.featureEn || spa.feature) : spa.feature;
+      const displayDesc = isEn ? (spa.descEn || spa.descKo) : spa.descKo;
+
       badgesEl.innerHTML = `
         <span class="detail-badge-num" style="background: #e67e22;">${isEn ? 'Winter Spa #' : '국내 노천온천 #'}${spa.num}</span>
         <span class="detail-badge-cat">♨️ ${isEn ? spa.catEn : spa.catKo}</span>
         <span class="detail-badge-loc">📍 ${isEn ? spa.subEn : spa.subKo}</span>
       `;
       titleEl.textContent = isEn ? spa.nameEn : spa.nameKo;
-      subEl.textContent = `♨️ ${spa.feature} · ${isEn ? spa.subEn : spa.subKo}`;
-      descEl.textContent = isEn ? (spa.descEn || spa.descKo) : spa.descKo;
+      subEl.textContent = `♨️ ${displayFeature} · ${isEn ? spa.subEn : spa.subKo}`;
+      descEl.textContent = displayDesc;
       descEl.style.display = 'block';
       card.classList.add('visible');
     } else if (layer === 'sauna') {
       const sauna = SAUNA_MAP.get(pin.id);
       if (!sauna) return;
+
+      const displayFeature = isEn ? (sauna.featureEn || sauna.feature) : sauna.feature;
+      const displayDesc = isEn ? (sauna.descEn || sauna.descKo) : sauna.descKo;
 
       badgesEl.innerHTML = `
         <span class="detail-badge-num" style="background: #27ae60;">${isEn ? 'Sauna & Spa #' : '전국 사우나·찜질방 #'}${sauna.num}</span>
@@ -5493,8 +5676,8 @@
         <span class="detail-badge-loc">📍 ${isEn ? sauna.subEn : sauna.subKo}</span>
       `;
       titleEl.textContent = isEn ? sauna.nameEn : sauna.nameKo;
-      subEl.textContent = `🧖 ${sauna.feature} · ${isEn ? sauna.subEn : sauna.subKo}`;
-      descEl.textContent = isEn ? (sauna.descEn || sauna.descKo) : sauna.descKo;
+      subEl.textContent = `🧖 ${displayFeature} · ${isEn ? sauna.subEn : sauna.subKo}`;
+      descEl.textContent = displayDesc;
       descEl.style.display = 'block';
       card.classList.add('visible');
     } else if (layer === 'userPlaces') {
@@ -5591,9 +5774,59 @@
     updateGoogleSearchButtonsUI(null);
   }
 
+  // 세션 기반 본인 등록 장소 관리 (sessionStorage)
+  function getMyRegisteredPlaceIds() {
+    try {
+      const stored = sessionStorage.getItem('season_map_my_places');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {}
+    return ['pin-user-seed-01', 'pin-user-seed-02'];
+  }
+
+  function addMyRegisteredPlaceId(placeId) {
+    if (!placeId) return;
+    try {
+      const ids = getMyRegisteredPlaceIds();
+      if (!ids.includes(placeId)) {
+        ids.push(placeId);
+        sessionStorage.setItem('season_map_my_places', JSON.stringify(ids));
+      }
+    } catch (e) {}
+  }
+
+  function isMyRegisteredPlace(placeId) {
+    if (!placeId) return false;
+    const ids = getMyRegisteredPlaceIds();
+    return ids.includes(placeId);
+  }
+
+  // 상단 장소추천 버튼 상태 전환 (신규 등록 <-> 내 장소 수정)
+  function updateTopRecommendButtonState(activePin = null) {
+    const btn = document.getElementById('openRecommendModalBtn');
+    if (!btn) return;
+
+    const isEn = appState.lang === 'en';
+    const isMy = activePin && isMyRegisteredPlace(activePin.id);
+
+    if (isMy) {
+      btn.classList.add('is-edit-mode');
+      btn.innerHTML = `<span>✏️</span> <span>${isEn ? 'Edit' : '수정'}</span>`;
+      btn.title = isEn ? 'Edit selected place' : '선택한 장소 정보 수정하기';
+      btn.onclick = () => openRecommendModal(activePin.id);
+    } else {
+      btn.classList.remove('is-edit-mode');
+      btn.innerHTML = `<span>➕</span> <span>${isEn ? 'Recommend' : '추천'}</span>`;
+      btn.title = isEn ? 'Recommend a new hot spring, sauna or spot' : '새로운 노천온천·사우나 등 명소 추천';
+      btn.onclick = () => openRecommendModal();
+    }
+  }
+
   function clearSpotSelection() {
     document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.spot-item.active').forEach(i => i.classList.remove('active'));
+    updateTopRecommendButtonState(null);
     closeDetailCard();
   }
 
@@ -5603,7 +5836,16 @@
     const pin = document.getElementById(pinId);
     if (!pin) return;
 
-    // 만약 해당 지역 체크박스가 해제되어 있으면 자동 활성화 (포커스 이동 없이 조용히 갱신)
+    // 진행 중인 지도 이동 애니메이션이 있다면 즉시 캔슬하여 충돌 방지
+    if (mapState.animFrame) {
+      cancelAnimationFrame(mapState.animFrame);
+      mapState.animFrame = null;
+    }
+
+    // 만약 해당 핀이 검색 또는 지역 필터에 의해 숨겨져 있었다면 즉시 표시 복원
+    pin.classList.remove('hidden-search', 'hidden');
+
+    // 만약 해당 지역 체크박스가 해제되어 있으면 자동 활성화
     const region = pin.getAttribute('data-region');
     const checkbox = document.querySelector(`.filter-item input[value="${region}"]`);
     if (checkbox && !checkbox.checked) {
@@ -5614,6 +5856,9 @@
     // 핀 하이라이트 활성화
     document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
     pin.classList.add('active');
+
+    // 본인 등록 핀 선택 시 상단 버튼을 '수정' 모드로 즉각 전환
+    updateTopRecommendButtonState(pin);
 
     // 사이드바 목록 아이템 선택값(.active) 갱신 (단, window 스크롤을 유발하는 scrollIntoView는 호출하지 않고 내부 목록 박스만 조절)
     document.querySelectorAll('.spot-item.active').forEach(el => el.classList.remove('active'));
@@ -5940,6 +6185,24 @@
     }
   }
 
+  // 상단 맵 카테고리 펼쳐보기(🔽) / 접기(🔼) 토글 함수
+  function toggleExpandLayerTabs() {
+    const tabsContainer = document.querySelector('.layer-tabs');
+    const expandBtn = document.getElementById('expandLayerTabsBtn');
+    const expandIcon = document.getElementById('expandLayerTabsIcon');
+    if (!tabsContainer || !expandBtn) return;
+
+    const isExpanded = tabsContainer.classList.toggle('is-expanded');
+    expandBtn.classList.toggle('active', isExpanded);
+    expandBtn.setAttribute('aria-expanded', String(isExpanded));
+    if (expandIcon) {
+      expandIcon.textContent = isExpanded ? '🔼' : '🔽';
+    }
+    expandBtn.title = isExpanded
+      ? (appState.lang === 'en' ? 'Collapse Categories' : '카테고리 접기')
+      : (appState.lang === 'en' ? 'Expand All Categories' : '카테고리 전체 펼쳐보기');
+  }
+
   // 레이어 개별 ON/OFF 토글 함수 (선택하면 켜지고 다시 선택하면 꺼지는 다중 오버레이 방식)
   function toggleLayer(targetLayer) {
     if (!(targetLayer in appState.layers)) return;
@@ -6011,14 +6274,26 @@
       }
     });
 
+    // 겨울 노천온천 핀 타이틀 갱신
+    document.querySelectorAll('.winter-spa-pin').forEach(pin => {
+      const titleEl = pin.querySelector('.pin-title');
+      const spa = WINTER_SPA_MAP.get(pin.id);
+      if (titleEl && spa) {
+        const shortKo = spa.nameKo.length > 8 ? spa.nameKo.slice(0, 7) + '…' : spa.nameKo;
+        const shortEn = (spa.shortEn || spa.nameEn).length > 14 ? (spa.shortEn || spa.nameEn).slice(0, 13) + '…' : (spa.shortEn || spa.nameEn);
+        titleEl.textContent = isEn ? shortEn : shortKo;
+      }
+    });
+
     // 사우나·찜질방 핀 타이틀 갱신
     document.querySelectorAll('.sauna-pin').forEach(pin => {
       const titleEl = pin.querySelector('.pin-title');
-      const koName = pin.getAttribute('data-name-ko') || '';
-      const enName = pin.getAttribute('data-name-en') || koName;
-      const shortKo = koName.length > 8 ? koName.slice(0, 7) + '…' : koName;
-      const shortEn = enName.length > 12 ? enName.slice(0, 11) + '…' : enName;
-      if (titleEl) titleEl.textContent = isEn ? shortEn : shortKo;
+      const sauna = SAUNA_MAP.get(pin.id);
+      if (titleEl && sauna) {
+        const shortKo = sauna.nameKo.length > 8 ? sauna.nameKo.slice(0, 7) + '…' : sauna.nameKo;
+        const shortEn = (sauna.shortEn || sauna.nameEn).length > 14 ? (sauna.shortEn || sauna.nameEn).slice(0, 13) + '…' : (sauna.shortEn || sauna.nameEn);
+        titleEl.textContent = isEn ? shortEn : shortKo;
+      }
     });
 
     // 사용자 추천 핀 타이틀 갱신
@@ -6554,12 +6829,21 @@
         });
       }
 
-      li.addEventListener('click', () => {
-        focusSpot(pinId, true);
-      });
-
       spotListEl.appendChild(li);
     });
+
+    // 위임 이벤트 리스너: 자식 요소나 렌더링 타이밍에 상관없이 단 1회 클릭으로 100% 포커스 보장
+    if (!spotListEl._hasClickDelegation) {
+      spotListEl._hasClickDelegation = true;
+      spotListEl.addEventListener('click', (e) => {
+        const item = e.target.closest('.spot-item');
+        if (!item) return;
+        const targetPinId = item.getAttribute('data-pin-id');
+        if (targetPinId) {
+          focusSpot(targetPinId, true);
+        }
+      });
+    }
 
     updateSortUI();
     sortSpotList();
