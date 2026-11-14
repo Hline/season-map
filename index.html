@@ -4641,7 +4641,7 @@
       top: 295,
       left: 275,
       reason: '도심 속에서 조용하게 땀 빼기 좋고 소나무 불가마가 정말 시원합니다!',
-      upvotes: 12,
+      upvotes: 0,
       isHidden: false,
       createdAt: '2026-11-14T09:00:00Z'
     },
@@ -4654,7 +4654,7 @@
       top: 175,
       left: 540,
       reason: '설악산 등산 후 탄산온천수에 몸 담그면 피로가 싹 풀려요. 톡톡 쏘는 기포가 최고!',
-      upvotes: 28,
+      upvotes: 0,
       isHidden: false,
       createdAt: '2026-11-14T10:30:00Z'
     }
@@ -4670,6 +4670,21 @@
         return memoryUserPlaces;
       }
       memoryUserPlaces = JSON.parse(raw);
+      // 기존 로컬스토리지에 남아있던 시드 장소의 떰스업 기본값(12, 28) 초기화 처리
+      let changed = false;
+      memoryUserPlaces.forEach(p => {
+        if (p.id === 'pin-user-seed-01' && p.upvotes === 12) {
+          p.upvotes = 0;
+          changed = true;
+        }
+        if (p.id === 'pin-user-seed-02' && p.upvotes === 28) {
+          p.upvotes = 0;
+          changed = true;
+        }
+      });
+      if (changed && window.localStorage) {
+        localStorage.setItem(USER_PLACES_STORAGE_KEY, JSON.stringify(memoryUserPlaces));
+      }
       return memoryUserPlaces;
     } catch (e) {
       memoryUserPlaces = [...DEFAULT_USER_PLACES];
@@ -4718,9 +4733,10 @@
       pinEl.style.left = p.left + 'px';
 
       const shortName = p.name.length > 8 ? p.name.slice(0, 7) + '…' : p.name;
+      const upvotePrefix = (p.upvotes && p.upvotes > 0) ? `👍 ${p.upvotes} ` : '';
       pinEl.innerHTML = `
         <span class="pin-title" data-name-ko="${p.name}">${shortName}</span>
-        <div class="pin-data"><span class="spa-pin-badge">👍 ${p.upvotes || 0} ${p.category.split(' ')[0]}</span></div>
+        <div class="pin-data"><span class="spa-pin-badge">${upvotePrefix}${p.category.split(' ')[0]}</span></div>
         <div class="pin-dot"></div>
       `;
 
@@ -5011,7 +5027,7 @@
       top: top,
       left: left,
       reason: reason,
-      upvotes: 1,
+      upvotes: 0,
       isHidden: false,
       createdAt: new Date().toISOString()
     };
@@ -5019,10 +5035,6 @@
     const places = getUserPlaces();
     places.unshift(newPlace);
     saveUserPlaces(places);
-
-    try {
-      sessionStorage.setItem('season_map_voted_' + newPlace.id, 'true');
-    } catch(e){}
 
     appState.layers.userPlaces = true;
     syncLayersUI();
@@ -5056,7 +5068,7 @@
     } catch(e){}
 
     if (hasVoted) {
-      targetPlace.upvotes = Math.max(0, (targetPlace.upvotes || 1) - 1);
+      targetPlace.upvotes = Math.max(0, (targetPlace.upvotes || 0) - 1);
       try { sessionStorage.removeItem(storageKey); } catch(e){}
     } else {
       targetPlace.upvotes = (targetPlace.upvotes || 0) + 1;
@@ -5934,13 +5946,13 @@
         const catKo = pin.getAttribute('data-cat-ko') || '';
         const addr = pin.getAttribute('data-address') || '';
         const reason = pin.getAttribute('data-reason') || '';
-        const upvotes = pin.getAttribute('data-upvotes') || 0;
+        const upvotes = Number(pin.getAttribute('data-upvotes') || 0);
         const isHidden = pin.getAttribute('data-is-hidden') === 'true';
 
         displayTitle = (isHidden ? '[숨김] ' : '') + nameKo;
         regionTagText = REGION_SHORT_I18N.ko[region] || region;
-        rightBadgeText = `👍 ${upvotes}`;
-        dateScore = 9000 - Number(upvotes);
+        rightBadgeText = upvotes > 0 ? `👍 ${upvotes}` : '추천';
+        dateScore = 9000 - upvotes;
         searchCorpus = `${nameKo} ${catKo} ${addr} ${reason} 사용자 추천 유저 사우나 찜질방`.toLowerCase();
       } else if (isPinKto) {
         const num = Number(pin.getAttribute('data-kto-num'));
