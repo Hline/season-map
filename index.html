@@ -22,12 +22,57 @@
       max-width: 100vw;
     }
     .header-top-bar {
-      flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
       max-width: 100%;
+      padding-bottom: 2px;
+      scrollbar-width: thin;
+      scrollbar-color: #d5cbc0 transparent;
+    }
+    .header-top-bar::-webkit-scrollbar {
+      height: 3px;
+    }
+    .header-top-bar::-webkit-scrollbar-thumb {
+      background: #d5cbc0;
+      border-radius: 3px;
     }
     .layer-tabs {
-      flex-wrap: wrap;
+      display: inline-flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      background: #f3ede4;
+      padding: 3px 5px;
+      border-radius: 10px;
+      border: 1px solid #e1d2be;
+      gap: 4px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #d5cbc0 transparent;
       max-width: 100%;
+      flex-shrink: 0;
+    }
+    .layer-tabs::-webkit-scrollbar {
+      height: 3px;
+    }
+    .layer-tabs::-webkit-scrollbar-thumb {
+      background: #d5cbc0;
+      border-radius: 3px;
+    }
+    .layer-tab {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .header-recommend-btn,
+    .lang-switch,
+    .header-info-toggle {
+      flex-shrink: 0;
+      white-space: nowrap;
     }
     body {
       background: #f5f2ec;
@@ -127,6 +172,12 @@
       color: #ffffff;
       opacity: 1;
       box-shadow: 0 2px 6px rgba(211, 84, 0, 0.28);
+    }
+    .layer-tab.active[data-layer-btn="sauna"] {
+      background: #8e44ad;
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(142, 68, 173, 0.28);
     }
     .layer-tab.active[data-layer-btn="userPlaces"] {
       background: #1e8449;
@@ -997,11 +1048,49 @@
       --theme-border: #f5cba7;
       background: #fbf6f0;
     }
+    body.mode-sauna {
+      --theme-primary: #8e44ad;
+      --theme-bg-light: #f5eef8;
+      --theme-border: #d7bde2;
+      background: #faf6fc;
+    }
     body.mode-userPlaces {
       --theme-primary: #27ae60;
       --theme-bg-light: #eafaf1;
       --theme-border: #a9dfbf;
       background: #f4faf6;
+    }
+
+    /* Sauna & Jjimjilbang Pin Styling */
+    .sauna-pin .pin-title {
+      background: #8e44ad;
+      color: #ffffff;
+    }
+    .sauna-pin .pin-data {
+      border-color: #d7bde2;
+    }
+    .sauna-pin .pin-dot {
+      background: #9b59b6;
+    }
+    .sauna-pin .spa-pin-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #8e44ad;
+    }
+    .sauna-pin:hover .pin-title {
+      background: #9b59b6;
+    }
+    .sauna-pin:hover .pin-data {
+      border-color: #9b59b6;
+    }
+    .sauna-pin.active .pin-title {
+      background: #8e44ad !important;
+    }
+    .sauna-pin.active .pin-data {
+      border-color: #8e44ad !important;
+    }
+    .sauna-pin.active .pin-dot {
+      background: #8e44ad;
     }
 
     /* Winter Spa Pin Styling */
@@ -1504,6 +1593,9 @@
       </button>
       <button type="button" class="layer-tab active" id="tabWinterSpaBtn" data-layer-btn="winterSpa" aria-pressed="true" onclick="toggleLayer('winterSpa')">
         <span>♨️</span> <span id="tabWinterSpaLabel">겨울 노천온천 (8선)</span> <span class="layer-state-pill" id="winterSpaStatePill">ON</span>
+      </button>
+      <button type="button" class="layer-tab active" id="tabSaunaBtn" data-layer-btn="sauna" aria-pressed="true" onclick="toggleLayer('sauna')">
+        <span>🧖</span> <span id="tabSaunaLabel">사우나·찜질방 (10선)</span> <span class="layer-state-pill" id="saunaStatePill">ON</span>
       </button>
       <button type="button" class="layer-tab active" id="tabUserPlacesBtn" data-layer-btn="userPlaces" aria-pressed="true" onclick="toggleLayer('userPlaces')">
         <span>📍</span> <span id="tabUserPlacesLabel">추천 장소</span> <span class="layer-state-pill" id="userPlacesStatePill">ON</span>
@@ -2455,6 +2547,77 @@
         <div class="pin-dot"></div>
       </div>
 
+      <!-- 사우나·찜질방 10선 핀 -->
+      <!-- 1. 용산 현대웰빙사우나 (서울 용산) -->
+      <div class="pin sauna-pin" id="pin-sauna-01" data-layer="sauna" data-region="gyeonggi" data-name-ko="용산 현대웰빙사우나" data-name-en="Hyundai Well-being Sauna" data-sub-ko="서울 용산구 한남동" data-sub-en="Yongsan, Seoul" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 295px; left: 275px;">
+        <span class="pin-title">현대웰빙사우나</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 도심 참숯불가마</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 2. 부산 스파랜드 센텀시티 (부산 해운대) -->
+      <div class="pin sauna-pin" id="pin-sauna-02" data-layer="sauna" data-region="gyeongnam" data-name-ko="부산 스파랜드 센텀시티" data-name-en="Spaland Centum City" data-sub-ko="부산 해운대구 센텀남대로" data-sub-en="Haeundae, Busan" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 642px; left: 566px;">
+        <span class="pin-title">스파랜드 센텀시티</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 세계 테마 찜질스파</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 3. 아쿠아필드 하남 (경기 하남) -->
+      <div class="pin sauna-pin" id="pin-sauna-03" data-layer="sauna" data-region="gyeonggi" data-name-ko="아쿠아필드 하남" data-name-en="Aquafield Hanam" data-sub-ko="경기 하남시 미사대로" data-sub-en="Hanam, Gyeonggi" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 285px; left: 320px;">
+        <span class="pin-title">아쿠아필드 하남</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 미디어아트 힐링스파</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 4. 아쿠아필드 고양 (경기 고양) -->
+      <div class="pin sauna-pin" id="pin-sauna-04" data-layer="sauna" data-region="gyeonggi" data-name-ko="아쿠아필드 고양" data-name-en="Aquafield Goyang" data-sub-ko="경기 고양시 덕양구" data-sub-en="Goyang, Gyeonggi" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 245px; left: 245px;">
+        <span class="pin-title">아쿠아필드 고양</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 루프탑 & 테마찜질</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 5. 파라다이스시티 씨메르 (인천 영종) -->
+      <div class="pin sauna-pin" id="pin-sauna-05" data-layer="sauna" data-region="gyeonggi" data-name-ko="파라다이스시티 씨메르" data-name-en="Paradise City Cimer" data-sub-ko="인천 중구 영종해안남로" data-sub-en="Yeongjong, Incheon" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 280px; left: 185px;">
+        <span class="pin-title">씨메르 찜질스파</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 유러피안 럭셔리스파</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 6. 신촌 숲속한방랜드 숯가마 (서울 서대문) -->
+      <div class="pin sauna-pin" id="pin-sauna-06" data-layer="sauna" data-region="gyeonggi" data-name-ko="신촌 숲속한방랜드 숯가마" data-name-en="Forest Herb Land Charcoal Kiln" data-sub-ko="서울 서대문구 봉원사길" data-sub-en="Seodaemun, Seoul" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 275px; left: 265px;">
+        <span class="pin-title">숲속한방랜드</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 야외 참숯가마</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 7. 횡성 강원참숯 가마 (강원 횡성) -->
+      <div class="pin sauna-pin" id="pin-sauna-07" data-layer="sauna" data-region="gangwon" data-name-ko="횡성 강원참숯 가마" data-name-en="Hoengseong Charcoal Kiln" data-sub-ko="강원 횡성군 갑천면" data-sub-en="Hoengseong, Gangwon" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 280px; left: 440px;">
+        <span class="pin-title">강원참숯 가마</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 원조 전통참숯가마</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 8. 대구 엘리바덴 상인점 (대구 달서) -->
+      <div class="pin sauna-pin" id="pin-sauna-08" data-layer="sauna" data-region="gyeongbuk" data-name-ko="대구 엘리바덴 상인점" data-name-en="Daegu Elybaden Sangin" data-sub-ko="대구 달서구 상인서로" data-sub-en="Dalseo, Daegu" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 555px; left: 505px;">
+        <span class="pin-title">엘리바덴 상인점</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 유황온천 테마사우나</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 9. 화순 금호아쿠아나 (전남 화순) -->
+      <div class="pin sauna-pin" id="pin-sauna-09" data-layer="sauna" data-region="jeonnam" data-name-ko="화순 금호아쿠아나" data-name-en="Hwasun Aquana Resort Spa" data-sub-ko="전남 화순군 북면" data-sub-en="Hwasun, Jeonnam" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 710px; left: 310px;">
+        <span class="pin-title">화순 금호아쿠아나</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 남도 숲속 온천사우나</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 10. 제주 도두해수파크 (제주 제주시) -->
+      <div class="pin sauna-pin" id="pin-sauna-10" data-layer="sauna" data-region="jeju" data-name-ko="제주 도두해수파크" data-name-en="Jeju Dodu Seawater Park" data-sub-ko="제주 제주시 서해안로" data-sub-en="Jeju City, Jeju" data-cat-ko="사우나·찜질방" data-cat-en="Sauna & Spa" data-icon="🧖" style="top: 865px; left: 260px;">
+        <span class="pin-title">도두해수파크</span>
+        <div class="pin-data"><span class="spa-pin-badge">🧖 오션뷰 지하해수탕</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
       <!-- 사용자 등록 핀 컨테이너 (로컬 저장소 동적 렌더링) -->
       <div id="userPinsContainer"></div>
 
@@ -2475,16 +2638,16 @@
         <!-- 4대 지도/검색 연결 버튼 그룹 (구글, 네이버, 카카오, 티맵) -->
         <div class="detail-map-btn-group">
           <button type="button" class="map-link-btn btn-naver" id="btnMapNaver" onclick="openNaverMapForSelected()" title="네이버 지도에서 검색 (새 창)">
-            <span style="font-weight:900;">N</span> <span>네이버 지도</span>
+            <span style="font-weight:900;">N</span> <span id="labelMapNaver">네이버 지도</span>
           </button>
           <button type="button" class="map-link-btn btn-kakao" id="btnMapKakao" onclick="openKakaoMapForSelected()" title="카카오맵에서 검색 (새 창)">
-            <span style="font-weight:900;">K</span> <span>카카오맵</span>
+            <span style="font-weight:900;">K</span> <span id="labelMapKakao">카카오맵</span>
           </button>
           <button type="button" class="map-link-btn btn-tmap" id="btnMapTmap" onclick="openTMapForSelected()" title="티맵에서 길찾기/검색 (새 창)">
-            <span style="font-weight:900;">T</span> <span>티맵</span>
+            <span style="font-weight:900;">T</span> <span id="labelMapTmap">티맵</span>
           </button>
           <button type="button" class="map-link-btn btn-google" id="btnMapGoogle" onclick="openGoogleSearchForSelected()" title="구글에서 검색 (새 창)">
-            <span>🌐</span> <span>구글 검색</span>
+            <span>🌐</span> <span id="labelMapGoogle">구글 검색</span>
           </button>
         </div>
 
@@ -4416,12 +4579,30 @@
   ];
   const WINTER_SPA_MAP = new Map(WINTER_SPA_DATA.map(s => [s.id, s]));
 
+  // ==========================================================
+  // 전국 대표 사우나 & 찜질방 10선 데이터셋
+  // ==========================================================
+  const SAUNA_DATA = [
+    { id: 'pin-sauna-01', num: 1, region: 'gyeonggi', nameKo: '용산 현대웰빙사우나', nameEn: 'Hyundai Well-being Sauna', subKo: '서울 용산구 한남동', subEn: 'Yongsan, Seoul', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '도심 속에서 즐기는 전통 참숯가마와 불가마, 깔끔한 시설로 힐링하기 좋은 서울 대표 도심 사우나입니다.', feature: '도심 참숯불가마', icon: '🧖' },
+    { id: 'pin-sauna-02', num: 2, region: 'gyeongnam', nameKo: '부산 스파랜드 센텀시티', nameEn: 'Spaland Centum City', subKo: '부산 해운대구 센텀남대로', subEn: 'Haeundae, Busan', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '세계 각국의 전통 사우나와 22개 테마 스파를 갖춘 국내 최고급 메가스케일 프리미엄 찜질스파입니다.', feature: '세계 테마 찜질스파', icon: '🧖' },
+    { id: 'pin-sauna-03', num: 3, region: 'gyeonggi', nameKo: '아쿠아필드 하남', nameEn: 'Aquafield Hanam', subKo: '경기 하남시 미사대로', subEn: 'Hanam, Gyeonggi', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '미디어아트룸, 구름방, 편백나무방 등 오감을 만족시키는 감성 힐링 찜질스파의 대표 명소입니다.', feature: '미디어아트 힐링스파', icon: '🧖' },
+    { id: 'pin-sauna-04', num: 4, region: 'gyeonggi', nameKo: '아쿠아필드 고양', nameEn: 'Aquafield Goyang', subKo: '경기 고양시 덕양구', subEn: 'Goyang, Gyeonggi', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '루프탑 풀과 이국적인 테마 찜질룸이 결합되어 가족, 연인과 하루 종일 쉼을 즐기기 좋습니다.', feature: '루프탑 & 테마찜질', icon: '🧖' },
+    { id: 'pin-sauna-05', num: 5, region: 'gyeonggi', nameKo: '파라다이스시티 씨메르', nameEn: 'Paradise City Cimer', subKo: '인천 중구 영종해안남로', subEn: 'Yeongjong, Incheon', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '유러피안 감성과 한국 고유의 찜질방 문화를 융합한 K-스타일 럭셔리 휴식 스파 공간입니다.', feature: '유러피안 럭셔리스파', icon: '🧖' },
+    { id: 'pin-sauna-06', num: 6, region: 'gyeonggi', nameKo: '신촌 숲속한방랜드 숯가마', nameEn: 'Forest Herb Land Charcoal Kiln', subKo: '서울 서대문구 봉원사길', subEn: 'Seodaemun, Seoul', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '안산 자락 숲속에 위치해 야외 참숯가마에서 떡과 고구마를 구워 먹을 수 있는 레트로 감성 숯가마입니다.', feature: '야외 참숯가마', icon: '🧖' },
+    { id: 'pin-sauna-07', num: 7, region: 'gangwon', nameKo: '횡성 강원참숯 가마', nameEn: 'Hoengseong Charcoal Kiln', subKo: '강원 횡성군 갑천면', subEn: 'Hoengseong, Gangwon', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '국내 최대 규모 참숯 생산지에서 뿜어져 나오는 원적외선 참숯가마 열기를 직접 체험하는 원조 힐링처입니다.', feature: '원조 전통참숯가마', icon: '🧖' },
+    { id: 'pin-sauna-08', num: 8, region: 'gyeongbuk', nameKo: '대구 엘리바덴 상인점', nameEn: 'Daegu Elybaden Sangin', subKo: '대구 달서구 상인서로', subEn: 'Dalseo, Daegu', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '유황온천수를 활용한 온천사우나와 한방 테마 찜질존, 대형 힐링 공간을 갖춘 영남권 대표 스파입니다.', feature: '유황온천 테마사우나', icon: '🧖' },
+    { id: 'pin-sauna-09', num: 9, region: 'jeonnam', nameKo: '화순 금호아쿠아나', nameEn: 'Hwasun Aquana Resort Spa', subKo: '전남 화순군 북면', subEn: 'Hwasun, Jeonnam', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '남도 숲세권 속에서 100% 천연 온천수를 사용하는 대형 찜질 사우나와 워터파크 복합 휴양지입니다.', feature: '남도 숲속 온천사우나', icon: '🧖' },
+    { id: 'pin-sauna-10', num: 10, region: 'jeju', nameKo: '제주 도두해수파크', nameEn: 'Jeju Dodu Seawater Park', subKo: '제주 제주시 서해안로', subEn: 'Jeju City, Jeju', catKo: '사우나·찜질방', catEn: 'Sauna & Spa', descKo: '제주 청정 지하 해수탕과 탁 트인 바다 뷰를 감상하며 땀을 뺄 수 있는 오션뷰 찜질사우나입니다.', feature: '오션뷰 지하해수탕', icon: '🧖' }
+  ];
+  const SAUNA_MAP = new Map(SAUNA_DATA.map(s => [s.id, s]));
+
   // 현재 앱 상태 (다중 레이어 ON/OFF 오버레이 & 언어 & 관리자)
   const appState = {
     layers: {
       foliage: true,    // 단풍 정보 (35선) ON/OFF
       kto100: false,    // 한국관광 100선 (25-26) ON/OFF
       winterSpa: true,  // 겨울 노천 온천 (8선) ON/OFF
+      sauna: true,      // 사우나·찜질방 (10선) ON/OFF
       userPlaces: true  // 사용자 추천 장소 ON/OFF
     },
     get layer() {
@@ -4674,12 +4855,18 @@
     {
       id: 'pin-user-seed-01',
       name: '이태원 한남동 현대웰빙사우나',
+      nameEn: 'Hannam Hyundai Well-being Sauna',
       category: '사우나·찜질방 🧖',
+      catEn: 'Sauna & Spa',
       address: '서울 용산구 한남대로',
+      addressEn: 'Hannam-daero, Yongsan, Seoul',
       region: 'gyeonggi',
       top: 295,
       left: 275,
+      desc: '소나무 장작 불가마와 전통 한방 습식 사우나',
+      descEn: 'Traditional pine kiln & oriental herb steam sauna',
       reason: '도심 속에서 조용하게 땀 빼기 좋고 소나무 불가마가 정말 시원합니다!',
+      reasonEn: 'Perfect tranquil healing spot in downtown Seoul with authentic pine kiln sauna!',
       upvotes: 0,
       isHidden: false,
       createdAt: '2026-11-14T09:00:00Z'
@@ -4687,12 +4874,18 @@
     {
       id: 'pin-user-seed-02',
       name: '양양 오색그린야드호텔 탄산온천',
+      nameEn: 'Osaek Greenyard Hotel Carbonate Hot Spring',
       category: '온천·스파 ♨️',
+      catEn: 'Hot Spring & Spa',
       address: '강원 양양군 서면 대청봉길',
+      addressEn: 'Daecheongbong-gil, Yangyang, Gangwon',
       region: 'gangwon',
       top: 175,
       left: 540,
+      desc: '설악산 주전골 자락의 천연 탄산 & 복합 온천',
+      descEn: 'Natural carbonated spring nestled beneath Seoraksan Jujengol Valley',
       reason: '설악산 등산 후 탄산온천수에 몸 담그면 피로가 싹 풀려요. 톡톡 쏘는 기포가 최고!',
+      reasonEn: 'Soaking in bubbly carbonated spring water after hiking Seoraksan melts all fatigue!',
       upvotes: 0,
       isHidden: false,
       createdAt: '2026-11-14T10:30:00Z'
@@ -4719,6 +4912,30 @@
         if (p.id === 'pin-user-seed-02' && p.upvotes === 28) {
           p.upvotes = 0;
           changed = true;
+        }
+        if (!p.desc) {
+          if (p.id === 'pin-user-seed-01') {
+            p.desc = '소나무 장작 불가마와 전통 한방 습식 사우나';
+            p.descEn = 'Traditional pine kiln & oriental herb steam sauna';
+            p.nameEn = 'Hannam Hyundai Well-being Sauna';
+            p.catEn = 'Sauna & Spa';
+            p.reasonEn = 'Perfect tranquil healing spot in downtown Seoul with authentic pine kiln sauna!';
+            changed = true;
+          } else if (p.id === 'pin-user-seed-02') {
+            p.desc = '설악산 주전골 자락의 천연 탄산 & 복합 온천';
+            p.descEn = 'Natural carbonated spring nestled beneath Seoraksan Jujengol Valley';
+            p.nameEn = 'Osaek Greenyard Hotel Carbonate Hot Spring';
+            p.catEn = 'Hot Spring & Spa';
+            p.reasonEn = 'Soaking in bubbly carbonated spring water after hiking Seoraksan melts all fatigue!';
+            changed = true;
+          } else {
+            p.desc = p.name;
+            p.descEn = p.name;
+            p.nameEn = p.name;
+            p.catEn = p.category;
+            p.reasonEn = p.reason;
+            changed = true;
+          }
         }
       });
       if (changed && window.localStorage) {
@@ -4762,20 +4979,28 @@
       pinEl.id = p.id;
       pinEl.setAttribute('data-layer', 'userPlaces');
       pinEl.setAttribute('data-region', p.region);
+      const isEn = appState.lang === 'en';
+      const name = isEn ? (p.nameEn || p.name) : p.name;
       pinEl.setAttribute('data-name-ko', p.name);
+      pinEl.setAttribute('data-name-en', p.nameEn || p.name);
       pinEl.setAttribute('data-cat-ko', p.category);
+      pinEl.setAttribute('data-cat-en', p.catEn || p.category);
+      pinEl.setAttribute('data-desc-ko', p.desc || '');
+      pinEl.setAttribute('data-desc-en', p.descEn || p.desc || '');
       pinEl.setAttribute('data-address', p.address || '');
       pinEl.setAttribute('data-reason', p.reason || '');
+      pinEl.setAttribute('data-reason-en', p.reasonEn || p.reason || '');
       pinEl.setAttribute('data-upvotes', p.upvotes || 0);
       pinEl.setAttribute('data-is-hidden', p.isHidden ? 'true' : 'false');
       pinEl.style.top = p.top + 'px';
       pinEl.style.left = p.left + 'px';
 
-      const shortName = p.name.length > 8 ? p.name.slice(0, 7) + '…' : p.name;
+      const shortName = name.length > 8 ? name.slice(0, 7) + '…' : name;
       const upvotePrefix = (p.upvotes && p.upvotes > 0) ? `👍 ${p.upvotes} ` : '';
+      const displayCatTag = (isEn && p.catEn) ? p.catEn.split(' ')[0] : p.category.split(' ')[0];
       pinEl.innerHTML = `
         <span class="pin-title" data-name-ko="${p.name}">${shortName}</span>
-        <div class="pin-data"><span class="spa-pin-badge">${upvotePrefix}${p.category.split(' ')[0]}</span></div>
+        <div class="pin-data"><span class="spa-pin-badge">${upvotePrefix}${displayCatTag}</span></div>
         <div class="pin-dot"></div>
       `;
 
@@ -5050,9 +5275,12 @@
       category = customVal + ' 🏷️';
     }
 
+    const descInput = document.getElementById('modalBriefDesc');
+    const desc = descInput ? descInput.value.trim() : '';
+
     const reason = document.getElementById('modalRecommendReason').value.trim();
     if (!reason) {
-      alert('추천 이유를 간단히 입력해주세요 (방문 꿀팁 등).');
+      alert(appState.lang === 'en' ? 'Please enter a recommendation reason (e.g. visiting tips).' : '추천 이유를 간단히 입력해주세요 (방문 꿀팁 등).');
       document.getElementById('modalRecommendReason').focus();
       return;
     }
@@ -5060,16 +5288,23 @@
     const newPlace = {
       id: 'pin-user-' + Date.now(),
       name: placeName,
+      nameEn: placeName,
       category: category,
+      catEn: category,
       address: address,
+      addressEn: address,
       region: region,
       top: top,
       left: left,
+      desc: desc || reason.slice(0, 30),
+      descEn: desc || reason.slice(0, 30),
       reason: reason,
+      reasonEn: reason,
       upvotes: 0,
       isHidden: false,
       createdAt: new Date().toISOString()
     };
+    if (descInput) descInput.value = '';
 
     const places = getUserPlaces();
     places.unshift(newPlace);
@@ -5236,7 +5471,7 @@
       if (!spa) return;
 
       badgesEl.innerHTML = `
-        <span class="detail-badge-num" style="background: #e67e22;">국내 노천온천 #${spa.num}</span>
+        <span class="detail-badge-num" style="background: #e67e22;">${isEn ? 'Winter Spa #' : '국내 노천온천 #'}${spa.num}</span>
         <span class="detail-badge-cat">♨️ ${isEn ? spa.catEn : spa.catKo}</span>
         <span class="detail-badge-loc">📍 ${isEn ? spa.subEn : spa.subKo}</span>
       `;
@@ -5245,23 +5480,53 @@
       descEl.textContent = isEn ? (spa.descEn || spa.descKo) : spa.descKo;
       descEl.style.display = 'block';
       card.classList.add('visible');
+    } else if (layer === 'sauna') {
+      const sauna = SAUNA_MAP.get(pin.id);
+      if (!sauna) return;
+
+      badgesEl.innerHTML = `
+        <span class="detail-badge-num" style="background: #8e44ad;">${isEn ? 'Sauna & Spa #' : '전국 사우나·찜질방 #'}${sauna.num}</span>
+        <span class="detail-badge-cat">🧖 ${isEn ? sauna.catEn : sauna.catKo}</span>
+        <span class="detail-badge-loc">📍 ${isEn ? sauna.subEn : sauna.subKo}</span>
+      `;
+      titleEl.textContent = isEn ? sauna.nameEn : sauna.nameKo;
+      subEl.textContent = `🧖 ${sauna.feature} · ${isEn ? sauna.subEn : sauna.subKo}`;
+      descEl.textContent = isEn ? (sauna.descEn || sauna.descKo) : sauna.descKo;
+      descEl.style.display = 'block';
+      card.classList.add('visible');
     } else if (layer === 'userPlaces') {
-      const name = pin.getAttribute('data-name-ko') || '';
-      const cat = pin.getAttribute('data-cat-ko') || '';
+      const nameKo = pin.getAttribute('data-name-ko') || '';
+      const nameEn = pin.getAttribute('data-name-en') || nameKo;
+      const catKo = pin.getAttribute('data-cat-ko') || '';
+      const catEn = pin.getAttribute('data-cat-en') || catKo;
       const addr = pin.getAttribute('data-address') || '';
-      const reason = pin.getAttribute('data-reason') || '';
+      const descKo = pin.getAttribute('data-desc-ko') || '';
+      const descEn = pin.getAttribute('data-desc-en') || descKo;
+      const reasonKo = pin.getAttribute('data-reason') || '';
+      const reasonEn = pin.getAttribute('data-reason-en') || reasonKo;
       const upvotes = Number(pin.getAttribute('data-upvotes') || 0);
       const isHidden = pin.getAttribute('data-is-hidden') === 'true';
 
+      const displayName = isEn ? nameEn : nameKo;
+      const displayCat = isEn ? catEn : catKo;
+      const displayDesc = isEn ? descEn : descKo;
+      const displayReason = isEn ? reasonEn : reasonKo;
+
       badgesEl.innerHTML = `
-        <span class="detail-badge-num" style="background: #27ae60;">사용자 추천</span>
-        <span class="detail-badge-cat">${cat}</span>
-        <span class="detail-badge-loc">📍 ${addr || '대한민국'}</span>
-        ${isHidden ? '<span class="detail-badge-num" style="background:#e74c3c;">숨김됨</span>' : ''}
+        <span class="detail-badge-num" style="background: #27ae60;">${isEn ? 'User Recommended' : '사용자 추천'}</span>
+        <span class="detail-badge-cat">${displayCat}</span>
+        <span class="detail-badge-loc">📍 ${addr || (isEn ? 'Korea' : '대한민국')}</span>
+        ${isHidden ? `<span class="detail-badge-num" style="background:#e74c3c;">${isEn ? 'Hidden' : '숨김됨'}</span>` : ''}
       `;
-      titleEl.textContent = name;
-      subEl.textContent = `🏷️ ${cat} · ${addr}`;
-      descEl.innerHTML = `<div style="font-weight:700; color:#27ae60; margin-bottom:4px;">💡 추천 이유:</div><div style="line-height:1.6;">${reason}</div>`;
+      titleEl.textContent = displayName;
+      subEl.textContent = `🏷️ ${displayCat} · ${addr}`;
+
+      let descContent = '';
+      if (displayDesc) {
+        descContent += `<div style="font-weight:700; color:#2c3e50; margin-bottom:6px; font-size:12.5px; line-height:1.5;">✨ ${displayDesc}</div>`;
+      }
+      descContent += `<div style="font-weight:700; color:#27ae60; margin-bottom:4px; margin-top:${displayDesc ? '8px' : '0'};">💡 ${isEn ? 'Reason for Recommendation:' : '추천 이유:'}</div><div style="line-height:1.6; color:#444;">${displayReason}</div>`;
+      descEl.innerHTML = descContent;
       descEl.style.display = 'block';
 
       if (userPlaceActions) {
@@ -5273,12 +5538,12 @@
         const upvoteLabel = document.getElementById('upvoteLabel');
         if (upvoteBtn) upvoteBtn.classList.toggle('voted', hasVoted);
         if (upvoteCount) upvoteCount.textContent = upvotes;
-        if (upvoteLabel) upvoteLabel.textContent = hasVoted ? '추천 완료' : '추천';
+        if (upvoteLabel) upvoteLabel.textContent = isEn ? (hasVoted ? 'Upvoted' : 'Upvote') : (hasVoted ? '추천 완료' : '추천');
 
         if (adminPinActions) {
           adminPinActions.style.display = appState.isAdmin ? 'inline-flex' : 'none';
           const hideBtn = document.getElementById('adminHideToggleBtn');
-          if (hideBtn) hideBtn.textContent = isHidden ? '👁️ 숨김해제' : '👁️ 숨기기';
+          if (hideBtn) hideBtn.textContent = isHidden ? (isEn ? '👁️ Unhide' : '👁️ 숨김해제') : (isEn ? '👁️ Hide' : '👁️ 숨기기');
         }
       }
       card.classList.add('visible');
@@ -5598,16 +5863,19 @@
     const foliageBtn = document.getElementById('tabFoliageBtn');
     const ktoBtn = document.getElementById('tabKto100Btn');
     const spaBtn = document.getElementById('tabWinterSpaBtn');
+    const saunaBtn = document.getElementById('tabSaunaBtn');
     const userBtn = document.getElementById('tabUserPlacesBtn');
 
     const foliagePill = document.getElementById('foliageStatePill');
     const ktoPill = document.getElementById('kto100StatePill');
     const spaPill = document.getElementById('winterSpaStatePill');
+    const saunaPill = document.getElementById('saunaStatePill');
     const userPill = document.getElementById('userPlacesStatePill');
 
     const isFoliageOn = Boolean(appState.layers.foliage);
     const isKtoOn = Boolean(appState.layers.kto100);
     const isWinterSpaOn = Boolean(appState.layers.winterSpa);
+    const isSaunaOn = Boolean(appState.layers.sauna);
     const isUserPlacesOn = Boolean(appState.layers.userPlaces);
 
     if (foliageBtn) {
@@ -5622,6 +5890,10 @@
       spaBtn.classList.toggle('active', isWinterSpaOn);
       spaBtn.setAttribute('aria-pressed', String(isWinterSpaOn));
     }
+    if (saunaBtn) {
+      saunaBtn.classList.toggle('active', isSaunaOn);
+      saunaBtn.setAttribute('aria-pressed', String(isSaunaOn));
+    }
     if (userBtn) {
       userBtn.classList.toggle('active', isUserPlacesOn);
       userBtn.setAttribute('aria-pressed', String(isUserPlacesOn));
@@ -5630,11 +5902,14 @@
     if (foliagePill) foliagePill.textContent = isFoliageOn ? 'ON' : 'OFF';
     if (ktoPill) ktoPill.textContent = isKtoOn ? 'ON' : 'OFF';
     if (spaPill) spaPill.textContent = isWinterSpaOn ? 'ON' : 'OFF';
+    if (saunaPill) saunaPill.textContent = isSaunaOn ? 'ON' : 'OFF';
     if (userPill) userPill.textContent = isUserPlacesOn ? 'ON' : 'OFF';
 
-    document.body.classList.toggle('mode-kto100', isKtoOn && !isFoliageOn && !isWinterSpaOn);
-    document.body.classList.toggle('mode-winterSpa', isWinterSpaOn && !isFoliageOn && !isKtoOn);
-    document.body.classList.toggle('mode-userPlaces', isUserPlacesOn && !isFoliageOn && !isKtoOn && !isWinterSpaOn);
+    const activeKeys = Object.keys(appState.layers).filter(k => appState.layers[k]);
+    document.body.classList.toggle('mode-kto100', activeKeys.length === 1 && activeKeys[0] === 'kto100');
+    document.body.classList.toggle('mode-winterSpa', activeKeys.length === 1 && activeKeys[0] === 'winterSpa');
+    document.body.classList.toggle('mode-sauna', activeKeys.length === 1 && activeKeys[0] === 'sauna');
+    document.body.classList.toggle('mode-userPlaces', activeKeys.length === 1 && activeKeys[0] === 'userPlaces');
 
     const adminBannerEl = document.getElementById('adminBanner');
     if (adminBannerEl) adminBannerEl.classList.toggle('active', appState.isAdmin);
@@ -5684,6 +5959,8 @@
     document.getElementById('langEnBtn').classList.toggle('active', lang === 'en');
 
     updatePinLabelsForLang();
+    renderUserPins();
+    bindPinClickListeners();
     updateI18nUI();
     buildSpotList();
     filterPins(false);
@@ -5731,6 +6008,26 @@
       }
     });
 
+    // 사우나·찜질방 핀 타이틀 갱신
+    document.querySelectorAll('.sauna-pin').forEach(pin => {
+      const titleEl = pin.querySelector('.pin-title');
+      const koName = pin.getAttribute('data-name-ko') || '';
+      const enName = pin.getAttribute('data-name-en') || koName;
+      const shortKo = koName.length > 8 ? koName.slice(0, 7) + '…' : koName;
+      const shortEn = enName.length > 12 ? enName.slice(0, 11) + '…' : enName;
+      if (titleEl) titleEl.textContent = isEn ? shortEn : shortKo;
+    });
+
+    // 사용자 추천 핀 타이틀 갱신
+    document.querySelectorAll('.user-pin').forEach(pin => {
+      const titleEl = pin.querySelector('.pin-title');
+      const koName = pin.getAttribute('data-name-ko') || '';
+      const enName = pin.getAttribute('data-name-en') || koName;
+      const shortKo = koName.length > 8 ? koName.slice(0, 7) + '…' : koName;
+      const shortEn = enName.length > 12 ? enName.slice(0, 11) + '…' : enName;
+      if (titleEl) titleEl.textContent = isEn ? shortEn : shortKo;
+    });
+
     // SVG 배경 지역 라벨 갱신
     document.querySelectorAll('.region-label[data-label-reg]').forEach(textEl => {
       const reg = textEl.getAttribute('data-label-reg');
@@ -5773,14 +6070,24 @@
     const isEn = appState.lang === 'en';
     const hasFoliage = Boolean(appState.layers.foliage);
     const hasKto = Boolean(appState.layers.kto100);
-    const isBoth = hasFoliage && hasKto;
-    const isKto = hasKto && !hasFoliage;
+    const hasSpa = Boolean(appState.layers.winterSpa);
+    const hasSauna = Boolean(appState.layers.sauna);
+    const hasUser = Boolean(appState.layers.userPlaces);
+
+    const activeList = [];
+    if (hasFoliage) activeList.push('foliage');
+    if (hasKto) activeList.push('kto100');
+    if (hasSpa) activeList.push('winterSpa');
+    if (hasSauna) activeList.push('sauna');
+    if (hasUser) activeList.push('userPlaces');
 
     // 탭 버튼 텍스트
     document.getElementById('tabFoliageLabel').textContent = isEn ? 'Autumn Foliage (35)' : '단풍 정보 (35선)';
     document.getElementById('tabKto100Label').textContent = isEn ? '100 Must-Visit Spots (25-26)' : '한국관광 100선 (25-26)';
     const winterSpaLabel = document.getElementById('tabWinterSpaLabel');
     if (winterSpaLabel) winterSpaLabel.textContent = isEn ? 'Winter Spas (8)' : '겨울 노천온천 (8선)';
+    const saunaLabel = document.getElementById('tabSaunaLabel');
+    if (saunaLabel) saunaLabel.textContent = isEn ? 'Saunas & Spas (10)' : '사우나·찜질방 (10선)';
     const userPlacesLabel = document.getElementById('tabUserPlacesLabel');
     if (userPlacesLabel) userPlacesLabel.textContent = isEn ? 'User Spots' : '추천 장소';
     const recommendBtn = document.getElementById('openRecommendModalBtn');
@@ -5789,51 +6096,165 @@
       recommendBtn.title = isEn ? 'Recommend a new hot spring, sauna or spot' : '새로운 노천온천·사우나 등 명소 추천';
     }
 
+    // 4대 지도 버튼 다국어 번역
+    const labelNaver = document.getElementById('labelMapNaver');
+    const labelKakao = document.getElementById('labelMapKakao');
+    const labelTmap = document.getElementById('labelMapTmap');
+    const labelGoogle = document.getElementById('labelMapGoogle');
+    if (labelNaver) labelNaver.textContent = isEn ? 'Naver Map' : '네이버 지도';
+    if (labelKakao) labelKakao.textContent = isEn ? 'Kakao Map' : '카카오맵';
+    if (labelTmap) labelTmap.textContent = isEn ? 'TMAP' : '티맵';
+    if (labelGoogle) labelGoogle.textContent = isEn ? 'Google Search' : '구글 검색';
+
+    // 모달 텍스트 다국어 번역
+    const modalTitle = document.getElementById('modalTitle');
+    if (modalTitle) modalTitle.innerHTML = `<span>📍</span> <span>${isEn ? 'Recommend a Place' : '나만의 장소 추천'}</span>`;
+    const modalBriefDescLabel = document.getElementById('modalBriefDescLabel');
+    if (modalBriefDescLabel) modalBriefDescLabel.textContent = isEn ? 'Brief Description (One-line summary)' : '간단한 설명 (한줄 요약)';
+    const modalBriefDesc = document.getElementById('modalBriefDesc');
+    if (modalBriefDesc) modalBriefDesc.placeholder = isEn ? 'Brief summary of this spot (e.g. Scenic outdoor bath overlooking mountains)' : '장소의 핵심 특징을 한 줄로 소개해주세요 (예: 설악산 설경을 품은 노천탕)';
+    const modalRecommendReasonLabel = document.getElementById('modalRecommendReasonLabel');
+    if (modalRecommendReasonLabel) modalRecommendReasonLabel.textContent = isEn ? 'Reason for Recommendation' : '추천 이유 (방문 꿀팁 등)';
+    const modalRecommendReason = document.getElementById('modalRecommendReason');
+    if (modalRecommendReason) modalRecommendReason.placeholder = isEn ? 'Why do you recommend this spot? (e.g. Amazing water and scenic view!)' : '이 장소를 추천하는 이유를 작성해주세요 (예: 겨울철 노천탕에서 바라보는 풍경이 일품이고 물이 정말 매끄러워요!)';
+
     // 헤더 타이틀 & 범례 & 힌트 & 푸터
     const headerTitle = document.getElementById('headerTitle');
     const legendBar = document.getElementById('legendBar');
     const headerHint = document.getElementById('headerHint');
     const footerSource = document.getElementById('footerSource');
 
-    if (isBoth) {
-      headerTitle.textContent = isEn
-        ? '2026 Autumn Foliage (35) & 2025–2026 100 Must-Visit Spots Overlay Map'
-        : '2026 단풍 예측(35선) × 2025-2026 한국관광 100선 통합 오버레이 지도';
-      legendBar.innerHTML = isEn
-        ? '<span class="legend-chip" data-cat-query="Maple" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 Maple</span><span class="legend-chip" data-cat-query="Ginkgo" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 Ginkgo</span><span class="legend-chip" data-cat-query="Oak" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 Oak</span><span>·</span><span class="legend-chip" data-cat-query="Heritage" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 Heritage</span><span class="legend-chip" data-cat-query="UNESCO" onclick="filterByLegendCategory(this.dataset.catQuery)">👑 UNESCO</span><span class="legend-chip" data-cat-query="Nature" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ Nature</span><span class="legend-chip" data-cat-query="Coast" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ Coast · Island</span><span class="legend-chip" data-cat-query="Theme" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 Theme · City</span>'
-        : '<span class="legend-chip" data-cat-query="단풍" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 단풍</span><span class="legend-chip" data-cat-query="은행" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 은행</span><span class="legend-chip" data-cat-query="참나무" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 참나무</span><span>·</span><span class="legend-chip" data-cat-query="역사·문화" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 역사·문화</span><span class="legend-chip" data-cat-query="유네스코" onclick="filterByLegendCategory(this.dataset.catQuery)">👑 유네스코</span><span class="legend-chip" data-cat-query="자연·공원" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ 자연·공원</span><span class="legend-chip" data-cat-query="해양·섬" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ 해양·섬</span><span class="legend-chip" data-cat-query="도심·테마" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 도심·테마</span>';
-      headerHint.textContent = isEn
-        ? '🔍 Both Autumn Foliage (35) and 100 Must-Visit Spots (100) layers are ON. Click any category chip above or type in Spot Directory to filter.'
-        : '🔍 단풍 정보(35곳)와 한국관광 100선(100곳)이 함께 표시 중입니다. 상단 카테고리 칩을 클릭하거나 명소 바로가기에서 검색할 수 있습니다.';
-      footerSource.textContent = isEn
-        ? 'Source: Korea Forest Service (2026 Foliage Forecast) & MCST · KTO (2025-2026 100 Must-Visit Tourist Spots)'
-        : '데이터 출처: 산림청 2026 단풍 절정 예측 지도 & 문화체육관광부·한국관광공사 2025~2026 한국관광 100선';
-    } else if (isKto) {
-      headerTitle.textContent = isEn
-        ? '2025–2026 100 Must-Visit Tourist Spots of Korea'
-        : '2025-2026 한국관광 100선 (문화체육관광부·한국관광공사)';
-      legendBar.innerHTML = isEn
-        ? '<span class="legend-chip" data-cat-query="Heritage" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 Heritage</span><span class="legend-chip" data-cat-query="UNESCO" onclick="filterByLegendCategory(this.dataset.catQuery)">👑 UNESCO</span><span class="legend-chip" data-cat-query="Nature" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ Nature · Park</span><span class="legend-chip" data-cat-query="National Park" onclick="filterByLegendCategory(this.dataset.catQuery)">🌲 National Park</span><span class="legend-chip" data-cat-query="Coast" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ Coast · Island</span><span class="legend-chip" data-cat-query="Theme" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 Theme · City</span>'
-        : '<span class="legend-chip" data-cat-query="역사·문화" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 역사·문화</span><span class="legend-chip" data-cat-query="유네스코" onclick="filterByLegendCategory(this.dataset.catQuery)">👑 유네스코</span><span class="legend-chip" data-cat-query="자연·공원" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ 자연·공원</span><span class="legend-chip" data-cat-query="국립공원" onclick="filterByLegendCategory(this.dataset.catQuery)">🌲 국립공원</span><span class="legend-chip" data-cat-query="해양·섬" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ 해양·섬·해변</span><span class="legend-chip" data-cat-query="도심·테마" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 도심·테마</span>';
-      headerHint.textContent = isEn
-        ? '🔍 Scroll/pinch to zoom and drag to pan. Click a category chip above or type (e.g. Heritage, UNESCO, Nature) in Spot Directory.'
-        : '🔍 휠·핀치로 확대/축소하고 드래그하여 이동할 수 있습니다. 상단 카테고리 칩을 클릭하거나 명소 바로가기에서 검색해보세요.';
-      footerSource.textContent = isEn
-        ? 'Source: Ministry of Culture, Sports and Tourism (MCST) & Korea Tourism Organization (KTO) — 2025-2026 100 Must-Visit Tourist Spots'
-        : '데이터 출처: 문화체육관광부 · 한국관광공사 2025~2026 한국관광 100선 공식 가이드';
+    // 단일 레이어인 경우
+    if (activeList.length === 1) {
+      const singleLayer = activeList[0];
+      if (singleLayer === 'winterSpa') {
+        headerTitle.textContent = isEn ? '2026 Korea Nationwide Winter Outdoor Hot Springs (Top 8)' : '2026 전국 겨울 노천온천 (8선) 지도';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="Hot Spring" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ Hot Spring</span><span class="legend-chip" data-cat-query="Outdoor" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ Outdoor Bath</span><span class="legend-chip" data-cat-query="Carbonate" onclick="filterByLegendCategory(this.dataset.catQuery)">🫧 Carbonated</span><span class="legend-chip" data-cat-query="Mineral" onclick="filterByLegendCategory(this.dataset.catQuery)">🌊 Seawater Mineral</span>'
+          : '<span class="legend-chip" data-cat-query="온천" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ 온천·스파</span><span class="legend-chip" data-cat-query="노천" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ 설경·노천탕</span><span class="legend-chip" data-cat-query="탄산" onclick="filterByLegendCategory(this.dataset.catQuery)">🫧 탄산·유황</span><span class="legend-chip" data-cat-query="해수" onclick="filterByLegendCategory(this.dataset.catQuery)">🌊 해수 미네랄</span>';
+        headerHint.textContent = isEn
+          ? '🔍 Winter outdoor hot springs across Korea. Click a chip or pin to view details and map directions.'
+          : '🔍 겨울철 몸을 녹여주는 전국 대표 노천온천 8곳을 둘러보고 네이버·티맵 길찾기를 이용해보세요.';
+        footerSource.textContent = isEn
+          ? 'Source: Local Tourism Guides & Official Hot Springs Records'
+          : '데이터 출처: 전국 주요 지자체 관광안내 및 온천·스파 공식 안내';
+      } else if (singleLayer === 'sauna') {
+        headerTitle.textContent = isEn ? '2026 Korea Nationwide Saunas & Jjimjilbangs (Top 10)' : '전국 사우나·찜질방 (10선) 힐링 명소 지도';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="Sauna" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 Sauna</span><span class="legend-chip" data-cat-query="Charcoal" onclick="filterByLegendCategory(this.dataset.catQuery)">🔥 Charcoal Kiln</span><span class="legend-chip" data-cat-query="Cimer" onclick="filterByLegendCategory(this.dataset.catQuery)">✨ Luxury Spa</span><span class="legend-chip" data-cat-query="Aquafield" onclick="filterByLegendCategory(this.dataset.catQuery)">🌿 Aquafield</span>'
+          : '<span class="legend-chip" data-cat-query="사우나" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 사우나·찜질</span><span class="legend-chip" data-cat-query="참숯" onclick="filterByLegendCategory(this.dataset.catQuery)">🔥 참숯불가마</span><span class="legend-chip" data-cat-query="스파" onclick="filterByLegendCategory(this.dataset.catQuery)">✨ 프리미엄 스파</span><span class="legend-chip" data-cat-query="아쿠아필드" onclick="filterByLegendCategory(this.dataset.catQuery)">🌿 힐링 테마존</span>';
+        headerHint.textContent = isEn
+          ? '🔍 Discover Korea top 10 relaxing saunas and jjimjilbangs. Click a spot to check amenities and directions.'
+          : '🔍 힐링과 휴식을 위한 전국 대표 사우나·찜질방 10곳을 확인하고 4대 지도로 바로 찾아가보세요.';
+        footerSource.textContent = isEn
+          ? 'Source: Nationwide Curated Saunas & Jjimjilbangs Guide'
+          : '데이터 출처: 전국 인기 스파·사우나 테마 가이드';
+      } else if (singleLayer === 'userPlaces') {
+        headerTitle.textContent = isEn ? 'Traveler Recommended Hidden Gems & Spots' : '여행자 추천 나만의 힐링 명소 지도';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="Sauna" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 Sauna</span><span class="legend-chip" data-cat-query="Spa" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ Hot Spring</span><span class="legend-chip" data-cat-query="Cafe" onclick="filterByLegendCategory(this.dataset.catQuery)">☕ Cafe</span><span class="legend-chip" data-cat-query="User" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 Community</span>'
+          : '<span class="legend-chip" data-cat-query="사우나" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 사우나</span><span class="legend-chip" data-cat-query="온천" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ 온천</span><span class="legend-chip" data-cat-query="카페" onclick="filterByLegendCategory(this.dataset.catQuery)">☕ 카페·맛집</span><span class="legend-chip" data-cat-query="추천" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 사용자 추천</span>';
+        headerHint.textContent = isEn
+          ? '🔍 Spots recommended by travelers. Click the thumbs up (👍) button to upvote your favorites!'
+          : '🔍 사용자가 직접 추천한 명소들을 둘러보고 마음에 드는 곳에 추천(👍)을 남겨보세요.';
+        footerSource.textContent = isEn
+          ? 'Source: Community User Recommended Spots'
+          : '데이터 출처: 커뮤니티 사용자 직접 등록 추천 데이터';
+      } else if (singleLayer === 'kto100') {
+        headerTitle.textContent = isEn ? '2025–2026 100 Must-Visit Tourist Spots of Korea' : '2025-2026 한국관광 100선 (문화체육관광부·한국관광공사)';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="Heritage" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 Heritage</span><span class="legend-chip" data-cat-query="UNESCO" onclick="filterByLegendCategory(this.dataset.catQuery)">👑 UNESCO</span><span class="legend-chip" data-cat-query="Nature" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ Nature · Park</span><span class="legend-chip" data-cat-query="National Park" onclick="filterByLegendCategory(this.dataset.catQuery)">🌲 National Park</span><span class="legend-chip" data-cat-query="Coast" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ Coast · Island</span><span class="legend-chip" data-cat-query="Theme" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 Theme · City</span>'
+          : '<span class="legend-chip" data-cat-query="역사·문화" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 역사·문화</span><span class="legend-chip" data-cat-query="유네스코" onclick="filterByLegendCategory(this.dataset.catQuery)">👑 유네스코</span><span class="legend-chip" data-cat-query="자연·공원" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ 자연·공원</span><span class="legend-chip" data-cat-query="국립공원" onclick="filterByLegendCategory(this.dataset.catQuery)">🌲 국립공원</span><span class="legend-chip" data-cat-query="해양·섬" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ 해양·섬·해변</span><span class="legend-chip" data-cat-query="도심·테마" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 도심·테마</span>';
+        headerHint.textContent = isEn
+          ? '🔍 Scroll/pinch to zoom and drag to pan. Click a category chip above or type in Spot Directory.'
+          : '🔍 휠·핀치로 확대/축소하고 드래그하여 이동할 수 있습니다. 상단 카테고리 칩을 클릭하거나 명소 바로가기에서 검색해보세요.';
+        footerSource.textContent = isEn
+          ? 'Source: Ministry of Culture, Sports and Tourism (MCST) & Korea Tourism Organization (KTO)'
+          : '데이터 출처: 문화체육관광부 · 한국관광공사 2025~2026 한국관광 100선 공식 가이드';
+      } else {
+        headerTitle.textContent = isEn ? '2026 Korea Autumn Foliage Peak Forecast Map' : '2026 전국 단풍·은행·참나무 통합 예측 지도';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="Maple" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 Maple</span><span class="legend-chip" data-cat-query="Ginkgo" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 Ginkgo</span><span class="legend-chip" data-cat-query="Oak" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 Oak</span>'
+          : '<span class="legend-chip" data-cat-query="단풍" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 단풍</span><span class="legend-chip" data-cat-query="은행" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 은행</span><span class="legend-chip" data-cat-query="참나무" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 참나무</span>';
+        headerHint.textContent = isEn
+          ? '🔍 Scroll/pinch to zoom and drag to pan. Click a mountain on the left list to jump directly.'
+          : '🔍 휠·핀치로 확대/축소하고 드래그하여 이동할 수 있습니다. 좌측 목록에서 산을 클릭하면 바로 이동합니다.';
+        footerSource.textContent = isEn
+          ? 'Source: Korea Forest Service (NIFoS) & Korea National Arboretum — 2026 Autumn Foliage Peak Forecast'
+          : '데이터 출처: 산림청 국립산림과학원·국립수목원 2026 단풍 절정 예측 지도';
+      }
+    } else if (activeList.length === 0) {
+      headerTitle.textContent = isEn ? 'Nationwide Seasonal Travel Map' : '전국 테마 여행 통합 지도';
+      legendBar.innerHTML = isEn ? '<span style="color:#888;">Turn ON a layer above</span>' : '<span style="color:#888;">상단에서 레이어를 켜주세요 (ON)</span>';
+      headerHint.textContent = isEn ? '💡 Please turn ON a layer at the top to explore spots.' : '💡 상단에서 확인하고 싶은 카테고리 레이어를 켜주세요 (ON).';
+      footerSource.textContent = isEn ? 'Source: Public open data & traveler curation' : '데이터 출처: 공공데이터 및 여행자 추천 큐레이션';
     } else {
+      // 복수 레이어 활성화된 경우: 동적 통합 타이틀 & 범례 생성
+      const titleNamesKo = [];
+      const titleNamesEn = [];
+      if (hasFoliage) { titleNamesKo.push('단풍(35선)'); titleNamesEn.push('Foliage (35)'); }
+      if (hasKto) { titleNamesKo.push('한국관광 100선'); titleNamesEn.push('100 Must-Visit'); }
+      if (hasSpa) { titleNamesKo.push('노천온천(8선)'); titleNamesEn.push('Winter Spas (8)'); }
+      if (hasSauna) { titleNamesKo.push('사우나·찜질방(10선)'); titleNamesEn.push('Saunas (10)'); }
+      if (hasUser) { titleNamesKo.push('추천 장소'); titleNamesEn.push('User Spots'); }
+
       headerTitle.textContent = isEn
-        ? '2026 Korea Autumn Foliage Peak Forecast Map'
-        : '2026 전국 단풍·은행·참나무 통합 예측 지도';
-      legendBar.innerHTML = isEn
-        ? '<span class="legend-chip" data-cat-query="Maple" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 Maple</span><span class="legend-chip" data-cat-query="Ginkgo" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 Ginkgo</span><span class="legend-chip" data-cat-query="Oak" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 Oak</span>'
-        : '<span class="legend-chip" data-cat-query="단풍" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 단풍</span><span class="legend-chip" data-cat-query="은행" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 은행</span><span class="legend-chip" data-cat-query="참나무" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 참나무</span>';
+        ? `2026 ${titleNamesEn.join(' × ')} Combined Map`
+        : `2026 ${titleNamesKo.join(' × ')} 통합 오버레이 지도`;
+
+      const legendChips = [];
+      if (hasFoliage) {
+        if (isEn) {
+          legendChips.push('<span class="legend-chip" data-cat-query="Maple" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 Maple</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="Ginkgo" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 Ginkgo</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="Oak" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 Oak</span>');
+        } else {
+          legendChips.push('<span class="legend-chip" data-cat-query="단풍" onclick="filterByLegendCategory(this.dataset.catQuery)">🍁 단풍</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="은행" onclick="filterByLegendCategory(this.dataset.catQuery)">🍂 은행</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="참나무" onclick="filterByLegendCategory(this.dataset.catQuery)">🌰 참나무</span>');
+        }
+      }
+      if (hasKto) {
+        if (isEn) {
+          legendChips.push('<span class="legend-chip" data-cat-query="Heritage" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 Heritage</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="Nature" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ Nature</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="Coast" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ Coast</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="Theme" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 Theme</span>');
+        } else {
+          legendChips.push('<span class="legend-chip" data-cat-query="역사·문화" onclick="filterByLegendCategory(this.dataset.catQuery)">🏯 역사·문화</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="자연·공원" onclick="filterByLegendCategory(this.dataset.catQuery)">⛰️ 자연·공원</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="해양·섬" onclick="filterByLegendCategory(this.dataset.catQuery)">🏖️ 해양·섬</span>');
+          legendChips.push('<span class="legend-chip" data-cat-query="도심·테마" onclick="filterByLegendCategory(this.dataset.catQuery)">🎡 도심·테마</span>');
+        }
+      }
+      if (hasSpa) {
+        legendChips.push(isEn
+          ? '<span class="legend-chip" data-cat-query="Hot Spring" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ Hot Spring</span>'
+          : '<span class="legend-chip" data-cat-query="온천" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ 노천온천</span>');
+      }
+      if (hasSauna) {
+        legendChips.push(isEn
+          ? '<span class="legend-chip" data-cat-query="Sauna" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 Sauna</span>'
+          : '<span class="legend-chip" data-cat-query="사우나" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 사우나</span>');
+      }
+      if (hasUser) {
+        legendChips.push(isEn
+          ? '<span class="legend-chip" data-cat-query="User" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 User Spots</span>'
+          : '<span class="legend-chip" data-cat-query="추천" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 추천장소</span>');
+      }
+      legendBar.innerHTML = legendChips.join('');
+
       headerHint.textContent = isEn
-        ? '🔍 Scroll/pinch to zoom and drag to pan. Click a mountain on the left list to jump directly.'
-        : '🔍 휠·핀치로 확대/축소하고 드래그하여 이동할 수 있습니다. 좌측 목록에서 산을 클릭하면 바로 이동합니다.';
-      footerSource.textContent = isEn
-        ? 'Source: Korea Forest Service (NIFoS) & Korea National Arboretum — 2026 Autumn Foliage Peak Forecast'
-        : '데이터 출처: 산림청 국립산림과학원·국립수목원 2026 단풍 절정 예측 지도';
+        ? `🔍 Active layers: ${titleNamesEn.join(', ')}. Click a category chip above or search spots below.`
+        : `🔍 ${titleNamesKo.join(', ')} 레이어가 함께 표시 중입니다. 상단 칩을 클릭하거나 명소 바로가기에서 검색해보세요.`;
+
+      const sources = [];
+      if (hasFoliage) sources.push(isEn ? 'Forest Service (Foliage Forecast)' : '산림청 단풍 예측');
+      if (hasKto) sources.push(isEn ? 'MCST·KTO (100 Must-Visit)' : '한국관광공사 100선');
+      if (hasSpa || hasSauna) sources.push(isEn ? 'Local Guides & Official Spa Records' : '지자체 관광가이드 및 온천·스파 공식안내');
+      if (hasUser) sources.push(isEn ? 'User Recommendations' : '커뮤니티 추천');
+
+      footerSource.textContent = isEn ? `Source: ${sources.join(' & ')}` : `데이터 출처: ${sources.join(' & ')}`;
     }
 
     // 사이드바 섹션 제목 & 검색 플레이스홀더
@@ -5842,18 +6263,32 @@
     document.getElementById('mapGuideBadgeText').textContent = isEn ? '🔍 Wheel/Pinch Zoom · Drag to Pan' : '🔍 휠/핀치 확대 · 드래그 이동';
 
     const searchInput = document.getElementById('spotSearchInput');
-    if (isBoth) {
-      searchInput.placeholder = isEn
-        ? 'Search spot, region, date, category (Heritage, UNESCO, Nature, Maple...)'
-        : '산·관광지명(한/영), 지역, 날짜, 카테고리(단풍, 역사, 유네스코, 자연 등) 검색...';
-    } else if (isKto) {
-      searchInput.placeholder = isEn
-        ? 'Search spot, city, category (Heritage, UNESCO, Nature, Coast, Theme...)'
-        : '관광지명(한/영), 지역, 카테고리(역사, 유네스코, 자연, 국립공원, 해양, 테마) 검색...';
-    } else {
-      searchInput.placeholder = isEn
-        ? 'Search mountain, region, tree (Maple, Ginkgo, Oak), date (Oct, 10.25)...'
-        : '산 이름, 지역, 수종(단풍, 은행, 참나무), 날짜(예: 10월, 10.25) 검색...';
+    if (searchInput) {
+      if (activeList.length > 1) {
+        searchInput.placeholder = isEn
+          ? 'Search spot, region, category, keyword...'
+          : '명소명, 지역, 카테고리(단풍, 온천, 사우나, 관광지 등), 키워드 검색...';
+      } else if (activeList.length === 1 && activeList[0] === 'kto100') {
+        searchInput.placeholder = isEn
+          ? 'Search spot, city, category (Heritage, UNESCO, Nature, Coast, Theme...)'
+          : '관광지명(한/영), 지역, 카테고리(역사, 유네스코, 자연, 국립공원, 해양, 테마) 검색...';
+      } else if (activeList.length === 1 && activeList[0] === 'winterSpa') {
+        searchInput.placeholder = isEn
+          ? 'Search hot spring, outdoor bath, spa, region...'
+          : '온천명, 노천탕, 스파, 지역(속초, 아산, 충주 등) 검색...';
+      } else if (activeList.length === 1 && activeList[0] === 'sauna') {
+        searchInput.placeholder = isEn
+          ? 'Search sauna, jjimjilbang, charcoal kiln, region...'
+          : '사우나, 찜질방, 참숯가마, 지역(용산, 센텀, 하남 등) 검색...';
+      } else if (activeList.length === 1 && activeList[0] === 'userPlaces') {
+        searchInput.placeholder = isEn
+          ? 'Search user recommended spots, categories...'
+          : '사용자 추천 명소명, 카테고리, 꿀팁 검색...';
+      } else {
+        searchInput.placeholder = isEn
+          ? 'Search mountain, region, tree (Maple, Ginkgo, Oak), date (Oct, 10.25)...'
+          : '산 이름, 지역, 수종(단풍, 은행, 참나무), 날짜(예: 10월, 10.25) 검색...';
+      }
     }
 
     // 지역별 필터 라벨 & 활성 레이어 기준 개수 집계
@@ -5987,6 +6422,7 @@
       let regionTagText = '';
 
       const isPinSpa = pinLayer === 'winterSpa';
+      const isPinSauna = pinLayer === 'sauna';
       const isPinUser = pinLayer === 'userPlaces';
 
       if (isPinSpa) {
@@ -6000,19 +6436,34 @@
         rightBadgeText = spa ? `♨️ #${spa.num}` : '♨️ 온천';
         dateScore = spa ? spa.num : 50;
         searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} 온천 노천탕 스파 spa hot spring 노천온천`.toLowerCase();
+      } else if (isPinSauna) {
+        const sauna = SAUNA_MAP.get(pinId);
+        const nameKo = pin.getAttribute('data-name-ko') || '';
+        const nameEn = pin.getAttribute('data-name-en') || '';
+        const subKo = pin.getAttribute('data-sub-ko') || '';
+        const subEn = pin.getAttribute('data-sub-en') || '';
+        displayTitle = isEn ? nameEn : nameKo;
+        regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
+        rightBadgeText = sauna ? `🧖 #${sauna.num}` : '🧖 사우나';
+        dateScore = sauna ? sauna.num : 50;
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} 사우나 찜질방 불가마 스파 sauna jjimjilbang spa 참숯가마`.toLowerCase();
       } else if (isPinUser) {
         const nameKo = pin.getAttribute('data-name-ko') || '';
+        const nameEn = pin.getAttribute('data-name-en') || nameKo;
         const catKo = pin.getAttribute('data-cat-ko') || '';
+        const catEn = pin.getAttribute('data-cat-en') || catKo;
         const addr = pin.getAttribute('data-address') || '';
+        const descKo = pin.getAttribute('data-desc-ko') || '';
+        const descEn = pin.getAttribute('data-desc-en') || descKo;
         const reason = pin.getAttribute('data-reason') || '';
         const upvotes = Number(pin.getAttribute('data-upvotes') || 0);
         const isHidden = pin.getAttribute('data-is-hidden') === 'true';
 
-        displayTitle = (isHidden ? '[숨김] ' : '') + nameKo;
-        regionTagText = REGION_SHORT_I18N.ko[region] || region;
-        rightBadgeText = upvotes > 0 ? `👍 ${upvotes}` : '추천';
+        displayTitle = (isHidden ? (isEn ? '[Hidden] ' : '[숨김] ') : '') + (isEn ? nameEn : nameKo);
+        regionTagText = isEn ? REGION_SHORT_I18N.en[region] : (REGION_SHORT_I18N.ko[region] || region);
+        rightBadgeText = upvotes > 0 ? `👍 ${upvotes}` : (isEn ? 'Vote' : '추천');
         dateScore = 9000 - upvotes;
-        searchCorpus = `${nameKo} ${catKo} ${addr} ${reason} 사용자 추천 유저 사우나 찜질방`.toLowerCase();
+        searchCorpus = `${nameKo} ${nameEn} ${catKo} ${catEn} ${descKo} ${descEn} ${addr} ${reason} 사용자 추천 유저 사우나 찜질방 user recommended`.toLowerCase();
       } else if (isPinKto) {
         const num = Number(pin.getAttribute('data-kto-num'));
         const nameKo = pin.getAttribute('data-name-ko') || '';
@@ -6302,9 +6753,15 @@
           </select>
         </div>
 
-        <!-- 3. 추천 이유 입력 -->
+        <!-- 3. 간단한 설명 (한줄 요약) -->
         <div class="form-group">
-          <label for="modalRecommendReason">추천 이유 (방문 꿀팁 등)</label>
+          <label for="modalBriefDesc" id="modalBriefDescLabel">간단한 설명 (한줄 요약)</label>
+          <input type="text" id="modalBriefDesc" placeholder="장소의 핵심 특징을 한 줄로 소개해주세요 (예: 설악산 설경을 품은 노천탕)">
+        </div>
+
+        <!-- 4. 추천 이유 입력 -->
+        <div class="form-group">
+          <label for="modalRecommendReason" id="modalRecommendReasonLabel">추천 이유 (방문 꿀팁 등)</label>
           <textarea id="modalRecommendReason" rows="3" placeholder="이 장소를 추천하는 이유를 작성해주세요 (예: 겨울철 노천탕에서 바라보는 풍경이 일품이고 물이 정말 매끄러워요!)"></textarea>
         </div>
       </div>
