@@ -122,18 +122,32 @@
       opacity: 1;
       box-shadow: 0 2px 6px rgba(26, 107, 156, 0.28);
     }
+    .layer-tab.active[data-layer-btn="winterSpa"] {
+      background: #d35400;
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(211, 84, 0, 0.28);
+    }
+    .layer-tab.active[data-layer-btn="userPlaces"] {
+      background: #1e8449;
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(30, 132, 73, 0.28);
+    }
     .layer-state-pill {
       font-size: 9.5px;
       font-weight: 900;
-      padding: 1px 5px;
+      padding: 1.5px 6px;
       border-radius: 999px;
-      background: rgba(0, 0, 0, 0.12);
-      color: #555;
+      background: #d5cbc0;
+      color: #555555;
       letter-spacing: 0.3px;
+      transition: all 0.15s ease;
     }
     .layer-tab.active .layer-state-pill {
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.3);
       color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     .lang-switch {
       display: inline-flex;
@@ -1496,9 +1510,9 @@
       </button>
     </div>
 
-    <!-- 장소 추천하기 모달 열기 버튼 -->
-    <button type="button" class="header-recommend-btn" id="openRecommendModalBtn" onclick="openRecommendModal()">
-      <span>➕</span> <span>장소 추천하기</span>
+    <!-- 장소 추천 모달 열기 버튼 -->
+    <button type="button" class="header-recommend-btn" id="openRecommendModalBtn" onclick="openRecommendModal()" title="새로운 노천온천·사우나 등 명소 추천">
+      <span>➕</span> <span>추천</span>
     </button>
 
     <!-- 한/영 다국어 전환 스위치 -->
@@ -1635,6 +1649,9 @@
       <svg class="korea-svg" viewBox="0 0 820 980" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
         <!-- 1. 경기 / 서울 -->
         <polygon class="province p-gyeonggi" points="280,150 375,145 390,280 330,390 250,395 205,320 225,240" />
+        <!-- 1-1. 강화도 & 석모도 (인천/경기) -->
+        <polygon class="province p-gyeonggi" points="188,198 212,216 210,244 196,256 178,246 174,226 182,206" />
+        <ellipse class="province p-gyeonggi" cx="166" cy="226" rx="6" ry="11" />
         <!-- 2. 강원도 -->
         <polygon class="province p-gangwon" points="375,145 530,115 610,230 615,340 510,330 390,280" />
         <!-- 3. 충청북도 -->
@@ -1654,6 +1671,7 @@
 
         <!-- 배경 라벨 -->
         <text x="250" y="270" class="region-label" data-label-reg="gyeonggi">경기·서울</text>
+        <text x="175" y="275" class="region-label" data-label-reg="ganghwa" style="font-size: 11px;">강화도</text>
         <text x="490" y="210" class="region-label" data-label-reg="gangwon">강원</text>
         <text x="240" y="465" class="region-label" data-label-reg="chungnam">충남</text>
         <text x="390" y="365" class="region-label" data-label-reg="chungbuk">충북</text>
@@ -2375,7 +2393,7 @@
       </div>
 
       <!-- 2. 해운대 클럽디오아시스 (부산 해운대) -->
-      <div class="pin winter-spa-pin" id="pin-spa-02" data-layer="winterSpa" data-region="gyeongnam" data-name-ko="해운대 클럽디오아시스" data-name-en="Club D Oasis Haeundae" data-sub-ko="부산 해운대구 달맞이길" data-sub-en="Haeundae, Busan" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 672px; left: 665px;">
+      <div class="pin winter-spa-pin" id="pin-spa-02" data-layer="winterSpa" data-region="gyeongnam" data-name-ko="해운대 클럽디오아시스" data-name-en="Club D Oasis Haeundae" data-sub-ko="부산 해운대구 달맞이길" data-sub-en="Haeundae, Busan" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 652px; left: 578px;">
         <span class="pin-title">클럽디오아시스</span>
         <div class="pin-data"><span class="spa-pin-badge">♨️ 해운대 바다뷰 도심스파</span></div>
         <div class="pin-dot"></div>
@@ -2389,7 +2407,7 @@
       </div>
 
       <!-- 4. 울진 덕구온천 리조트 스파월드 (경북 울진) -->
-      <div class="pin winter-spa-pin" id="pin-spa-04" data-layer="winterSpa" data-region="gyeongbuk" data-name-ko="덕구온천 스파월드" data-name-en="Deokgu Hot Springs Resort" data-sub-ko="경북 울진군 북면" data-sub-en="Uljin, Gyeongbuk" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 310px; left: 658px;">
+      <div class="pin winter-spa-pin" id="pin-spa-04" data-layer="winterSpa" data-region="gyeongbuk" data-name-ko="덕구온천 스파월드" data-name-en="Deokgu Hot Springs Resort" data-sub-ko="경북 울진군 북면" data-sub-en="Uljin, Gyeongbuk" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 335px; left: 598px;">
         <span class="pin-title">덕구온천 스파월드</span>
         <div class="pin-data"><span class="spa-pin-badge">♨️ 국내유일 자연용출 온천</span></div>
         <div class="pin-dot"></div>
@@ -2473,7 +2491,7 @@
         <!-- 사용자 추천 핀 전용: 👍 추천 버튼 & 관리자(Admin) 제어 -->
         <div class="user-place-actions" id="userPlaceActions" style="display: none;">
           <button type="button" class="upvote-btn" id="upvoteBtn" onclick="toggleUpvoteForSelected()">
-            <span>👍</span> <span id="upvoteLabel">추천하기</span> <span class="upvote-count" id="upvoteCount">0</span>
+            <span>👍</span> <span id="upvoteLabel">추천</span> <span class="upvote-count" id="upvoteCount">0</span>
           </button>
           <div class="admin-pin-actions" id="adminPinActions" style="display: none;">
             <button type="button" class="admin-btn btn-hide" id="adminHideToggleBtn" onclick="toggleHideSelectedUserPin()">👁️ 숨김 토글</button>
@@ -5255,7 +5273,7 @@
         const upvoteLabel = document.getElementById('upvoteLabel');
         if (upvoteBtn) upvoteBtn.classList.toggle('voted', hasVoted);
         if (upvoteCount) upvoteCount.textContent = upvotes;
-        if (upvoteLabel) upvoteLabel.textContent = hasVoted ? '추천 완료' : '추천하기';
+        if (upvoteLabel) upvoteLabel.textContent = hasVoted ? '추천 완료' : '추천';
 
         if (adminPinActions) {
           adminPinActions.style.display = appState.isAdmin ? 'inline-flex' : 'none';
@@ -5489,6 +5507,7 @@
   };
 
   function toggleSort(type) {
+    if (type === 'date' && !appState.layers.foliage && !appState.layers.kto100) return;
     if (sortState.type === type) {
       if (type === 'date') {
         sortState.dateOrder = sortState.dateOrder === 'asc' ? 'desc' : 'asc';
@@ -5513,15 +5532,23 @@
     if (!dateBtn || !regionBtn) return;
 
     const isEn = appState.lang === 'en';
-    const hasFoliage = appState.layers.foliage;
-    const hasKto = appState.layers.kto100;
+    const hasFoliage = Boolean(appState.layers.foliage);
+    const hasKto = Boolean(appState.layers.kto100);
 
-    if (hasFoliage && hasKto) {
-      dateLabel.textContent = isEn ? 'Date·No.' : '시기·번호';
-    } else if (hasKto) {
-      dateLabel.textContent = isEn ? 'No.' : '번호';
+    // 단풍정보 꺼지면 '시기' 버튼 숨김 처리 (단, 관광100선이 켜져있으면 '번호'로 표출, 둘 다 꺼지면 버튼 자체 숨김)
+    if (!hasFoliage) {
+      if (hasKto) {
+        dateBtn.style.display = 'inline-flex';
+        dateLabel.textContent = isEn ? 'No.' : '번호';
+      } else {
+        dateBtn.style.display = 'none';
+        if (sortState.type === 'date') {
+          sortState.type = 'region';
+        }
+      }
     } else {
-      dateLabel.textContent = isEn ? 'Date' : '시기';
+      dateBtn.style.display = 'inline-flex';
+      dateLabel.textContent = isEn ? (hasKto ? 'Date·No.' : 'Date') : (hasKto ? '시기·번호' : '시기');
     }
     regionLabel.textContent = isEn ? 'Region' : '지역';
 
@@ -5718,7 +5745,8 @@
           gyeongnam: 'Gyeongnam',
           jeonnam: 'Jeonnam',
           jeju: 'Jeju',
-          ulleung: 'Ulleung·Dokdo'
+          ulleung: 'Ulleung·Dokdo',
+          ganghwa: 'Ganghwado'
         };
         textEl.textContent = enMap[reg] || reg;
       } else {
@@ -5732,7 +5760,8 @@
           gyeongnam: '경남',
           jeonnam: '전남',
           jeju: '제주',
-          ulleung: '울릉·독도'
+          ulleung: '울릉·독도',
+          ganghwa: '강화도'
         };
         textEl.textContent = koMap[reg] || reg;
       }
@@ -5750,6 +5779,15 @@
     // 탭 버튼 텍스트
     document.getElementById('tabFoliageLabel').textContent = isEn ? 'Autumn Foliage (35)' : '단풍 정보 (35선)';
     document.getElementById('tabKto100Label').textContent = isEn ? '100 Must-Visit Spots (25-26)' : '한국관광 100선 (25-26)';
+    const winterSpaLabel = document.getElementById('tabWinterSpaLabel');
+    if (winterSpaLabel) winterSpaLabel.textContent = isEn ? 'Winter Spas (8)' : '겨울 노천온천 (8선)';
+    const userPlacesLabel = document.getElementById('tabUserPlacesLabel');
+    if (userPlacesLabel) userPlacesLabel.textContent = isEn ? 'User Spots' : '추천 장소';
+    const recommendBtn = document.getElementById('openRecommendModalBtn');
+    if (recommendBtn) {
+      recommendBtn.innerHTML = `<span>➕</span> <span>${isEn ? 'Recommend' : '추천'}</span>`;
+      recommendBtn.title = isEn ? 'Recommend a new hot spring, sauna or spot' : '새로운 노천온천·사우나 등 명소 추천';
+    }
 
     // 헤더 타이틀 & 범례 & 힌트 & 푸터
     const headerTitle = document.getElementById('headerTitle');
@@ -6212,7 +6250,7 @@
   <div class="recommend-modal-overlay" id="recommendModal" onclick="onModalOverlayClick(event)">
     <div class="recommend-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-header">
-        <h3 id="modalTitle"><span>📍</span> <span>나만의 장소 추천하기</span></h3>
+        <h3 id="modalTitle"><span>📍</span> <span>나만의 장소 추천</span></h3>
         <button type="button" class="modal-close-btn" onclick="closeRecommendModal()" aria-label="닫기">✕</button>
       </div>
       <div class="modal-body">
