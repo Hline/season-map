@@ -174,10 +174,10 @@
       box-shadow: 0 2px 6px rgba(211, 84, 0, 0.28);
     }
     .layer-tab.active[data-layer-btn="sauna"] {
-      background: #8e44ad;
+      background: #27ae60;
       color: #ffffff;
       opacity: 1;
-      box-shadow: 0 2px 6px rgba(142, 68, 173, 0.28);
+      box-shadow: 0 2px 6px rgba(39, 174, 96, 0.28);
     }
     .layer-tab.active[data-layer-btn="userPlaces"] {
       background: #1e8449;
@@ -1049,10 +1049,10 @@
       background: #fbf6f0;
     }
     body.mode-sauna {
-      --theme-primary: #8e44ad;
-      --theme-bg-light: #f5eef8;
-      --theme-border: #d7bde2;
-      background: #faf6fc;
+      --theme-primary: #27ae60;
+      --theme-bg-light: #eafaf1;
+      --theme-border: #a9dfbf;
+      background: #f4faf6;
     }
     body.mode-userPlaces {
       --theme-primary: #27ae60;
@@ -1063,34 +1063,37 @@
 
     /* Sauna & Jjimjilbang Pin Styling */
     .sauna-pin .pin-title {
-      background: #8e44ad;
+      background: #27ae60;
       color: #ffffff;
     }
     .sauna-pin .pin-data {
-      border-color: #d7bde2;
+      border-color: #a9dfbf;
     }
     .sauna-pin .pin-dot {
-      background: #9b59b6;
+      background: #2ecc71;
     }
     .sauna-pin .spa-pin-badge {
       font-size: 10px;
       font-weight: 800;
-      color: #8e44ad;
+      color: #27ae60;
     }
     .sauna-pin:hover .pin-title {
-      background: #9b59b6;
+      background: #2ecc71;
     }
     .sauna-pin:hover .pin-data {
-      border-color: #9b59b6;
+      border-color: #2ecc71;
     }
     .sauna-pin.active .pin-title {
-      background: #8e44ad !important;
+      background: #27ae60 !important;
     }
     .sauna-pin.active .pin-data {
-      border-color: #8e44ad !important;
+      border-color: #27ae60 !important;
     }
     .sauna-pin.active .pin-dot {
-      background: #8e44ad;
+      background: #27ae60;
+    }
+    .pin.hidden-search {
+      display: none !important;
     }
 
     /* Winter Spa Pin Styling */
@@ -5485,7 +5488,7 @@
       if (!sauna) return;
 
       badgesEl.innerHTML = `
-        <span class="detail-badge-num" style="background: #8e44ad;">${isEn ? 'Sauna & Spa #' : '전국 사우나·찜질방 #'}${sauna.num}</span>
+        <span class="detail-badge-num" style="background: #27ae60;">${isEn ? 'Sauna & Spa #' : '전국 사우나·찜질방 #'}${sauna.num}</span>
         <span class="detail-badge-cat">🧖 ${isEn ? sauna.catEn : sauna.catKo}</span>
         <span class="detail-badge-loc">📍 ${isEn ? sauna.subEn : sauna.subKo}</span>
       `;
@@ -6431,22 +6434,26 @@
         const nameEn = pin.getAttribute('data-name-en') || '';
         const subKo = pin.getAttribute('data-sub-ko') || '';
         const subEn = pin.getAttribute('data-sub-en') || '';
+        const feature = spa ? spa.feature : '';
+        const descKo = spa ? spa.descKo : '';
         displayTitle = isEn ? nameEn : nameKo;
         regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
         rightBadgeText = spa ? `♨️ #${spa.num}` : '♨️ 온천';
         dateScore = spa ? spa.num : 50;
-        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} 온천 노천탕 스파 spa hot spring 노천온천`.toLowerCase();
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${descKo} 온천 스파 온천스파 온천·스파 노천 노천탕 설경 설경·노천탕 탄산 유황 해수 미네랄 노천온천 hot spring outdoor bath spa`.toLowerCase();
       } else if (isPinSauna) {
         const sauna = SAUNA_MAP.get(pinId);
         const nameKo = pin.getAttribute('data-name-ko') || '';
         const nameEn = pin.getAttribute('data-name-en') || '';
         const subKo = pin.getAttribute('data-sub-ko') || '';
         const subEn = pin.getAttribute('data-sub-en') || '';
+        const feature = sauna ? sauna.feature : '';
+        const descKo = sauna ? sauna.descKo : '';
         displayTitle = isEn ? nameEn : nameKo;
         regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
         rightBadgeText = sauna ? `🧖 #${sauna.num}` : '🧖 사우나';
         dateScore = sauna ? sauna.num : 50;
-        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} 사우나 찜질방 불가마 스파 sauna jjimjilbang spa 참숯가마`.toLowerCase();
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${descKo} 사우나 찜질 찜질방 사우나·찜질 사우나·찜질방 불가마 참숯 참숯가마 참숯불가마 복합스파 테마스파 힐링 루프탑 오션뷰 sauna jjimjilbang spa charcoal kiln`.toLowerCase();
       } else if (isPinUser) {
         const nameKo = pin.getAttribute('data-name-ko') || '';
         const nameEn = pin.getAttribute('data-name-en') || nameKo;
@@ -6463,7 +6470,7 @@
         regionTagText = isEn ? REGION_SHORT_I18N.en[region] : (REGION_SHORT_I18N.ko[region] || region);
         rightBadgeText = upvotes > 0 ? `👍 ${upvotes}` : (isEn ? 'Vote' : '추천');
         dateScore = 9000 - upvotes;
-        searchCorpus = `${nameKo} ${nameEn} ${catKo} ${catEn} ${descKo} ${descEn} ${addr} ${reason} 사용자 추천 유저 사우나 찜질방 user recommended`.toLowerCase();
+        searchCorpus = `${nameKo} ${nameEn} ${catKo} ${catEn} ${descKo} ${descEn} ${addr} ${reason} 사용자추천 사용자 추천 유저추천 추천장소 사우나 찜질 찜질방 온천 스파 카페 맛집 힐링 산책 user recommended`.toLowerCase();
       } else if (isPinKto) {
         const num = Number(pin.getAttribute('data-kto-num'));
         const nameKo = pin.getAttribute('data-name-ko') || '';
@@ -6562,19 +6569,26 @@
   function matchesSpot(item, q) {
     if (!q) return true;
 
-    const corpus = item.getAttribute('data-search-corpus') || '';
+    const corpus = (item.getAttribute('data-search-corpus') || '').toLowerCase();
     const title = (item.getAttribute('data-title') || '').toLowerCase();
 
-    // 1. 통합 코퍼스(한글명, 영문명, 지역명, 카테고리, 번호 등) 직접 포함 여부
+    // 1. 직접 포함 여부 (이모지 포함 검색어 및 원문 쿼리)
     if (title.includes(q) || corpus.includes(q)) return true;
 
-    // 2. 다중 단어/카테고리 조합 검색 (예: "Heritage Unesco", "Nature Park", "Heritage & Culture", "역사 유네스코" 등 어순 무관 매칭)
-    const tokens = q
-      .replace(/[🏯👑⛰️🌲🏖️🎡🍁🍂🌰·&/,\-()]/g, ' ')
-      .split(/\s+/)
-      .filter(tok => tok && tok !== 'and');
-    if (tokens.length > 0 && tokens.every(tok => title.includes(tok) || corpus.includes(tok))) {
-      return true;
+    // 2. 이모지 및 특수기호(\uFE0F, ·, /, -, ~, +, # 등) 안전하게 정제 후 매칭
+    const cleanQ = q
+      .replace(/[\p{Extended_Pictographic}\uFE0F\u200D·&/,\-()~+!@#$%^*[\]{}|:;<>?♨️♨]/gu, ' ')
+      .trim()
+      .toLowerCase();
+
+    if (cleanQ) {
+      if (title.includes(cleanQ) || corpus.includes(cleanQ)) return true;
+
+      // 3. 다중 키워드 분할(어순 무관) 검증 (예: "온천 스파", "설경 노천탕", "사우나 찜질", "참숯 불가마")
+      const tokens = cleanQ.split(/\s+/).filter(tok => tok && tok !== 'and');
+      if (tokens.length > 0 && tokens.every(tok => title.includes(tok) || corpus.includes(tok))) {
+        return true;
+      }
     }
 
     // 한국관광 100선 아이템은 코퍼스 및 토큰 매칭으로 충분
@@ -6614,12 +6628,35 @@
 
   function onSearchSpots(query) {
     const q = query.trim().toLowerCase();
+    const isFiltered = q.length > 0;
     let count = 0;
+
     document.querySelectorAll('.spot-item').forEach(item => {
       const isMatch = matchesSpot(item, q);
       item.style.display = isMatch ? 'flex' : 'none';
       if (isMatch) count++;
+
+      // 검색어와 일치하는 명소만 지도 핀에도 동기화 표출
+      const pinId = item.getAttribute('data-pin-id');
+      const pin = document.getElementById(pinId);
+      if (pin) {
+        pin.classList.toggle('hidden-search', isFiltered && !isMatch);
+      }
     });
+
+    if (isFiltered) {
+      document.querySelectorAll('.pin:not(.hidden-layer)').forEach(pin => {
+        const item = document.querySelector(`.spot-item[data-pin-id="${pin.id}"]`);
+        if (!item || item.style.display === 'none') {
+          pin.classList.add('hidden-search');
+        } else {
+          pin.classList.remove('hidden-search');
+        }
+      });
+    } else {
+      document.querySelectorAll('.pin.hidden-search').forEach(pin => pin.classList.remove('hidden-search'));
+    }
+
     spotCountBadge.textContent = formatSpotCount(count);
     syncLegendActiveChip();
 
