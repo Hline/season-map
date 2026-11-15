@@ -216,6 +216,12 @@
       opacity: 1;
       box-shadow: 0 2px 6px rgba(39, 174, 96, 0.28);
     }
+    .layer-tab.active[data-layer-btn="skiSled"] {
+      background: #0891b2;
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(8, 145, 178, 0.28);
+    }
     .layer-tab.active[data-layer-btn="userPlaces"] {
       background: #1e8449;
       color: #ffffff;
@@ -1091,6 +1097,12 @@
       --theme-border: #a9dfbf;
       background: #f4faf6;
     }
+    body.mode-skiSled {
+      --theme-primary: #0891b2;
+      --theme-bg-light: #ecfeff;
+      --theme-border: #a5f3fc;
+      background: #f0f9ff;
+    }
     body.mode-userPlaces {
       --theme-primary: #27ae60;
       --theme-bg-light: #eafaf1;
@@ -1128,6 +1140,38 @@
     }
     .sauna-pin.active .pin-dot {
       background: #27ae60;
+    }
+
+    /* Ski & Snow Sled Pin Styling */
+    .ski-pin .pin-title {
+      background: #0891b2;
+      color: #ffffff;
+    }
+    .ski-pin .pin-data {
+      border-color: #a5f3fc;
+    }
+    .ski-pin .pin-dot {
+      background: #06b6d4;
+    }
+    .ski-pin .spa-pin-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0e7490;
+    }
+    .ski-pin:hover .pin-title {
+      background: #06b6d4;
+    }
+    .ski-pin:hover .pin-data {
+      border-color: #06b6d4;
+    }
+    .ski-pin.active .pin-title {
+      background: #0891b2 !important;
+    }
+    .ski-pin.active .pin-data {
+      border-color: #0891b2 !important;
+    }
+    .ski-pin.active .pin-dot {
+      background: #0891b2;
     }
     .pin.hidden-search {
       display: none !important;
@@ -1636,6 +1680,9 @@
       </button>
       <button type="button" class="layer-tab active" id="tabSaunaBtn" data-layer-btn="sauna" aria-pressed="true" onclick="toggleLayer('sauna')">
         <span>🧖</span> <span id="tabSaunaLabel">사우나·찜질방 (10선)</span> <span class="layer-state-pill" id="saunaStatePill">ON</span>
+      </button>
+      <button type="button" class="layer-tab active" id="tabSkiSledBtn" data-layer-btn="skiSled" aria-pressed="true" onclick="toggleLayer('skiSled')">
+        <span>⛷️</span> <span id="tabSkiSledLabel">스키·눈썰매 (20선)</span> <span class="layer-state-pill" id="skiSledStatePill">ON</span>
       </button>
       <button type="button" class="layer-tab active" id="tabUserPlacesBtn" data-layer-btn="userPlaces" aria-pressed="true" onclick="toggleLayer('userPlaces')">
         <span>📍</span> <span id="tabUserPlacesLabel">추천 장소</span> <span class="layer-state-pill" id="userPlacesStatePill">ON</span>
@@ -2659,6 +2706,9 @@
         <div class="pin-data"><span class="spa-pin-badge">🧖 오션뷰 지하해수탕</span></div>
         <div class="pin-dot"></div>
       </div>
+
+      <!-- 전국 스키장·눈썰매장 20선 컨테이너 (2025-2026 시즌 운영 기준 동적 렌더링) -->
+      <div id="skiSledPinsContainer"></div>
 
       <!-- 사용자 등록 핀 컨테이너 (로컬 저장소 동적 렌더링) -->
       <div id="userPinsContainer"></div>
@@ -4638,6 +4688,36 @@
   ];
   const SAUNA_MAP = new Map(SAUNA_DATA.map(s => [s.id, s]));
 
+  // ==========================================================
+  // 전국 스키장 (13곳 전수) & 주요 눈썰매장 (7곳) 20선 (2025-2026 시즌 운영 기준)
+  // ==========================================================
+  const SKI_SLED_DATA = [
+    // [전국 스키장 13곳 전수 — 2025-2026 시즌 기준 운영 리조트]
+    { id: 'pin-ski-01', num: 1, type: 'ski', region: 'gangwon', nameKo: '모나 용평 스키장', nameEn: 'Mona Yongpyong Resort', shortKo: '모나 용평', shortEn: 'Yongpyong', subKo: '강원 평창군 대관령면', subEn: 'Pyeongchang, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '28면 슬로프·눈썰매장', featureEn: '28 Slopes & Sled Hill', descKo: '국내 최대 규모 중 하나인 대한민국 대표 스키 리조트로, 발왕산 레인보우 슬로프와 가족 눈썰매장을 함께 운영합니다.', descEn: 'One of Korea’s largest landmark ski resorts on Mt. Balwangsan, famous for Rainbow Slopes alongside a family snow sledding hill.', icon: '⛷️', top: 234, left: 572 },
+    { id: 'pin-ski-02', num: 2, type: 'ski', region: 'gangwon', nameKo: '휘닉스 스노우파크', nameEn: 'Phoenix Snow Park', shortKo: '휘닉스 파크', shortEn: 'Phoenix Park', subKo: '강원 평창군 봉평면', subEn: 'Pyeongchang, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '조기개장·스노우빌리지', featureEn: 'Early Open & Snow Village', descKo: '매년 가장 빠르게 개장하는 평창 대표 스키장이며, 튜브 눈썰매·스노우모빌이 어우러진 스노우빌리지를 운영합니다.', descEn: 'Known as one of Korea’s earliest-opening ski parks each winter, featuring Snow Village with tube sledding and alpine attractions.', icon: '⛷️', top: 218, left: 526 },
+    { id: 'pin-ski-03', num: 3, type: 'ski', region: 'gangwon', nameKo: '알펜시아 리조트 스키장', nameEn: 'Alpensia Resort Ski', shortKo: '알펜시아', shortEn: 'Alpensia', subKo: '강원 평창군 대관령면', subEn: 'Pyeongchang, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '가족친화·눈썰매장', featureEn: 'Family Ski & Sled Park', descKo: '대관령 해발 700m 설원 위 초·중급 중심 6개 슬로프와 눈썰매장을 갖춰 가족·입문 스키어에게 인기가 높습니다.', descEn: 'A family-friendly alpine resort at 700 m elevation in Daegwallyeong with gentle slopes and a dedicated snow sledding hill.', icon: '⛷️', top: 196, left: 560 },
+    { id: 'pin-ski-04', num: 4, type: 'ski', region: 'gangwon', nameKo: '하이원리조트 스키장', nameEn: 'High1 Resort Ski', shortKo: '하이원리조트', shortEn: 'High1 Ski', subKo: '강원 정선군 고한읍', subEn: 'Jeongseon, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '4.2km 초급코스·스노우월드', featureEn: '4.2km Trail & Snow World', descKo: '백운산 정상에서 내려오는 완만한 4.2km 초급 슬로프와 대형 눈썰매 테마존 하이원 스노우월드가 유명합니다.', descEn: 'Famous for its scenic 4.2 km beginner run from the summit ridge and the large High1 Snow World sledding zone.', icon: '⛷️', top: 274, left: 542 },
+    { id: 'pin-ski-05', num: 5, type: 'ski', region: 'gangwon', nameKo: '비발디파크 스키월드', nameEn: 'Vivaldi Park Ski World', shortKo: '비발디파크', shortEn: 'Vivaldi Park', subKo: '강원 홍천군 서면', subEn: 'Hongcheon, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '야간스키·스노위랜드', featureEn: 'Night Ski & Snowy Land', descKo: '수도권 접근성이 뛰어나고 심야 스키와 국내 대표 대형 눈놀이·눈썰매 테마파크 스노위랜드를 함께 즐길 수 있습니다.', descEn: 'Highly accessible from Seoul, offering popular night skiing plus Snowy Land, a sprawling snow sledding theme park.', icon: '⛷️', top: 222, left: 438 },
+    { id: 'pin-ski-06', num: 6, type: 'ski', region: 'gangwon', nameKo: '웰리힐리파크 스노우파크', nameEn: 'Welli Hilli Snow Park', shortKo: '웰리힐리파크', shortEn: 'Welli Hilli', subKo: '강원 횡성군 둔내면', subEn: 'Hoengseong, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '국제규격·눈썰매장', featureEn: 'Pro Park & Snow Sled', descKo: '국제 스키연맹 공인 20면 슬로프와 슈퍼파이프, 튜브 눈썰매장을 갖춰 보더와 가족 방문객 모두에게 인기입니다.', descEn: 'Boasts 20 FIS-certified runs, terrain parks, and a winter tube sledding slope loved by snowboarders and families alike.', icon: '⛷️', top: 248, left: 488 },
+    { id: 'pin-ski-07', num: 7, type: 'ski', region: 'gangwon', nameKo: '오크밸리 스키장', nameEn: 'Oak Valley Ski Resort', shortKo: '오크밸리', shortEn: 'Oak Valley', subKo: '강원 원주시 지정면', subEn: 'Wonju, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '완만슬로프·눈썰매장', featureEn: 'Beginner Friendly & Sled', descKo: '참나무 숲에 둘러싸인 아늑한 슬로프와 눈썰매장·스노우 어트랙션으로 유아·초보 스키어 가족에게 제격입니다.', descEn: 'Tucked among serene oak hills with gentle beginner trails and a family sledding park ideal for kids and first-timers.', icon: '⛷️', top: 268, left: 432 },
+    { id: 'pin-ski-08', num: 8, type: 'ski', region: 'gangwon', nameKo: '엘리시안 강촌 스키장', nameEn: 'Elysian Gangchon Ski', shortKo: '엘리시안강촌', shortEn: 'Elysian Gangchon', subKo: '강원 춘천시 남산면', subEn: 'Chuncheon, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '경춘선 전철·스노우힐', featureEn: 'Subway Access & Snow Hill', descKo: '전철(백양리역)로 바로 방문할 수 있는 국내 유일의 역세권 스키장이며 스노우힐&펀파크 눈썰매장을 운영합니다.', descEn: 'Korea’s only ski resort reachable directly via Seoul Metro railway (Baegyang-ri Station), featuring Snow Hill sledding park.', icon: '⛷️', top: 192, left: 416 },
+    { id: 'pin-ski-09', num: 9, type: 'ski', region: 'gangwon', nameKo: '오투리조트 스키장', nameEn: 'O2 Resort Ski', shortKo: '오투리조트', shortEn: 'O2 Resort', subKo: '강원 태백시 서학로', subEn: 'Taebaek, Gangwon', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '고원 설질·태백 눈썰매', featureEn: 'High-Altitude Snow & Sled', descKo: '함백산 해발 1,420m 고지대의 천연 설질과 맑은 공기, 여유로운 슬로프와 눈썰매 코스를 즐길 수 있습니다.', descEn: 'Set high on Mt. Hambaeksan (1,420 m elevation), offering crisp alpine snow quality, uncrowded runs, and snow sledding.', icon: '⛷️', top: 302, left: 576 },
+    { id: 'pin-ski-10', num: 10, type: 'ski', region: 'gyeonggi', nameKo: '곤지암리조트 스키장', nameEn: 'Konjiam Resort Ski', shortKo: '곤지암리조트', shortEn: 'Konjiam Ski', subKo: '경기 광주시 도척면', subEn: 'Gwangju, Gyeonggi', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '슬로프 정원제·눈썰매', featureEn: 'Time-Pass & Sled Hill', descKo: '시간권·슬로프 정원제로 쾌적한 활주를 제공하는 수도권 프리미엄 스키장이자 무빙워크 완비 눈썰매장입니다.', descEn: 'A premier capital-region resort featuring slope capacity limits, flexible hourly lift passes, and a well-kept sledding slope.', icon: '⛷️', top: 308, left: 342 },
+    { id: 'pin-ski-11', num: 11, type: 'ski', region: 'gyeonggi', nameKo: '지산 포레스트 리조트', nameEn: 'Jisan Forest Ski Resort', shortKo: '지산리조트', shortEn: 'Jisan Forest', subKo: '경기 이천시 마장면', subEn: 'Icheon, Gyeonggi', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '강남 근교·심야스키 성지', featureEn: 'Night Ski near Seoul', descKo: '서울 강남에서 차량 40~50분 거리로 퇴근 후 야간·심야 스키 당일치기 명소로 꾸준히 사랑받는 수도권 스키장입니다.', descEn: 'Under an hour from southern Seoul, prized by weekday night skiers and day-trippers for convenient slopes and facilities.', icon: '⛷️', top: 356, left: 336 },
+    { id: 'pin-ski-12', num: 12, type: 'ski', region: 'jeonbuk', nameKo: '무주 덕유산리조트 스키장', nameEn: 'Muju Deogyusan Resort', shortKo: '무주 덕유산', shortEn: 'Muju Ski', subKo: '전북 무주군 설천면', subEn: 'Muju, Jeonbuk', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '6.1km 실크로드·눈썰매', featureEn: '6.1km Silk Road & Sled', descKo: '남부·호남권 최대 규모 스키장으로 설천봉에서 이어지는 국내 최장 6.1km 실크로드 슬로프와 눈썰매장을 자랑합니다.', descEn: 'Southern Korea’s largest ski resort, renowned for Korea’s longest 6.1 km Silk Road trail from Seolcheonbong Peak plus sledding.', icon: '⛷️', top: 534, left: 398 },
+    { id: 'pin-ski-13', num: 13, type: 'ski', region: 'gyeongnam', nameKo: '에덴밸리 리조트 스키장', nameEn: 'Eden Valley Ski Resort', shortKo: '에덴밸리', shortEn: 'Eden Valley', subKo: '경남 양산시 원동면', subEn: 'Yangsan, Gyeongnam', catKo: '스키·눈썰매', catEn: 'Ski & Sled', feature: '영남권 유일·눈썰매장', featureEn: 'Yeongnam Only Ski & Sled', descKo: '부산·울산·경남권에서 유일하게 스키·보드를 탈 수 있는 남부권 거점 스키장이자 가족 눈썰매 명소입니다.', descEn: 'The sole ski and snowboard resort serving the Busan-Ulsan-Gyeongnam region, complete with family snow sledding slopes.', icon: '⛷️', top: 618, left: 560 },
+
+    // [전국 주요 눈썰매장 7곳 — 2025-2026 겨울 시즌 기준 대표 명소]
+    { id: 'pin-ski-14', num: 14, type: 'sled', region: 'gyeonggi', nameKo: '에버랜드 스노우 버스터', nameEn: 'Everland Snow Buster', shortKo: '스노우 버스터', shortEn: 'Snow Buster', subKo: '경기 용인시 처인구', subEn: 'Yongin, Gyeonggi', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '튜브리프트·레이싱코스', featureEn: 'Tube Lift & Racing Slopes', descKo: '에버랜드 내 대표 겨울 눈썰매장으로 패밀리·레이싱·익스프레스 코스와 자동 튜브 리프트를 갖춘 메가 눈썰매장입니다.', descEn: 'Everland’s flagship winter sledding attraction featuring Family, Racing, and Express courses with automated tube lifts.', icon: '🛷', top: 332, left: 298 },
+    { id: 'pin-ski-15', num: 15, type: 'sled', region: 'gyeonggi', nameKo: '서울랜드 스노우 펀파크', nameEn: 'Seoulland Snow Fun Park', shortKo: '서울랜드썰매장', shortEn: 'Seoulland Sled', subKo: '경기 과천시 막계동', subEn: 'Gwacheon, Gyeonggi', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '일반/유아 슬로프·빛축제', featureEn: 'Kids & Adult Sled + Lights', descKo: '과천 서울랜드 안에서 일반·유아 전용 눈썰매 슬로프와 눈놀이터, 겨울 빛축제를 한 번에 즐기는 인기 가족 코스입니다.', descEn: 'Located inside Seoulland theme park with separate adult/toddler sledding lanes, snow play zones, and evening light shows.', icon: '🛷', top: 300, left: 262 },
+    { id: 'pin-ski-16', num: 16, type: 'sled', region: 'gyeonggi', nameKo: '한강공원 눈썰매장 (뚝섬·잠원·여의도)', nameEn: 'Hangang Park Snow Sled', shortKo: '한강 눈썰매장', shortEn: 'Hangang Sled', subKo: '서울 광진·서초·영등포', subEn: 'Seoul Han River', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '도심 초역세권·대/소슬로프', featureEn: 'Subway Urban Sled Park', descKo: '서울시 한강사업본부가 겨울마다 운영하는 도심 가성비 눈썰매장으로 뚝섬·잠원·여의도에서 지하철로 쉽게 찾습니다.', descEn: 'Seoul’s iconic downtown winter sledding parks operated along the Han River (Ttukseom, Jamwon, Yeouido) near subway stations.', icon: '🛷', top: 268, left: 268 },
+    { id: 'pin-ski-17', num: 17, type: 'sled', region: 'gyeonggi', nameKo: '양주 눈꽃축제 눈썰매장', nameEn: 'Yangju Snow Flower Sledding', shortKo: '양주눈썰매장', shortEn: 'Yangju Sled', subKo: '경기 양주시 장흥면', subEn: 'Yangju, Gyeonggi', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '200m 최장급·줄줄이썰매', featureEn: '200m Long Slope & Train Sled', descKo: '수도권 최장급 200m 대형 눈썰매 슬로프와 여럿이 함께 타는 줄줄이 썰매, 대형 눈조각 공원으로 이름 높은 곳입니다.', descEn: 'Famous for its 200 m capital-area giant sled slope, linked group train sleds, and winter snow sculpture festival grounds.', icon: '🛷', top: 185, left: 270 },
+    { id: 'pin-ski-18', num: 18, type: 'sled', region: 'chungnam', nameKo: '청양 알프스마을 눈썰매장', nameEn: 'Cheongyang Alps Village Sled', shortKo: '알프스마을', shortEn: 'Alps Village', subKo: '충남 청양군 정산면', subEn: 'Cheongyang, Chungnam', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '칠갑산 얼음분수·봅슬레이', featureEn: 'Ice Fountain & Bobsled', descKo: '겨울 칠갑산 얼음분수축제의 성지로 거대한 빙벽·얼음성 포토존과 다채로운 눈썰매·얼음봅슬레이를 즐길 수 있습니다.', descEn: 'Home to the Chilgapsan Ice Fountain Festival, featuring towering ice walls alongside snow sleds and ice bobsledding.', icon: '🛷', top: 446, left: 282 },
+    { id: 'pin-ski-19', num: 19, type: 'sled', region: 'gyeongbuk', nameKo: '경주월드 스노우파크', nameEn: 'Gyeongju World Snow Park', shortKo: '경주스노우파크', shortEn: 'Gyeongju Snow', subKo: '경북 경주시 천군동', subEn: 'Gyeongju, Gyeongbuk', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '250m 바나헤임·전용리프트', featureEn: '250m Slope & Dedicated Lift', descKo: '남부권 최대 250m 익스트림 썰매 바나헤임과 전용 리프트를 보유한 영남권 대표 겨울 스노우파크입니다.', descEn: 'Southern Korea’s premier snow park inside Gyeongju World, highlighted by the thrilling 250 m Bannaheim sled slope and lift.', icon: '🛷', top: 530, left: 588 },
+    { id: 'pin-ski-20', num: 20, type: 'sled', region: 'gyeongbuk', nameKo: '대구 이월드 스노우월드', nameEn: 'Daegu E-World Snow World', shortKo: '이월드 스노우', shortEn: 'E-World Snow', subKo: '대구 달서구 두류공원로', subEn: 'Daegu', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '130m 도심 대형 눈썰매', featureEn: '130m Downtown Snow Slide', descKo: '대구 도심 테마파크 이월드 판타지광장에 조성되는 130m 초대형 눈썰매 슬로프와 눈놀이터 겨울 명소입니다.', descEn: 'An urban winter snow attraction in Daegu’s E-World theme park offering a 130 m mega snow sled slide and snow playground.', icon: '🛷', top: 520, left: 515 }
+  ];
+  const SKI_SLED_MAP = new Map(SKI_SLED_DATA.map(s => [s.id, s]));
+
   // 현재 앱 상태 (다중 레이어 ON/OFF 오버레이 & 언어 & 관리자)
   const FOLIAGE_SEASON_YEAR = 2026;
   const FOLIAGE_DEFAULT_GRACE_DAYS = 15;
@@ -4697,6 +4777,7 @@
       kto100: false,    // 한국관광 100선 (25-26) ON/OFF
       winterSpa: true,  // 겨울 노천 온천 (8선) ON/OFF
       sauna: true,      // 사우나·찜질방 (10선) ON/OFF
+      skiSled: true,    // 전국 스키·눈썰매장 (20선) ON/OFF
       userPlaces: true  // 사용자 추천 장소 ON/OFF
     },
     get layer() {
@@ -5262,6 +5343,46 @@
     } catch (e) {
       console.error('Error saving user places:', e);
     }
+  }
+
+  function renderSkiSledPins() {
+    const container = document.getElementById('skiSledPinsContainer');
+    if (!container || container.childElementCount > 0) return;
+
+    const isEn = appState.lang === 'en';
+    const isLayerOn = Boolean(appState.layers.skiSled);
+    const frag = document.createDocumentFragment();
+
+    SKI_SLED_DATA.forEach(s => {
+      const safePos = typeof clampToProvinceLand === 'function'
+        ? clampToProvinceLand(s.left, s.top, s.region)
+        : { top: s.top, left: s.left };
+
+      const pinEl = document.createElement('div');
+      pinEl.className = 'pin ski-pin' + (isLayerOn ? '' : ' hidden-layer');
+      pinEl.id = s.id;
+      pinEl.setAttribute('data-layer', 'skiSled');
+      pinEl.setAttribute('data-region', s.region);
+      pinEl.setAttribute('data-name-ko', s.nameKo);
+      pinEl.setAttribute('data-name-en', s.nameEn);
+      pinEl.setAttribute('data-sub-ko', s.subKo);
+      pinEl.setAttribute('data-sub-en', s.subEn);
+      pinEl.setAttribute('data-cat-ko', s.catKo);
+      pinEl.setAttribute('data-cat-en', s.catEn);
+      pinEl.setAttribute('data-icon', s.icon);
+      pinEl.style.top = safePos.top + 'px';
+      pinEl.style.left = safePos.left + 'px';
+
+      const titleText = isEn ? s.shortEn : s.shortKo;
+      const badgeText = isEn ? s.featureEn : s.feature;
+      pinEl.innerHTML = `
+        <span class="pin-title">${titleText}</span>
+        <div class="pin-data"><span class="spa-pin-badge">${s.icon} ${badgeText}</span></div>
+        <div class="pin-dot"></div>
+      `;
+      frag.appendChild(pinEl);
+    });
+    container.appendChild(frag);
   }
 
   // 지도 위 사용자 핀 렌더링
@@ -5946,6 +6067,26 @@
       descEl.textContent = displayDesc;
       descEl.style.display = 'block';
       card.classList.add('visible');
+    } else if (layer === 'skiSled') {
+      const ski = SKI_SLED_MAP.get(pin.id);
+      if (!ski) return;
+
+      const displayFeature = isEn ? (ski.featureEn || ski.feature) : ski.feature;
+      const displayDesc = isEn ? (ski.descEn || ski.descKo) : ski.descKo;
+      const badgePrefix = ski.type === 'sled'
+        ? (isEn ? 'Snow Sled #' : '전국 눈썰매장 #')
+        : (isEn ? 'Ski Resort #' : '전국 스키장 #');
+
+      badgesEl.innerHTML = `
+        <span class="detail-badge-num" style="background: #0891b2;">${badgePrefix}${ski.num}</span>
+        <span class="detail-badge-cat">${ski.icon} ${isEn ? ski.catEn : ski.catKo}</span>
+        <span class="detail-badge-loc">📍 ${isEn ? ski.subEn : ski.subKo}</span>
+      `;
+      titleEl.textContent = isEn ? ski.nameEn : ski.nameKo;
+      subEl.textContent = `${ski.icon} ${displayFeature} · ${isEn ? ski.subEn : ski.subKo}`;
+      descEl.textContent = displayDesc;
+      descEl.style.display = 'block';
+      card.classList.add('visible');
     } else if (layer === 'userPlaces') {
       const nameKo = pin.getAttribute('data-name-ko') || '';
       const nameEn = pin.getAttribute('data-name-en') || nameKo;
@@ -6375,60 +6516,36 @@
 
   // 레이어 UI 및 핀 표시 상태 동기화
   function syncLayersUI() {
-    const foliageBtn = document.getElementById('tabFoliageBtn');
-    const ktoBtn = document.getElementById('tabKto100Btn');
-    const spaBtn = document.getElementById('tabWinterSpaBtn');
-    const saunaBtn = document.getElementById('tabSaunaBtn');
-    const userBtn = document.getElementById('tabUserPlacesBtn');
-
-    const foliagePill = document.getElementById('foliageStatePill');
-    const ktoPill = document.getElementById('kto100StatePill');
-    const spaPill = document.getElementById('winterSpaStatePill');
-    const saunaPill = document.getElementById('saunaStatePill');
-    const userPill = document.getElementById('userPlacesStatePill');
-
-    const isFoliageOn = Boolean(appState.layers.foliage);
-    const isKtoOn = Boolean(appState.layers.kto100);
-    const isWinterSpaOn = Boolean(appState.layers.winterSpa);
-    const isSaunaOn = Boolean(appState.layers.sauna);
-    const isUserPlacesOn = Boolean(appState.layers.userPlaces);
-
-    if (foliageBtn) {
-      foliageBtn.classList.toggle('active', isFoliageOn);
-      foliageBtn.setAttribute('aria-pressed', String(isFoliageOn));
-    }
-    if (ktoBtn) {
-      ktoBtn.classList.toggle('active', isKtoOn);
-      ktoBtn.setAttribute('aria-pressed', String(isKtoOn));
-    }
-    if (spaBtn) {
-      spaBtn.classList.toggle('active', isWinterSpaOn);
-      spaBtn.setAttribute('aria-pressed', String(isWinterSpaOn));
-    }
-    if (saunaBtn) {
-      saunaBtn.classList.toggle('active', isSaunaOn);
-      saunaBtn.setAttribute('aria-pressed', String(isSaunaOn));
-    }
-    if (userBtn) {
-      userBtn.classList.toggle('active', isUserPlacesOn);
-      userBtn.setAttribute('aria-pressed', String(isUserPlacesOn));
-    }
-
-    if (foliagePill) foliagePill.textContent = isFoliageOn ? 'ON' : 'OFF';
-    if (ktoPill) ktoPill.textContent = isKtoOn ? 'ON' : 'OFF';
-    if (spaPill) spaPill.textContent = isWinterSpaOn ? 'ON' : 'OFF';
-    if (saunaPill) saunaPill.textContent = isSaunaOn ? 'ON' : 'OFF';
-    if (userPill) userPill.textContent = isUserPlacesOn ? 'ON' : 'OFF';
+    const layerDomMap = {
+      foliage: ['tabFoliageBtn', 'foliageStatePill'],
+      kto100: ['tabKto100Btn', 'kto100StatePill'],
+      winterSpa: ['tabWinterSpaBtn', 'winterSpaStatePill'],
+      sauna: ['tabSaunaBtn', 'saunaStatePill'],
+      skiSled: ['tabSkiSledBtn', 'skiSledStatePill'],
+      userPlaces: ['tabUserPlacesBtn', 'userPlacesStatePill']
+    };
+    Object.entries(layerDomMap).forEach(([key, [btnId, pillId]]) => {
+      const isOn = Boolean(appState.layers[key]);
+      const btn = document.getElementById(btnId);
+      const pill = document.getElementById(pillId);
+      if (btn) {
+        btn.classList.toggle('active', isOn);
+        btn.setAttribute('aria-pressed', String(isOn));
+      }
+      if (pill) pill.textContent = isOn ? 'ON' : 'OFF';
+    });
 
     const activeKeys = Object.keys(appState.layers).filter(k => appState.layers[k]);
     document.body.classList.toggle('mode-kto100', activeKeys.length === 1 && activeKeys[0] === 'kto100');
     document.body.classList.toggle('mode-winterSpa', activeKeys.length === 1 && activeKeys[0] === 'winterSpa');
     document.body.classList.toggle('mode-sauna', activeKeys.length === 1 && activeKeys[0] === 'sauna');
+    document.body.classList.toggle('mode-skiSled', activeKeys.length === 1 && activeKeys[0] === 'skiSled');
     document.body.classList.toggle('mode-userPlaces', activeKeys.length === 1 && activeKeys[0] === 'userPlaces');
 
     const adminBannerEl = document.getElementById('adminBanner');
     if (adminBannerEl) adminBannerEl.classList.toggle('active', appState.isAdmin);
 
+    renderSkiSledPins();
     renderUserPins();
     bindPinClickListeners();
 
@@ -6554,6 +6671,19 @@
       }
     });
 
+    // 전국 스키장·눈썰매장 핀 타이틀 및 배지 갱신
+    document.querySelectorAll('.ski-pin').forEach(pin => {
+      const titleEl = pin.querySelector('.pin-title');
+      const badgeEl = pin.querySelector('.spa-pin-badge');
+      const ski = SKI_SLED_MAP.get(pin.id);
+      if (titleEl && ski) {
+        titleEl.textContent = isEn ? ski.shortEn : ski.shortKo;
+      }
+      if (badgeEl && ski) {
+        badgeEl.textContent = `${ski.icon} ${isEn ? ski.featureEn : ski.feature}`;
+      }
+    });
+
     // 사용자 추천 핀 타이틀 갱신
     document.querySelectorAll('.user-pin').forEach(pin => {
       const titleEl = pin.querySelector('.pin-title');
@@ -6610,6 +6740,7 @@
     const hasKto = Boolean(appState.layers.kto100);
     const hasSpa = Boolean(appState.layers.winterSpa);
     const hasSauna = Boolean(appState.layers.sauna);
+    const hasSkiSled = Boolean(appState.layers.skiSled);
     const hasUser = Boolean(appState.layers.userPlaces);
 
     const activeList = [];
@@ -6617,6 +6748,7 @@
     if (hasKto) activeList.push('kto100');
     if (hasSpa) activeList.push('winterSpa');
     if (hasSauna) activeList.push('sauna');
+    if (hasSkiSled) activeList.push('skiSled');
     if (hasUser) activeList.push('userPlaces');
 
     // 탭 버튼 텍스트
@@ -6626,6 +6758,8 @@
     if (winterSpaLabel) winterSpaLabel.textContent = isEn ? 'Winter Spas (8)' : '겨울 노천온천 (8선)';
     const saunaLabel = document.getElementById('tabSaunaLabel');
     if (saunaLabel) saunaLabel.textContent = isEn ? 'Saunas & Spas (10)' : '사우나·찜질방 (10선)';
+    const skiSledLabel = document.getElementById('tabSkiSledLabel');
+    if (skiSledLabel) skiSledLabel.textContent = isEn ? 'Ski & Sled (20)' : '스키·눈썰매 (20선)';
     const userPlacesLabel = document.getElementById('tabUserPlacesLabel');
     if (userPlacesLabel) userPlacesLabel.textContent = isEn ? 'User Spots' : '추천 장소';
     const recommendBtn = document.getElementById('openRecommendModalBtn');
@@ -6689,6 +6823,17 @@
         footerSource.textContent = isEn
           ? 'Source: Nationwide Curated Saunas & Jjimjilbangs Guide'
           : '데이터 출처: 전국 인기 스파·사우나 테마 가이드';
+      } else if (singleLayer === 'skiSled') {
+        headerTitle.textContent = isEn ? '2025–2026 Korea Ski Resorts (13) & Major Snow Sledding Parks (7)' : '전국 스키장(13선)·대표 눈썰매장(7선) 겨울 레저 지도 (25-26 운영 기준)';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="Ski" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ Ski Resort</span><span class="legend-chip" data-cat-query="Sled" onclick="filterByLegendCategory(this.dataset.catQuery)">🛷 Snow Sledding</span><span class="legend-chip" data-cat-query="Night" onclick="filterByLegendCategory(this.dataset.catQuery)">🌙 Night Ski</span><span class="legend-chip" data-cat-query="Gangwon" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ Gangwon Slopes</span>'
+          : '<span class="legend-chip" data-cat-query="스키" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ 전국 스키장</span><span class="legend-chip" data-cat-query="눈썰매" onclick="filterByLegendCategory(this.dataset.catQuery)">🛷 대표 눈썰매장</span><span class="legend-chip" data-cat-query="야간" onclick="filterByLegendCategory(this.dataset.catQuery)">🌙 야간·심야스키</span><span class="legend-chip" data-cat-query="평창" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ 강원 설원</span>';
+        headerHint.textContent = isEn
+          ? '🔍 All 13 operating ski resorts & 7 top snow sledding parks in Korea (2025–2026 winter reference).'
+          : '🔍 작년(2025-2026) 운영 기준 전국 스키장 13곳 전수와 대표 눈썰매장 7곳을 확인하고 길찾기를 이용해보세요.';
+        footerSource.textContent = isEn
+          ? 'Source: 2025–2026 Korea Ski & Winter Leisure Operating Directory'
+          : '데이터 출처: 2025-2026 시즌 국내 운영 스키장·테마파크 눈썰매장 안내';
       } else if (singleLayer === 'userPlaces') {
         headerTitle.textContent = isEn ? 'Traveler Recommended Hidden Gems & Spots' : '여행자 추천 나만의 힐링 명소 지도';
         legendBar.innerHTML = isEn
@@ -6736,6 +6881,7 @@
       if (hasKto) { titleNamesKo.push('한국관광 100선'); titleNamesEn.push('100 Must-Visit'); }
       if (hasSpa) { titleNamesKo.push('노천온천(8선)'); titleNamesEn.push('Winter Spas (8)'); }
       if (hasSauna) { titleNamesKo.push('사우나·찜질방(10선)'); titleNamesEn.push('Saunas (10)'); }
+      if (hasSkiSled) { titleNamesKo.push('스키·눈썰매(20선)'); titleNamesEn.push('Ski & Sled (20)'); }
       if (hasUser) { titleNamesKo.push('추천 장소'); titleNamesEn.push('User Spots'); }
 
       headerTitle.textContent = isEn
@@ -6777,6 +6923,11 @@
           ? '<span class="legend-chip" data-cat-query="Sauna" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 Sauna</span>'
           : '<span class="legend-chip" data-cat-query="사우나" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 사우나</span>');
       }
+      if (hasSkiSled) {
+        legendChips.push(isEn
+          ? '<span class="legend-chip" data-cat-query="Ski" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ Ski & Sled</span>'
+          : '<span class="legend-chip" data-cat-query="스키" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ 스키·눈썰매</span>');
+      }
       if (hasUser) {
         legendChips.push(isEn
           ? '<span class="legend-chip" data-cat-query="User" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 User Spots</span>'
@@ -6792,6 +6943,7 @@
       if (hasFoliage) sources.push(isEn ? 'Forest Service (Foliage Forecast)' : '산림청 단풍 예측');
       if (hasKto) sources.push(isEn ? 'MCST·KTO (100 Must-Visit)' : '한국관광공사 100선');
       if (hasSpa || hasSauna) sources.push(isEn ? 'Local Guides & Official Spa Records' : '지자체 관광가이드 및 온천·스파 공식안내');
+      if (hasSkiSled) sources.push(isEn ? '2025-2026 Ski & Sled Operating Directory' : '25-26 전국 스키·눈썰매 운영안내');
       if (hasUser) sources.push(isEn ? 'User Recommendations' : '커뮤니티 추천');
 
       footerSource.textContent = isEn ? `Source: ${sources.join(' & ')}` : `데이터 출처: ${sources.join(' & ')}`;
@@ -6820,6 +6972,10 @@
         searchInput.placeholder = isEn
           ? 'Search sauna, jjimjilbang, charcoal kiln, region...'
           : '사우나, 찜질방, 참숯가마, 지역(용산, 센텀, 하남 등) 검색...';
+      } else if (activeList.length === 1 && activeList[0] === 'skiSled') {
+        searchInput.placeholder = isEn
+          ? 'Search ski resort, snow sledding, region (Pyeongchang, Konjiam, Muju...)'
+          : '스키장, 눈썰매장, 지역(평창, 홍천, 무주, 양산, 용인 등) 검색...';
       } else if (activeList.length === 1 && activeList[0] === 'userPlaces') {
         searchInput.placeholder = isEn
           ? 'Search user recommended spots, categories...'
@@ -6979,6 +7135,7 @@
 
       const isPinSpa = pinLayer === 'winterSpa';
       const isPinSauna = pinLayer === 'sauna';
+      const isPinSkiSled = pinLayer === 'skiSled';
       const isPinUser = pinLayer === 'userPlaces';
 
       if (isPinSpa) {
@@ -7009,6 +7166,21 @@
         rightBadgeText = sauna ? `🧖 #${sauna.num}` : '🧖 사우나';
         dateScore = sauna ? sauna.num : 50;
         searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${descKo} 사우나 찜질 찜질방 사우나·찜질 사우나·찜질방 불가마 참숯 참숯가마 참숯불가마 복합스파 테마스파 힐링 루프탑 오션뷰 sauna jjimjilbang spa charcoal kiln`.toLowerCase();
+      } else if (isPinSkiSled) {
+        const ski = SKI_SLED_MAP.get(pinId);
+        const nameKo = pin.getAttribute('data-name-ko') || '';
+        const nameEn = pin.getAttribute('data-name-en') || '';
+        const subKo = pin.getAttribute('data-sub-ko') || '';
+        const subEn = pin.getAttribute('data-sub-en') || '';
+        const feature = ski ? ski.feature : '';
+        const featureEn = ski ? (ski.featureEn || '') : '';
+        const descKo = ski ? ski.descKo : '';
+        const descEn = ski ? (ski.descEn || '') : '';
+        displayTitle = isEn ? nameEn : nameKo;
+        regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
+        rightBadgeText = ski ? `${ski.icon} #${ski.num}` : '⛷️ 스키';
+        dateScore = ski ? ski.num : 50;
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 스키 스키장 스노우보드 보드 눈썰매 눈썰매장 썰매 슬로프 야간스키 심야스키 평창 홍천 강촌 무주 곤지암 에버랜드 ski resort snow sled sledding snowboard winter`.toLowerCase();
       } else if (isPinUser) {
         const nameKo = pin.getAttribute('data-name-ko') || '';
         const nameEn = pin.getAttribute('data-name-en') || nameKo;
@@ -7286,6 +7458,7 @@
       appState.layers.foliage = shouldEnableFoliageByDefault();
       hasAppliedInitialFoliageSchedule = true;
     }
+    renderSkiSledPins();
     renderUserPins();
     bindPinClickListeners();
     syncLayersUI();
@@ -7316,6 +7489,7 @@
           <select id="modalCategorySelect" onchange="onCategorySelectChange()">
             <option value="사우나·찜질방 🧖">사우나·찜질방 🧖</option>
             <option value="온천·스파 ♨️">온천·스파 ♨️</option>
+            <option value="스키·눈썰매장 ⛷️">스키·눈썰매장 ⛷️</option>
             <option value="겨울 맛집·카페 ☕">겨울 맛집·카페 ☕</option>
             <option value="힐링 명소·산책 🌿">힐링 명소·산책 🌿</option>
             <option value="단풍·자연 🍁">단풍·자연 🍁</option>
