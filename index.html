@@ -23,36 +23,35 @@
     }
     .header-top-bar {
       position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+      padding-bottom: 2px;
+      scrollbar-width: thin;
+      scrollbar-color: #d5cbc0 transparent;
+      transition: all 0.2s ease;
+    }
+    .header-top-bar.is-expanded {
+      flex-wrap: wrap !important;
+      overflow-x: visible !important;
+      overflow-y: visible !important;
+      justify-content: center;
     }
     .layer-tabs.is-expanded {
       flex-wrap: wrap !important;
       overflow-x: visible !important;
       max-height: none !important;
       white-space: normal !important;
-    }
-    .layer-tabs-expand-btn {
-      display: inline-flex;
-      align-items: center;
       justify-content: center;
-      background: #f3ede4;
-      border: 1px solid #d5cbc0;
-      border-radius: 8px;
-      padding: 4px 7px;
-      font-size: 13px;
-      cursor: pointer;
-      flex-shrink: 0;
-      line-height: 1;
-      height: 28px;
-      margin-left: 2px;
-      transition: background 0.15s, border-color 0.15s, transform 0.15s;
     }
-    .layer-tabs-expand-btn:hover {
-      background: #e8ded2;
-      border-color: #bfae9c;
-    }
-    .layer-tabs-expand-btn.active {
-      background: #e0d4c3;
-      border-color: #8c7b6d;
+    .header-info-toggle.active {
+      background: #e0d4c3 !important;
+      border-color: #8c7b6d !important;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.12);
     }
     .header-recommend-btn.is-edit-mode {
       background: linear-gradient(135deg, #e67e22, #d35400) !important;
@@ -1642,9 +1641,6 @@
         <span>📍</span> <span id="tabUserPlacesLabel">추천 장소</span> <span class="layer-state-pill" id="userPlacesStatePill">ON</span>
       </button>
     </div>
-    <button type="button" class="layer-tabs-expand-btn" id="expandLayerTabsBtn" onclick="toggleExpandLayerTabs()" aria-label="카테고리 펼쳐보기/접기" title="카테고리 펼쳐보기/접기">
-      <span id="expandLayerTabsIcon">🔽</span>
-    </button>
 
     <!-- 장소 추천 모달 열기 버튼 -->
     <button type="button" class="header-recommend-btn" id="openRecommendModalBtn" onclick="openRecommendModal()" title="새로운 노천온천·사우나 등 명소 추천">
@@ -5095,7 +5091,6 @@
     }
 
     const nameInput = document.getElementById('placeSearchInput');
-    const briefDescInput = document.getElementById('modalBriefDesc');
     const reasonInput = document.getElementById('modalRecommendReason');
     const catSelect = document.getElementById('modalCategorySelect');
     const customCatInput = document.getElementById('modalCustomCategory');
@@ -5103,7 +5098,6 @@
     const resultsBox = document.getElementById('searchResultsBox');
 
     if (nameInput) nameInput.value = '';
-    if (briefDescInput) briefDescInput.value = '';
     if (reasonInput) reasonInput.value = '';
     if (catSelect) catSelect.selectedIndex = 0;
     if (customCatInput) {
@@ -5144,14 +5138,12 @@
         if (submitBtn) submitBtn.textContent = isEn ? 'Save Changes' : '수정사항 저장하기';
 
         const nameInput = document.getElementById('placeSearchInput');
-        const briefDescInput = document.getElementById('modalBriefDesc');
         const reasonInput = document.getElementById('modalRecommendReason');
         const catSelect = document.getElementById('modalCategorySelect');
         const customCatInput = document.getElementById('modalCustomCategory');
         const regSelect = document.getElementById('manualRegionSelect');
 
         if (nameInput) nameInput.value = target.name;
-        if (briefDescInput) briefDescInput.value = target.desc || '';
         if (reasonInput) reasonInput.value = target.reason || '';
         if (regSelect && target.region) regSelect.value = target.region;
 
@@ -5427,14 +5419,28 @@
       category = customVal + ' 🏷️';
     }
 
-    const descInput = document.getElementById('modalBriefDesc');
-    const desc = descInput ? descInput.value.trim() : '';
-
     const reason = document.getElementById('modalRecommendReason').value.trim();
     if (!reason) {
       alert(appState.lang === 'en' ? 'Please enter a recommendation reason (e.g. visiting tips).' : '추천 이유를 간단히 입력해주세요 (방문 꿀팁 등).');
       document.getElementById('modalRecommendReason').focus();
       return;
+    }
+
+    // 한줄설명 필드 제거 -> 추천이유(reason)를 기반으로 자동 생성
+    const reasonText = reason.trim();
+    let autoDesc = '';
+    if (reasonText) {
+      // 첫 문장 추출 (마침표, 느낌표, 물음표, 줄바꿈 기준)
+      const firstSentence = reasonText.split(/[\n.!?]/)[0].trim();
+      if (firstSentence && firstSentence.length >= 4 && firstSentence.length <= 40) {
+        autoDesc = firstSentence;
+      } else if (reasonText.length > 40) {
+        autoDesc = reasonText.slice(0, 38).trim() + '…';
+      } else {
+        autoDesc = reasonText;
+      }
+    } else {
+      autoDesc = placeName;
     }
 
     const places = getUserPlaces();
@@ -5453,8 +5459,8 @@
         target.region = region;
         target.top = top;
         target.left = left;
-        target.desc = desc || reason.slice(0, 30);
-        target.descEn = desc || reason.slice(0, 30);
+        target.desc = autoDesc;
+        target.descEn = autoDesc;
         target.reason = reason;
         target.reasonEn = reason;
       }
@@ -5472,8 +5478,8 @@
         region: region,
         top: top,
         left: left,
-        desc: desc || reason.slice(0, 30),
-        descEn: desc || reason.slice(0, 30),
+        desc: autoDesc,
+        descEn: autoDesc,
         reason: reason,
         reasonEn: reason,
         upvotes: 0,
@@ -5708,10 +5714,11 @@
       subEl.textContent = `🏷️ ${displayCat} · ${addr}`;
 
       let descContent = '';
-      if (displayDesc) {
+      const isDescDiff = displayDesc && displayDesc.trim() !== displayReason.trim();
+      if (isDescDiff) {
         descContent += `<div style="font-weight:700; color:#2c3e50; margin-bottom:6px; font-size:12.5px; line-height:1.5;">✨ ${displayDesc}</div>`;
       }
-      descContent += `<div style="font-weight:700; color:#27ae60; margin-bottom:4px; margin-top:${displayDesc ? '8px' : '0'};">💡 ${isEn ? 'Reason for Recommendation:' : '추천 이유:'}</div><div style="line-height:1.6; color:#444;">${displayReason}</div>`;
+      descContent += `<div style="font-weight:700; color:#27ae60; margin-bottom:4px; margin-top:${isDescDiff ? '8px' : '0'};">💡 ${isEn ? 'Reason for Recommendation:' : '추천 이유:'}</div><div style="line-height:1.6; color:#444;">${displayReason}</div>`;
       descEl.innerHTML = descContent;
       descEl.style.display = 'block';
 
@@ -6185,22 +6192,9 @@
     }
   }
 
-  // 상단 맵 카테고리 펼쳐보기(🔽) / 접기(🔼) 토글 함수
+  // 상단 맵 카테고리 & 타이틀/범례 통합 토글 함수
   function toggleExpandLayerTabs() {
-    const tabsContainer = document.querySelector('.layer-tabs');
-    const expandBtn = document.getElementById('expandLayerTabsBtn');
-    const expandIcon = document.getElementById('expandLayerTabsIcon');
-    if (!tabsContainer || !expandBtn) return;
-
-    const isExpanded = tabsContainer.classList.toggle('is-expanded');
-    expandBtn.classList.toggle('active', isExpanded);
-    expandBtn.setAttribute('aria-expanded', String(isExpanded));
-    if (expandIcon) {
-      expandIcon.textContent = isExpanded ? '🔼' : '🔽';
-    }
-    expandBtn.title = isExpanded
-      ? (appState.lang === 'en' ? 'Collapse Categories' : '카테고리 접기')
-      : (appState.lang === 'en' ? 'Expand All Categories' : '카테고리 전체 펼쳐보기');
+    toggleHeaderDetails();
   }
 
   // 레이어 개별 ON/OFF 토글 함수 (선택하면 켜지고 다시 선택하면 꺼지는 다중 오버레이 방식)
@@ -6651,17 +6645,33 @@
     const isCollapsed = detailsEl.classList.contains('collapsed');
     const isEn = appState.lang === 'en';
     btnEl.setAttribute('aria-expanded', String(!isCollapsed));
+    btnEl.classList.toggle('active', !isCollapsed);
+
     if (isEn) {
-      labelEl.textContent = isCollapsed ? 'ℹ️ Title & Legend ▾' : 'ℹ️ Hide Title ▴';
+      labelEl.textContent = isCollapsed ? 'ℹ️ Title & Legend ▾' : 'ℹ️ Title & Legend ▴';
+      btnEl.title = isCollapsed ? 'Expand Title, Legend & Categories' : 'Collapse Title, Legend & Categories';
     } else {
-      labelEl.textContent = isCollapsed ? 'ℹ️ 타이틀·범례 ▾' : 'ℹ️ 타이틀 숨김 ▴';
+      labelEl.textContent = isCollapsed ? 'ℹ️ 타이틀·범례 ▾' : 'ℹ️ 타이틀·범례 ▴';
+      btnEl.title = isCollapsed ? '타이틀, 범례 및 맵카테고리 전체 펼쳐보기' : '타이틀, 범례 및 맵카테고리 접기';
     }
   }
 
   function toggleHeaderDetails() {
     const detailsEl = document.getElementById('headerDetails');
+    const tabsEl = document.getElementById('layerTabs');
+    const topBarEl = document.querySelector('.header-top-bar');
     if (!detailsEl) return;
-    detailsEl.classList.toggle('collapsed');
+
+    const isNowCollapsed = detailsEl.classList.toggle('collapsed');
+    const isExpanded = !isNowCollapsed;
+
+    if (tabsEl) {
+      tabsEl.classList.toggle('is-expanded', isExpanded);
+    }
+    if (topBarEl) {
+      topBarEl.classList.toggle('is-expanded', isExpanded);
+    }
+
     updateHeaderToggleLabel();
   }
 
@@ -7072,12 +7082,6 @@
             <option value="jeonnam">전남·광주</option>
             <option value="jeju">제주</option>
           </select>
-        </div>
-
-        <!-- 3. 간단한 설명 (한줄 요약) -->
-        <div class="form-group">
-          <label for="modalBriefDesc" id="modalBriefDescLabel">간단한 설명 (한줄 요약)</label>
-          <input type="text" id="modalBriefDesc" placeholder="장소의 핵심 특징을 한 줄로 소개해주세요 (예: 설악산 설경을 품은 노천탕)">
         </div>
 
         <!-- 4. 추천 이유 입력 -->
