@@ -1676,7 +1676,7 @@
         <span>🇰🇷</span> <span id="tabKto100Label">한국관광 100선</span> <span class="layer-state-pill" id="kto100StatePill">OFF</span>
       </button>
       <button type="button" class="layer-tab active" id="tabWinterSpaBtn" data-layer-btn="winterSpa" aria-pressed="true" onclick="toggleLayer('winterSpa')">
-        <span>♨️</span> <span id="tabWinterSpaLabel">겨울 노천온천 (8선)</span> <span class="layer-state-pill" id="winterSpaStatePill">ON</span>
+        <span>♨️</span> <span id="tabWinterSpaLabel">겨울 노천온천 (10선)</span> <span class="layer-state-pill" id="winterSpaStatePill">ON</span>
       </button>
       <button type="button" class="layer-tab active" id="tabSaunaBtn" data-layer-btn="sauna" aria-pressed="true" onclick="toggleLayer('sauna')">
         <span>🧖</span> <span id="tabSaunaLabel">사우나·찜질방 (10선)</span> <span class="layer-state-pill" id="saunaStatePill">ON</span>
@@ -2565,7 +2565,7 @@
       </div>
 
     
-      <!-- [겨울 시즌 노천 온천 8선 + 2대 명품 온천 레이어] -->
+      <!-- [겨울 시즌 노천 온천 10선 레이어] -->
       <!-- 1. 설악 척산온천휴양촌 (강원 속초) -->
       <div class="pin winter-spa-pin" id="pin-spa-01" data-layer="winterSpa" data-region="gangwon" data-name-ko="설악 척산온천휴양촌" data-name-en="Cheoksan Onsen Resort" data-sub-ko="강원 속초시 노학동" data-sub-en="Sokcho, Gangwon" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 170px; left: 565px;">
         <span class="pin-title">척산온천휴양촌</span>
@@ -4655,7 +4655,7 @@
   };
 
   // ==========================================================
-  // 겨울 시즌 노천 온천 8선 (+2대 명품 온천) 데이터셋
+  // 겨울 시즌 노천 온천 10선 데이터셋
   // ==========================================================
   const WINTER_SPA_DATA = [
     { id: 'pin-spa-01', num: 1, region: 'gangwon', nameKo: '설악 척산온천휴양촌', nameEn: 'Cheoksan Onsen Resort', subKo: '강원 속초시 노학동', subEn: 'Sokcho, Gangwon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '설악산 설경을 바라보며 즐기는 천연 온천수로, 겨울철 눈 덮인 산세를 감상할 수 있는 대표 노천탕입니다.', descEn: 'A signature outdoor hot spring fed by natural mineral water where you can soak while admiring snow-covered Seoraksan peaks in winter.', feature: '설악산 설경 노천탕', featureEn: 'Snowy Seoraksan Outdoor Bath', icon: '♨️' },
@@ -4775,7 +4775,7 @@
     layers: {
       foliage: shouldEnableFoliageByDefault(), // 단풍 정보 (35선): 마지막 단풍일+15일 경과 시 기본값 해제
       kto100: false,    // 한국관광 100선 (25-26) ON/OFF
-      winterSpa: true,  // 겨울 노천 온천 (8선) ON/OFF
+      winterSpa: true,  // 겨울 노천 온천 (10선) ON/OFF
       sauna: true,      // 사우나·찜질방 (10선) ON/OFF
       skiSled: true,    // 전국 스키·눈썰매장 (20선) ON/OFF
       userPlaces: true  // 사용자 추천 장소 ON/OFF
@@ -6755,7 +6755,7 @@
     document.getElementById('tabFoliageLabel').textContent = isEn ? 'Autumn Foliage (35)' : '단풍 정보 (35선)';
     document.getElementById('tabKto100Label').textContent = isEn ? '100 Must-Visit Spots (25-26)' : '한국관광 100선 (25-26)';
     const winterSpaLabel = document.getElementById('tabWinterSpaLabel');
-    if (winterSpaLabel) winterSpaLabel.textContent = isEn ? 'Winter Spas (8)' : '겨울 노천온천 (8선)';
+    if (winterSpaLabel) winterSpaLabel.textContent = isEn ? 'Winter Spas (10)' : '겨울 노천온천 (10선)';
     const saunaLabel = document.getElementById('tabSaunaLabel');
     if (saunaLabel) saunaLabel.textContent = isEn ? 'Saunas & Spas (10)' : '사우나·찜질방 (10선)';
     const skiSledLabel = document.getElementById('tabSkiSledLabel');
@@ -6802,13 +6802,13 @@
     if (activeList.length === 1) {
       const singleLayer = activeList[0];
       if (singleLayer === 'winterSpa') {
-        headerTitle.textContent = isEn ? '2026 Korea Nationwide Winter Outdoor Hot Springs (Top 8)' : '2026 전국 겨울 노천온천 (8선) 지도';
+        headerTitle.textContent = isEn ? '2026 Korea Nationwide Winter Outdoor Hot Springs (Top 10)' : '2026 전국 겨울 노천온천 (10선) 지도';
         legendBar.innerHTML = isEn
           ? '<span class="legend-chip" data-cat-query="Hot Spring" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ Hot Spring</span><span class="legend-chip" data-cat-query="Outdoor" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ Outdoor Bath</span><span class="legend-chip" data-cat-query="Carbonate" onclick="filterByLegendCategory(this.dataset.catQuery)">🫧 Carbonated</span><span class="legend-chip" data-cat-query="Mineral" onclick="filterByLegendCategory(this.dataset.catQuery)">🌊 Seawater Mineral</span>'
           : '<span class="legend-chip" data-cat-query="온천" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ 온천·스파</span><span class="legend-chip" data-cat-query="노천" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ 설경·노천탕</span><span class="legend-chip" data-cat-query="탄산" onclick="filterByLegendCategory(this.dataset.catQuery)">🫧 탄산·유황</span><span class="legend-chip" data-cat-query="해수" onclick="filterByLegendCategory(this.dataset.catQuery)">🌊 해수 미네랄</span>';
         headerHint.textContent = isEn
           ? '🔍 Winter outdoor hot springs across Korea. Click a chip or pin to view details and map directions.'
-          : '🔍 겨울철 몸을 녹여주는 전국 대표 노천온천 8곳을 둘러보고 네이버·티맵 길찾기를 이용해보세요.';
+          : '🔍 겨울철 몸을 녹여주는 전국 대표 노천온천 10곳을 둘러보고 네이버·티맵 길찾기를 이용해보세요.';
         footerSource.textContent = isEn
           ? 'Source: Local Tourism Guides & Official Hot Springs Records'
           : '데이터 출처: 전국 주요 지자체 관광안내 및 온천·스파 공식 안내';
@@ -6879,7 +6879,7 @@
       const titleNamesEn = [];
       if (hasFoliage) { titleNamesKo.push('단풍(35선)'); titleNamesEn.push('Foliage (35)'); }
       if (hasKto) { titleNamesKo.push('한국관광 100선'); titleNamesEn.push('100 Must-Visit'); }
-      if (hasSpa) { titleNamesKo.push('노천온천(8선)'); titleNamesEn.push('Winter Spas (8)'); }
+      if (hasSpa) { titleNamesKo.push('노천온천(10선)'); titleNamesEn.push('Winter Spas (10)'); }
       if (hasSauna) { titleNamesKo.push('사우나·찜질방(10선)'); titleNamesEn.push('Saunas (10)'); }
       if (hasSkiSled) { titleNamesKo.push('스키·눈썰매(20선)'); titleNamesEn.push('Ski & Sled (20)'); }
       if (hasUser) { titleNamesKo.push('추천 장소'); titleNamesEn.push('User Spots'); }
