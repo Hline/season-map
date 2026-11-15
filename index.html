@@ -1173,11 +1173,108 @@
     .ski-pin.active .pin-dot {
       background: #0891b2;
     }
+
+    /* Night View & Light Festival Pin Styling */
+    .night-pin .pin-title {
+      background: #d97706;
+      color: #ffffff;
+    }
+    .night-pin .pin-data {
+      border-color: #fde68a;
+    }
+    .night-pin .pin-dot {
+      background: #f59e0b;
+    }
+    .night-pin .spa-pin-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #b45309;
+    }
+    .night-pin:hover .pin-title {
+      background: #f59e0b;
+    }
+    .night-pin:hover .pin-data {
+      border-color: #f59e0b;
+    }
+    .night-pin.active .pin-title {
+      background: #d97706 !important;
+    }
+    .night-pin.active .pin-data {
+      border-color: #d97706 !important;
+    }
+    .night-pin.active .pin-dot {
+      background: #d97706;
+    }
+
+    /* Drive Course Pin Styling */
+    .drive-pin .pin-title {
+      background: #0284c7;
+      color: #ffffff;
+    }
+    .drive-pin .pin-data {
+      border-color: #bae6fd;
+    }
+    .drive-pin .pin-dot {
+      background: #0ea5e9;
+    }
+    .drive-pin .spa-pin-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0369a1;
+    }
+    .drive-pin:hover .pin-title {
+      background: #0ea5e9;
+    }
+    .drive-pin:hover .pin-data {
+      border-color: #0ea5e9;
+    }
+    .drive-pin.active .pin-title {
+      background: #0284c7 !important;
+    }
+    .drive-pin.active .pin-data {
+      border-color: #0284c7 !important;
+    }
+    .drive-pin.active .pin-dot {
+      background: #0284c7;
+    }
     .pin.hidden-search {
       display: none !important;
     }
 
     /* Winter Spa Pin Styling */
+    
+    /* Book Spot Library Pin Styling (📚 랜드마크 & 감성 도서관 10선) */
+    .book-spot-pin .pin-title {
+      background: #2b5876;
+      color: #ffffff;
+    }
+    .book-spot-pin .pin-data {
+      border-color: #70a1ff;
+    }
+    .book-spot-pin .pin-dot {
+      background: #4e54c8;
+    }
+    .book-spot-pin .spa-pin-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #2b5876;
+    }
+    .book-spot-pin:hover .pin-title {
+      background: #4e54c8;
+    }
+    .book-spot-pin:hover .pin-data {
+      border-color: #4e54c8;
+    }
+    .book-spot-pin.active .pin-title {
+      background: #1e3c72 !important;
+    }
+    .book-spot-pin.active .pin-data {
+      border-color: #1e3c72 !important;
+    }
+    .book-spot-pin.active .pin-dot {
+      background: #1e3c72;
+    }
+
     .winter-spa-pin .pin-title {
       background: #d35400;
       color: #ffffff;
@@ -1675,14 +1772,23 @@
       <button type="button" class="layer-tab" id="tabKto100Btn" data-layer-btn="kto100" aria-pressed="false" onclick="toggleLayer('kto100')">
         <span>🇰🇷</span> <span id="tabKto100Label">한국관광 100선</span> <span class="layer-state-pill" id="kto100StatePill">OFF</span>
       </button>
+            <button type="button" class="layer-tab active" id="tabBookSpotBtn" data-layer-btn="bookSpot" aria-pressed="true" onclick="toggleLayer('bookSpot')">
+        <span>📚</span> <span id="tabBookSpotLabel">감성 도서관 (10선)</span> <span class="layer-state-pill" id="bookSpotStatePill">ON</span>
+      </button>
       <button type="button" class="layer-tab active" id="tabWinterSpaBtn" data-layer-btn="winterSpa" aria-pressed="true" onclick="toggleLayer('winterSpa')">
-        <span>♨️</span> <span id="tabWinterSpaLabel">겨울 노천온천 (10선)</span> <span class="layer-state-pill" id="winterSpaStatePill">ON</span>
+        <span>♨️</span> <span id="tabWinterSpaLabel">겨울 노천온천 (33선)</span> <span class="layer-state-pill" id="winterSpaStatePill">ON</span>
       </button>
       <button type="button" class="layer-tab active" id="tabSaunaBtn" data-layer-btn="sauna" aria-pressed="true" onclick="toggleLayer('sauna')">
         <span>🧖</span> <span id="tabSaunaLabel">사우나·찜질방 (10선)</span> <span class="layer-state-pill" id="saunaStatePill">ON</span>
       </button>
       <button type="button" class="layer-tab active" id="tabSkiSledBtn" data-layer-btn="skiSled" aria-pressed="true" onclick="toggleLayer('skiSled')">
         <span>⛷️</span> <span id="tabSkiSledLabel">스키·눈썰매 (20선)</span> <span class="layer-state-pill" id="skiSledStatePill">ON</span>
+      </button>
+      <button type="button" class="layer-tab active" id="tabNightViewBtn" data-layer-btn="nightView" aria-pressed="true" onclick="toggleLayer('nightView')">
+        <span>🌃</span> <span id="tabNightViewLabel">야경·빛축제 (10선)</span> <span class="layer-state-pill" id="nightViewStatePill">ON</span>
+      </button>
+      <button type="button" class="layer-tab active" id="tabDriveCourseBtn" data-layer-btn="driveCourse" aria-pressed="true" onclick="toggleLayer('driveCourse')">
+        <span>🚗</span> <span id="tabDriveCourseLabel">드라이브 코스 (10선)</span> <span class="layer-state-pill" id="driveCourseStatePill">ON</span>
       </button>
       <button type="button" class="layer-tab active" id="tabUserPlacesBtn" data-layer-btn="userPlaces" aria-pressed="true" onclick="toggleLayer('userPlaces')">
         <span>📍</span> <span id="tabUserPlacesLabel">추천 장소</span> <span class="layer-state-pill" id="userPlacesStatePill">ON</span>
@@ -2565,6 +2671,78 @@
       </div>
 
     
+      
+      <!-- [감성 도서관 10선 레이어: 랜드마크 & 국공립 도서관] -->
+      <!-- 1. 스타필드 코엑스 별마당 도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-01" data-layer="bookSpot" data-region="gyeonggi" data-name-ko="스타필드 코엑스 별마당 도서관" data-name-en="Starfield COEX Byeolmadang Library" data-sub-ko="서울 강남구 영동대로" data-sub-en="Gangnam, Seoul" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 305px; left: 285px;">
+        <span class="pin-title">코엑스 별마당</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 13m 곡선 서가</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 2. 스타필드 수원 별마당 도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-02" data-layer="bookSpot" data-region="gyeonggi" data-name-ko="스타필드 수원 별마당 도서관" data-name-en="Starfield Suwon Byeolmadang Library" data-sub-ko="경기 수원시 장안구" data-sub-en="Suwon, Gyeonggi" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 335px; left: 275px;">
+        <span class="pin-title">수원 별마당</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 22m 웅장한 행성 서가</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 3. 국립중앙도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-03" data-layer="bookSpot" data-region="gyeonggi" data-name-ko="국립중앙도서관" data-name-en="National Library of Korea" data-sub-ko="서울 서초구 반포대로" data-sub-en="Seocho, Seoul" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 312px; left: 270px;">
+        <span class="pin-title">국립중앙도서관</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 대한민국 도서의 심장</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 4. 서울도서관 (구 서울시청) -->
+      <div class="pin book-spot-pin" id="pin-book-04" data-layer="bookSpot" data-region="gyeonggi" data-name-ko="서울도서관" data-name-en="Seoul Metropolitan Library" data-sub-ko="서울 중구 세종대로" data-sub-en="Jung-gu, Seoul" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 290px; left: 270px;">
+        <span class="pin-title">서울도서관</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 1926년 르네상스 건축</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 5. 의정부 미술도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-05" data-layer="bookSpot" data-region="gyeonggi" data-name-ko="의정부 미술도서관" data-name-en="Uijeongbu Art Library" data-sub-ko="경기 의정부시 민락동" data-sub-en="Uijeongbu, Gyeonggi" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 258px; left: 280px;">
+        <span class="pin-title">의정부 미술도서관</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 건축대상 수상 나선서가</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 6. 파주출판도시 지혜의숲 -->
+      <div class="pin book-spot-pin" id="pin-book-06" data-layer="bookSpot" data-region="gyeonggi" data-name-ko="파주출판도시 지혜의숲" data-name-en="Forest of Wisdom Paju" data-sub-ko="경기 파주시 문발동" data-sub-en="Paju, Gyeonggi" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 265px; left: 235px;">
+        <span class="pin-title">파주 지혜의숲</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 8m 초대형 서가 숲</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 7. 배곧 한울공원 해넘이다누리도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-07" data-layer="bookSpot" data-region="gyeonggi" data-name-ko="배곧 한울공원 해넘이다누리도서관" data-name-en="Baegot Hanul Park Danuri Library" data-sub-ko="경기 시흥시 정왕동" data-sub-en="Siheung, Gyeonggi" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 320px; left: 245px;">
+        <span class="pin-title">배곧 해넘이도서관</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 서해 낙조 오션뷰 서재</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 8. 국립세종도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-08" data-layer="bookSpot" data-region="chungnam" data-name-ko="국립세종도서관" data-name-en="National Library of Korea, Sejong" data-sub-ko="세종 다솜3로" data-sub-en="Sejong" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 425px; left: 345px;">
+        <span class="pin-title">국립세종도서관</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 호수공원 품은 곡선 미학</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 9. 전주시립 연화정도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-09" data-layer="bookSpot" data-region="jeonbuk" data-name-ko="전주시립 연화정도서관" data-name-en="Jeonju Yeonhwajeong Library" data-sub-ko="전북 전주시 덕진구" data-sub-en="Jeonju, Jeonbuk" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 550px; left: 325px;">
+        <span class="pin-title">전주 연화정도서관</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 연꽃 연못 한가운데 한옥</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 10. 부산도서관 -->
+      <div class="pin book-spot-pin" id="pin-book-10" data-layer="bookSpot" data-region="gyeongnam" data-name-ko="부산도서관" data-name-en="Busan Metropolitan Library" data-sub-ko="부산 사상구 사상로" data-sub-en="Sasang, Busan" data-cat-ko="도서관·복합문화" data-cat-en="Library" data-icon="📚" style="top: 655px; left: 545px;">
+        <span class="pin-title">부산도서관</span>
+        <div class="pin-data"><span class="spa-pin-badge">📚 서부산 문화허브 랜드마크</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
       <!-- [겨울 시즌 노천 온천 10선 레이어] -->
       <!-- 1. 설악 척산온천휴양촌 (강원 속초) -->
       <div class="pin winter-spa-pin" id="pin-spa-01" data-layer="winterSpa" data-region="gangwon" data-name-ko="설악 척산온천휴양촌" data-name-en="Cheoksan Onsen Resort" data-sub-ko="강원 속초시 노학동" data-sub-en="Sokcho, Gangwon" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 170px; left: 565px;">
@@ -2633,6 +2811,167 @@
       <div class="pin winter-spa-pin" id="pin-spa-10" data-layer="winterSpa" data-region="jeonnam" data-name-ko="지리산 온천랜드" data-name-en="Jirisan Hot Spring Land" data-sub-ko="전남 구례군 산동면" data-sub-en="Gurye, Jeonnam" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 660px; left: 380px;">
         <span class="pin-title">지리산 온천랜드</span>
         <div class="pin-data"><span class="spa-pin-badge">♨️ 지리산 게르마늄 노천스파</span></div>
+
+      <!-- 11. 이천 테르메덴 (경기 이천) -->
+      <div class="pin winter-spa-pin" id="pin-spa-11" data-layer="winterSpa" data-region="gyeonggi" data-name-ko="이천 테르메덴" data-name-en="Icheon Termeden" data-sub-ko="경기 이천시 사실로 988" data-sub-en="Icheon, Gyeonggi" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 345px; left: 340px;">
+        <span class="pin-title">이천 테르메덴</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 독일식 숲속 온천스파</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 12. 화성 율암온천 (경기 화성) -->
+      <div class="pin winter-spa-pin" id="pin-spa-12" data-layer="winterSpa" data-region="gyeonggi" data-name-ko="화성 율암온천" data-name-en="Yulam Hot Spring" data-sub-ko="경기 화성시 온천로 434-14" data-sub-en="Hwaseong, Gyeonggi" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 345px; left: 245px;">
+        <span class="pin-title">화성 율암온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 천연 알칼리 참숯가마</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 13. 화성 발안식염온천 (경기 화성) -->
+      <div class="pin winter-spa-pin" id="pin-spa-13" data-layer="winterSpa" data-region="gyeonggi" data-name-ko="화성 발안식염온천" data-name-en="Baran Saline Hot Spring" data-sub-ko="경기 화성시 장안면 수촌리" data-sub-en="Hwaseong, Gyeonggi" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 362px; left: 236px;">
+        <span class="pin-title">발안식염온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 심층 식염 미네랄 온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 14. 화성 월문온천 (경기 화성) -->
+      <div class="pin winter-spa-pin" id="pin-spa-14" data-layer="winterSpa" data-region="gyeonggi" data-name-ko="화성 월문온천" data-name-en="Wolmun Hot Spring" data-sub-ko="경기 화성시 팔탄면 버들로" data-sub-en="Hwaseong, Gyeonggi" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 335px; left: 252px;">
+        <span class="pin-title">화성 월문온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 프라이빗 가족 온천탕</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 15. 포천 신북온천 스프링폴 (경기 포천) -->
+      <div class="pin winter-spa-pin" id="pin-spa-15" data-layer="winterSpa" data-region="gyeonggi" data-name-ko="포천 신북온천 스프링폴" data-name-en="Sinbuk Resort Springfall" data-sub-ko="경기 포천시 신북면 청신로" data-sub-en="Pocheon, Gyeonggi" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 215px; left: 295px;">
+        <span class="pin-title">신북온천 스프링폴</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 중탄산나트륨 유황온천풀</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 16. 포천 일동제일유황온천 (경기 포천) -->
+      <div class="pin winter-spa-pin" id="pin-spa-16" data-layer="winterSpa" data-region="gyeonggi" data-name-ko="포천 일동제일유황온천" data-name-en="Ildong Jeil Sulfur Hot Spring" data-sub-ko="경기 포천시 일동면 화대리" data-sub-en="Pocheon, Gyeonggi" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 228px; left: 312px;">
+        <span class="pin-title">일동제일유황온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 일동 유황온천 대중탕</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 17. 양양 오색그린야드호텔 온천 (강원 양양) -->
+      <div class="pin winter-spa-pin" id="pin-spa-17" data-layer="winterSpa" data-region="gangwon" data-name-ko="양양 오색그린야드호텔 온천" data-name-en="Osaek Greenyard Hotel Onsen" data-sub-ko="강원 양양군 서면 대청봉길" data-sub-en="Yangyang, Gangwon" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 188px; left: 546px;">
+        <span class="pin-title">오색그린야드 온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 설악산 복합 탄산온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 18. 고성 오션플레이 델피노 (강원 고성) -->
+      <div class="pin winter-spa-pin" id="pin-spa-18" data-layer="winterSpa" data-region="gangwon" data-name-ko="고성 오션플레이 델피노" data-name-en="Ocean Play Delpino" data-sub-ko="강원 고성군 토성면 미시령옛길" data-sub-en="Goseong, Gangwon" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 152px; left: 558px;">
+        <span class="pin-title">오션플레이 델피노</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 울산바위뷰 인피니티</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 19. 동해보양온천 컨벤션호텔 (강원 동해) -->
+      <div class="pin winter-spa-pin" id="pin-spa-19" data-layer="winterSpa" data-region="gangwon" data-name-ko="동해보양온천 컨벤션호텔" data-name-en="Donghae Grand Resort Onsen" data-sub-ko="강원 동해시 망상동 동해대로" data-sub-en="Donghae, Gangwon" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 272px; left: 612px;">
+        <span class="pin-title">동해보양온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 망상해변 해수온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 20. 부산 동래 녹천탕 (부산 동래) -->
+      <div class="pin winter-spa-pin" id="pin-spa-20" data-layer="winterSpa" data-region="gyeongnam" data-name-ko="부산 동래 녹천탕" data-name-en="Nokcheontang Dongnae" data-sub-ko="부산 동래구 온천장로107번길" data-sub-en="Dongnae, Busan" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 638px; left: 552px;">
+        <span class="pin-title">동래 녹천탕</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 동래온천 원조 대중탕</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 21. 창녕 일성부곡온천콘도&리조트 (경남 창녕) -->
+      <div class="pin winter-spa-pin" id="pin-spa-21" data-layer="winterSpa" data-region="gyeongnam" data-name-ko="창녕 일성부곡온천콘도&리조트" data-name-en="Ilsung Bugok Hot Spring Resort" data-sub-ko="경남 창녕군 부곡면 온천중앙로" data-sub-en="Changnyeong, Gyeongnam" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 596px; left: 494px;">
+        <span class="pin-title">일성부곡온천콘도</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 78℃ 고온 천연 부곡온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 22. 거제도해수온천 (경남 거제) -->
+      <div class="pin winter-spa-pin" id="pin-spa-22" data-layer="winterSpa" data-region="gyeongnam" data-name-ko="거제도해수온천" data-name-en="Geojedo Seawater Hot Spring" data-sub-ko="경남 거제시 수양로 507" data-sub-en="Geoje, Gyeongnam" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 706px; left: 508px;">
+        <span class="pin-title">거제도해수온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 청정 지하 암반 해수탕</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 23. 서귀포 오레브 핫스프링 앤 스파 (제주 서귀포) -->
+      <div class="pin winter-spa-pin" id="pin-spa-23" data-layer="winterSpa" data-region="jeju" data-name-ko="서귀포 오레브 핫스프링 앤 스파" data-name-en="Orev Hot Spring & Spa" data-sub-ko="제주 서귀포시 호근동" data-sub-en="Seogwipo, Jeju" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 884px; left: 262px;">
+        <span class="pin-title">오레브 핫스프링</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 서귀포 오션뷰 야외온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 24. 제주 부림온천 (제주 제주시) -->
+      <div class="pin winter-spa-pin" id="pin-spa-24" data-layer="winterSpa" data-region="jeju" data-name-ko="제주 부림온천" data-name-en="Burim Onsen Jeju" data-sub-ko="제주 제주시 사평2길" data-sub-en="Jeju City, Jeju" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 840px; left: 262px;">
+        <span class="pin-title">제주 부림온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 제주 도심 힐링 온천탕</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 25. 디아넥스 아라고나이트 온천 (제주 서귀포) -->
+      <div class="pin winter-spa-pin" id="pin-spa-25" data-layer="winterSpa" data-region="jeju" data-name-ko="디아넥스 아라고나이트 온천" data-name-en="The Annex Aragonite Hot Spring" data-sub-ko="제주 서귀포시 안덕면 산록남로" data-sub-en="Seogwipo, Jeju" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 866px; left: 242px;">
+        <span class="pin-title">디아넥스 아라고나이트</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 희귀 아라고나이트 고온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 26. 아산 온양관광호텔 온천 (충남 아산) -->
+      <div class="pin winter-spa-pin" id="pin-spa-26" data-layer="winterSpa" data-region="chungnam" data-name-ko="아산 온양관광호텔 온천" data-name-en="Onyang Grand Hotel Hot Spring" data-sub-ko="충남 아산시 온천대로 1459" data-sub-en="Asan, Chungnam" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 396px; left: 318px;">
+        <span class="pin-title">온양관광호텔 온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 1300년 역사 조선왕실 온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 27. 충주 앙성탄산온천 (충북 충주) -->
+      <div class="pin winter-spa-pin" id="pin-spa-27" data-layer="winterSpa" data-region="chungbuk" data-name-ko="충주 앙성탄산온천" data-name-en="Angseong Carbonate Hot Spring" data-sub-ko="충북 충주시 앙성면 가곡로" data-sub-en="Chungju, Chungbuk" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 342px; left: 402px;">
+        <span class="pin-title">충주 앙성탄산온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 톡톡 터지는 천연 탄산수</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 28. 청송 소노벨 솔샘온천 (경북 청송) -->
+      <div class="pin winter-spa-pin" id="pin-spa-28" data-layer="winterSpa" data-region="gyeongbuk" data-name-ko="청송 소노벨 솔샘온천" data-name-en="Solsaem Hot Springs Cheongsong" data-sub-ko="경북 청송군 주왕산면 주왕산로" data-sub-en="Cheongsong, Gyeongbuk" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 428px; left: 554px;">
+        <span class="pin-title">청송 솔샘온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 주왕산 피톤치드 솔숲 노천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 29. 포항 보경사온천파크 (경북 포항) -->
+      <div class="pin winter-spa-pin" id="pin-spa-29" data-layer="winterSpa" data-region="gyeongbuk" data-name-ko="포항 보경사온천파크" data-name-en="Bogyeongsa Hot Spring Park" data-sub-ko="경북 포항시 북구 송라면" data-sub-en="Pohang, Gyeongbuk" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 476px; left: 582px;">
+        <span class="pin-title">보경사온천파크</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 내연산 천연 알칼리 온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 30. 대구 수목원 생활온천 (대구 달서) -->
+      <div class="pin winter-spa-pin" id="pin-spa-30" data-layer="winterSpa" data-region="gyeongbuk" data-name-ko="대구 수목원 생활온천" data-name-en="Daegu Arboretum Living Hot Spring" data-sub-ko="대구 달서구 상화로 79" data-sub-en="Dalseo, Daegu" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 538px; left: 486px;">
+        <span class="pin-title">수목원 생활온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 대구 도심 힐링 천연온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 31. 김제 쿰다스파랜드 (전북 김제) -->
+      <div class="pin winter-spa-pin" id="pin-spa-31" data-layer="winterSpa" data-region="jeonbuk" data-name-ko="김제 쿰다스파랜드" data-name-en="Qumda Spa Land" data-sub-ko="전북 김제시 금산면 모악로" data-sub-en="Gimje, Jeonbuk" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 568px; left: 274px;">
+        <span class="pin-title">쿰다스파랜드</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 모악산 온천 워터스파</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 32. 완주 죽림온천 (전북 완주) -->
+      <div class="pin winter-spa-pin" id="pin-spa-32" data-layer="winterSpa" data-region="jeonbuk" data-name-ko="완주 죽림온천" data-name-en="Jungnim Hot Spring" data-sub-ko="완주군 상관면 죽림편백길" data-sub-en="Wanju, Jeonbuk" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 552px; left: 312px;">
+        <span class="pin-title">완주 죽림온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 상관 편백숲 유황온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <!-- 33. 화순 썬웨이 도곡온천 (전남 화순) -->
+      <div class="pin winter-spa-pin" id="pin-spa-33" data-layer="winterSpa" data-region="jeonnam" data-name-ko="화순 썬웨이 도곡온천" data-name-en="Sunway Dogok Hot Spring" data-sub-ko="전남 화순군 도곡면 온천1길" data-sub-en="Hwasun, Jeonnam" data-cat-ko="온천·스파" data-cat-en="Hot Spring" data-icon="♨️" style="top: 714px; left: 288px;">
+        <span class="pin-title">썬웨이 도곡온천</span>
+        <div class="pin-data"><span class="spa-pin-badge">♨️ 도곡온천지구 가족 온천</span></div>
+        <div class="pin-dot"></div>
+      </div>
         <div class="pin-dot"></div>
       </div>
 
@@ -2709,6 +3048,12 @@
 
       <!-- 전국 스키장·눈썰매장 20선 컨테이너 (2025-2026 시즌 운영 기준 동적 렌더링) -->
       <div id="skiSledPinsContainer"></div>
+
+      <!-- 전국 야경 & 불꽃·빛축제 10선 컨테이너 -->
+      <div id="nightViewPinsContainer"></div>
+
+      <!-- 전국 오션뷰 & 설경 드라이브 코스 10선 컨테이너 -->
+      <div id="driveCoursePinsContainer"></div>
 
       <!-- 사용자 등록 핀 컨테이너 (로컬 저장소 동적 렌더링) -->
       <div id="userPinsContainer"></div>
@@ -4667,7 +5012,30 @@
     { id: 'pin-spa-07', num: 7, region: 'chungbuk', nameKo: '포레스트 리솜 해브나인 스파', nameEn: 'Forest Resom Have9 Spa', subKo: '충북 제천시 백운면', subEn: 'Jecheon, Chungbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '원시림 숲속 바위 틈에 마련된 프라이빗 스톤스파와 인피니티풀에서 사계절 자연 풍경을 누리는 감성 온천입니다.', descEn: 'A scenic retreat nestled in deep primeval woodland, featuring private stone baths and an infinity thermal pool with four-season forest views.', feature: '숲속 인피니티 스톤스파', featureEn: 'Forest Infinity Stone Spa', icon: '♨️' },
     { id: 'pin-spa-08', num: 8, region: 'chungbuk', nameKo: '수안보 온천 (파크호텔)', nameEn: 'Suanbo Hot Springs', subKo: '충북 충주시 수안보면', subEn: 'Chungju, Chungbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '조선 태조가 피부병 치료를 위해 찾았던 왕의 온천으로, 소나무 숲을 마주한 야외 맥반석 노천탕이 유명합니다.', descEn: 'Known as the "King’s Hot Spring" visited by King Taejo of Joseon, famous for its outdoor elvan stone bath overlooking a pine forest.', feature: '왕의 온천 맥반석 노천탕', featureEn: 'King’s Elvan Stone Outdoor Bath', icon: '♨️' },
     { id: 'pin-spa-09', num: 9, region: 'gyeonggi', nameKo: '석모도 미네랄 온천', nameEn: 'Seokmodo Mineral Hot Springs', subKo: '인천 강화군 삼산면', subEn: 'Ganghwa, Incheon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '서해 바다 바로 앞에서 붉은 낙조를 바라보며 해양 암반수를 즐기는 해수 노천온천입니다.', descEn: 'A coastal seawater mineral outdoor bath right beside the West Sea, renowned for soaking while watching vibrant crimson sunsets.', feature: '서해 낙조 해수 노천탕', featureEn: 'Sunset Seawater Mineral Bath', icon: '♨️' },
-    { id: 'pin-spa-10', num: 10, region: 'jeonnam', nameKo: '지리산 온천랜드', nameEn: 'Jirisan Hot Spring Land', subKo: '전남 구례군 산동면', subEn: 'Gurye, Jeonnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '지리산 자락이 병풍처럼 둘러싸인 야외 테마파크형 온천으로 천연 게르마늄 온천수를 자랑합니다.', descEn: 'An open-air theme park hot spring framed by Mt. Jirisan’s ridges, celebrated for its natural germanium-rich thermal water.', feature: '지리산 게르마늄 노천스파', featureEn: 'Jirisan Germanium Outdoor Spa', icon: '♨️' }
+    { id: 'pin-spa-10', num: 10, region: 'jeonnam', nameKo: '지리산 온천랜드', nameEn: 'Jirisan Hot Spring Land', subKo: '전남 구례군 산동면', subEn: 'Gurye, Jeonnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '지리산 자락이 병풍처럼 둘러싸인 야외 테마파크형 온천으로 천연 게르마늄 온천수를 자랑합니다.', descEn: 'An open-air theme park hot spring framed by Mt. Jirisan’s ridges, celebrated for its natural germanium-rich thermal water.', feature: '지리산 게르마늄 노천스파', featureEn: 'Jirisan Germanium Outdoor Spa', icon: '♨️' },
+    { id: 'pin-spa-11', num: 11, region: 'gyeonggi', nameKo: '이천 테르메덴', nameEn: 'Icheon Termeden', subKo: '경기 이천시 사실로 988', subEn: 'Icheon, Gyeonggi', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '울창한 숲에 둘러싸인 아시아 최초의 독일식 온천 리조트로, 넓은 실내외 바데풀과 사계절 온천 인피니티풀이 유명합니다.', descEn: 'Asia’s first German-style thermal resort nestled in lush woodlands, featuring expansive indoor/outdoor bade pools and four-season infinity baths.', feature: '독일식 숲속 온천스파', featureEn: 'German Forest Water Spa', icon: '♨️' },
+    { id: 'pin-spa-12', num: 12, region: 'gyeonggi', nameKo: '화성 율암온천', nameEn: 'Yulam Hot Spring', subKo: '경기 화성시 온천로 434-14', subEn: 'Hwaseong, Gyeonggi', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '지하 700m 암반에서 용출되는 부드러운 천연 알칼리 온천수 노천탕과 전통 참숯가마 찜질을 동시에 즐기는 수도권 명소입니다.', descEn: 'A prime Gyeonggi thermal retreat gushing smooth natural alkaline spring water from 700 m underground, paired with traditional charcoal kiln baths.', feature: '천연 알칼리 참숯가마', featureEn: 'Natural Alkali & Charcoal Bath', icon: '♨️' },
+    { id: 'pin-spa-13', num: 13, region: 'gyeonggi', nameKo: '화성 발안식염온천', nameEn: 'Baran Saline Hot Spring', subKo: '경기 화성시 장안면 수촌리', subEn: 'Hwaseong, Gyeonggi', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '지하 암반에서 솟아나는 바닷물 성분의 식염 온천수로, 염분과 풍부한 미네랄이 함유되어 피로 회복과 피부 미용에 탁월합니다.', descEn: 'Rich in deep subterranean saline minerals, this unique saltwater hot spring relieves bodily fatigue and revitalizes skin.', feature: '심층 식염 미네랄 온천', featureEn: 'Deep Saline Mineral Bath', icon: '♨️' },
+    { id: 'pin-spa-14', num: 14, region: 'gyeonggi', nameKo: '화성 월문온천', nameEn: 'Wolmun Hot Spring', subKo: '경기 화성시 팔탄면 버들로', subEn: 'Hwaseong, Gyeonggi', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '화성 온천휴양단지의 중심지로, 객실 내 대형 스파 욕조를 갖춘 프라이빗 가족탕 숙소가 밀집해 가족·연인 휴식처로 인기입니다.', descEn: 'The hub of Hwaseong’s hot spring zone, widely loved by families and couples for comfortable private in-room spa suites.', feature: '프라이빗 가족 온천탕', featureEn: 'Private Family Thermal Bath', icon: '♨️' },
+    { id: 'pin-spa-15', num: 15, region: 'gyeonggi', nameKo: '포천 신북온천 스프링폴', nameEn: 'Sinbuk Resort Springfall', subKo: '경기 포천시 신북면 청신로', subEn: 'Pocheon, Gyeonggi', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '중탄산나트륨 천연 온천수를 사용하는 온천 테마파크로, 파도풀·유수풀과 설경을 마주하는 야외 노천탕을 함께 갖추고 있습니다.', descEn: 'A full-scale hot spring theme park fed by natural sodium bicarbonate waters, featuring outdoor snowy baths and wave pools.', feature: '중탄산나트륨 유황온천풀', featureEn: 'Sulfur & Bicarbonate Water Park', icon: '♨️' },
+    { id: 'pin-spa-16', num: 16, region: 'gyeonggi', nameKo: '포천 일동제일유황온천', nameEn: 'Ildong Jeil Sulfur Hot Spring', subKo: '경기 포천시 일동면 화대리', subEn: 'Pocheon, Gyeonggi', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '지하 800m에서 솟구치는 유황 온천수를 원수로 사용하는 포천 일동온천지구 대표 대중 온천탕입니다.', descEn: 'The historic flagship public bath of Pocheon’s Ildong onsen district, supplied by raw sulfur thermal water from 800 m deep underground.', feature: '일동 유황온천 대중탕', featureEn: 'Ildong Sulfur Mineral Bath', icon: '♨️' },
+    { id: 'pin-spa-17', num: 17, region: 'gangwon', nameKo: '양양 오색그린야드호텔 온천', nameEn: 'Osaek Greenyard Hotel Onsen', subKo: '강원 양양군 서면 대청봉길', subEn: 'Yangyang, Gangwon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '해발 650m 설악산 오색지구에 위치하며, 톡 쏘는 고농도 천연 탄산온천과 알칼리 온천을 동시에 즐길 수 있는 국민보양온천입니다.', descEn: 'A certified national wellness onsen nestled 650 m high in Seoraksan, famous for dual bubbling natural carbonate and alkaline baths.', feature: '설악산 천연 복합 탄산온천', featureEn: 'Seoraksan Carbonate & Alkali Bath', icon: '♨️' },
+    { id: 'pin-spa-18', num: 18, region: 'gangwon', nameKo: '고성 오션플레이 델피노', nameEn: 'Ocean Play Delpino', subKo: '강원 고성군 토성면 미시령옛길', subEn: 'Goseong, Gangwon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '소노펠리체 델피노 최상층에서 장엄한 설악산 울산바위를 정면으로 마주하며 천연 온천수를 누리는 대한민국 대표 뷰 맛집 온천입니다.', descEn: 'Korea’s most scenic rooftop hot spring atop Sonofelice Delpino, gazing right into the breathtaking crags of Mt. Seoraksan Ulsanbawi.', feature: '울산바위뷰 인피니티 온천', featureEn: 'Ulsanbawi Panoramic Infinity Bath', icon: '♨️' },
+    { id: 'pin-spa-19', num: 19, region: 'gangwon', nameKo: '동해보양온천 컨벤션호텔', nameEn: 'Donghae Grand Resort Onsen', subKo: '강원 동해시 망상동 동해대로', subEn: 'Donghae, Gangwon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '망상해수욕장 바로 앞에 위치한 행정안전부 승인 국민보양온천으로, 천연 암반 해수와 지장수 온천풀을 갖추고 있습니다.', descEn: 'A government-certified health resort by Mangsang Beach featuring natural coastal bedrock seawater and mineral thermal pools.', feature: '망상해변 국민보양 해수온천', featureEn: 'Mangsang Beach Seawater Spa', icon: '♨️' },
+    { id: 'pin-spa-20', num: 20, region: 'gyeongnam', nameKo: '부산 동래 녹천탕', nameEn: 'Nokcheontang Dongnae', subKo: '부산 동래구 온천장로107번길', subEn: 'Dongnae, Busan', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '신라시대부터 유래한 유서 깊은 부산 동래온천지구의 원조 대중 온천탕으로, 마그네슘이 풍부한 약알칼리 온천수를 자랑합니다.', descEn: 'The historic bedrock bathhouse of Busan’s Dongnae onsen district dating back to the Silla Dynasty, rich in pure magnesium alkali water.', feature: '동래온천 원조 대중탕', featureEn: 'Historic Dongnae Bath', icon: '♨️' },
+    { id: 'pin-spa-21', num: 21, region: 'gyeongnam', nameKo: '창녕 일성부곡온천콘도&리조트', nameEn: 'Ilsung Bugok Hot Spring Resort', subKo: '경남 창녕군 부곡면 온천중앙로', subEn: 'Changnyeong, Gyeongnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '국내 최고 수온인 78℃를 자랑하는 부곡온천지구의 대표 리조트로, 활성산소를 제거하는 유황 성분이 풍부합니다.', descEn: 'A prime resort in Korea’s hottest thermal district (78°C artesian water), famous for sulfur-rich healing minerals.', feature: '78℃ 고온 천연 부곡온천', featureEn: '78°C Artesian Bugok Bath', icon: '♨️' },
+    { id: 'pin-spa-22', num: 22, region: 'gyeongnam', nameKo: '거제도해수온천', nameEn: 'Geojedo Seawater Hot Spring', subKo: '경남 거제시 수양로 507', subEn: 'Geoje, Gyeongnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '거제도 청정 해안 지하 암반에서 솟구치는 염화나트륨 광천 온천수로, 바다 미네랄이 풍부한 온천수영장과 가족탕을 갖추었습니다.', descEn: 'Gushing natural sodium-chloride mineral spring water from deep coastal bedrock, offering mineral swimming pools and family tubs.', feature: '청정 지하 암반 해수탕', featureEn: 'Bedrock Seawater Bath', icon: '♨️' },
+    { id: 'pin-spa-23', num: 23, region: 'jeju', nameKo: '서귀포 오레브 핫스프링 앤 스파', nameEn: 'Orev Hot Spring & Spa', subKo: '제주 서귀포시 호근동', subEn: 'Seogwipo, Jeju', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '서귀포 푸른 바다를 내려다보며 사계절 천연 온천수를 즐길 수 있는 이국적인 럭셔리 야외 노천 스파 공간입니다.', descEn: 'An exotic luxury open-air oceanfront thermal spa where you can soak in pristine hot spring waters while gazing at Seogwipo’s coast.', feature: '서귀포 오션뷰 야외온천스파', featureEn: 'Seogwipo Ocean-View Spa', icon: '♨️' },
+    { id: 'pin-spa-24', num: 24, region: 'jeju', nameKo: '제주 부림온천', nameEn: 'Burim Onsen Jeju', subKo: '제주 제주시 사평2길', subEn: 'Jeju City, Jeju', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '제주시 도심 인근에 위치해 여행 전후 피로를 풀기 좋은 대중 온천으로, 깔끔한 수질과 온천 사우나 시설을 갖추고 있습니다.', descEn: 'A beloved local thermal bathhouse in downtown Jeju City, ideal for relaxing body and soul before or after island travels.', feature: '제주 도심 힐링 온천탕', featureEn: 'Jeju Urban Thermal Bath', icon: '♨️' },
+    { id: 'pin-spa-25', num: 25, region: 'jeju', nameKo: '디아넥스 아라고나이트 온천', nameEn: 'The Annex Aragonite Hot Spring', subKo: '제주 서귀포시 안덕면 산록남로', subEn: 'Seogwipo, Jeju', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '포도호텔·디아넥스에서 즐기는 국내 유일의 심층 고온천으로, 우윳빛을 띠는 희귀 탄산칼슘 아라고나이트 성분이 피부를 부드럽게 해줍니다.', descEn: 'Korea’s sole milky deep-layer artesian hot spring at The Annex Hotel, enriched with rare skin-nourishing aragonite calcium minerals.', feature: '희귀 아라고나이트 심층 고온천', featureEn: 'Rare Aragonite Deep Spring', icon: '♨️' },
+    { id: 'pin-spa-26', num: 26, region: 'chungnam', nameKo: '아산 온양관광호텔 온천', nameEn: 'Onyang Grand Hotel Hot Spring', subKo: '충남 아산시 온천대로 1459', subEn: 'Asan, Chungnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '백제시대부터 1300년 역사를 이어온 조선 왕실의 온천 행궁 터로, 세종대왕과 숙종이 찾았던 최고(最古)의 알칼리 온천입니다.', descEn: 'The historic royal bath grounds where Joseon kings soaked, reigning as Korea’s oldest documented 1300-year alkaline thermal spring.', feature: '1300년 역사 조선왕실 온천', featureEn: '1300-Yr Historic Royal Bath', icon: '♨️' },
+    { id: 'pin-spa-27', num: 27, region: 'chungbuk', nameKo: '충주 앙성탄산온천', nameEn: 'Angseong Carbonate Hot Spring', subKo: '충북 충주시 앙성면 가곡로', subEn: 'Chungju, Chungbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '입욕 시 온몸에 탄산 기포가 맺히며 모세혈관을 자극하는 국내 대표 천연 탄산온천으로, 청량한 입욕감과 혈액순환 효과가 탁월합니다.', descEn: 'A premier natural sparkling hot spring where fine carbon dioxide bubbles tingle all over the body, boosting blood circulation.', feature: '톡톡 터지는 천연 탄산수', featureEn: 'Sparkling Carbonate Spring', icon: '♨️' },
+    { id: 'pin-spa-28', num: 28, region: 'gyeongbuk', nameKo: '청송 소노벨 솔샘온천', nameEn: 'Solsaem Hot Springs Cheongsong', subKo: '경북 청송군 주왕산면 주왕산로', subEn: 'Cheongsong, Gyeongbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '주왕산 자락 울창한 소나무 숲에서 뿜어져 나오는 피톤치드와 함께 히노키 노천탕에서 2개의 온천공 천연수를 즐기는 감성 온천입니다.', descEn: 'A poetic open-air hinoki bath nestled beneath Juwangsan’s fragrant pine forests, fed by two pure natural mineral springs.', feature: '주왕산 피톤치드 솔숲 노천탕', featureEn: 'Juwangsan Pine Forest Outdoor Bath', icon: '♨️' },
+    { id: 'pin-spa-29', num: 29, region: 'gyeongbuk', nameKo: '포항 보경사온천파크', nameEn: 'Bogyeongsa Hot Spring Park', subKo: '경북 포항시 북구 송라면', subEn: 'Pohang, Gyeongbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '12폭포로 유명한 내연산 보경사 입구에 위치하여 등산 후 피로를 풀기 좋은 지하 650m 알칼리 천연 온천탕입니다.', descEn: 'An alkaline natural hot spring at the foot of Mt. Naeyeonsan near Bogyeongsa Temple, perfect for unwinding after hiking.', feature: '내연산 천연 알칼리 온천', featureEn: 'Naeyeonsan Alkali Spring', icon: '♨️' },
+    { id: 'pin-spa-30', num: 30, region: 'gyeongbuk', nameKo: '대구 수목원 생활온천', nameEn: 'Daegu Arboretum Living Hot Spring', subKo: '대구 달서구 상화로 79', subEn: 'Dalseo, Daegu', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '대구 도심 수목원 인근 지하 700m에서 솟구치는 천연 온천수를 사용하며, 다양한 수치료 바데풀과 노천탕 시설을 갖춘 도심 휴양지입니다.', descEn: 'A refreshing urban thermal oasis near Daegu Arboretum, offering hydrotherapy pools and outdoor tubs sourced from 700 m underground.', feature: '대구 도심 힐링 천연온천', featureEn: 'Urban Natural Mineral Bath', icon: '♨️' },
+    { id: 'pin-spa-31', num: 31, region: 'jeonbuk', nameKo: '김제 쿰다스파랜드', nameEn: 'Qumda Spa Land', subKo: '전북 김제시 금산면 모악로', subEn: 'Gimje, Jeonbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '모악산 자락 청정 온천수를 활용한 워터파크형 복합 스파랜드로, 실내외 바데풀과 가족형 온천 물놀이 시설을 완비했습니다.', descEn: 'A family-friendly thermal water park resort set beside Mt. Moaksan, offering indoor and outdoor hydro-spa pools.', feature: '모악산 온천 워터스파', featureEn: 'Moaksan Thermal Water Park', icon: '♨️' },
+    { id: 'pin-spa-32', num: 32, region: 'jeonbuk', nameKo: '완주 죽림온천', nameEn: 'Jungnim Hot Spring', subKo: '완주군 상관면 죽림편백길', subEn: 'Wanju, Jeonbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '전주 근교 상관 편백나무 숲 인근에 자리하여 피톤치드 힐링과 함께 유황 및 알칼리 천연 온천욕을 즐길 수 있는 호남의 쉼터입니다.', descEn: 'Located near the famous Sangwan cypress forest near Jeonju, offering soothing sulfur-alkaline baths amidst phytoncide breezes.', feature: '상관 편백숲 유황 알칼리 온천', featureEn: 'Cypress Forest Sulfur Spring', icon: '♨️' },
+    { id: 'pin-spa-33', num: 33, region: 'jeonnam', nameKo: '화순 썬웨이 도곡온천', nameEn: 'Sunway Dogok Hot Spring', subKo: '전남 화순군 도곡면 온천1길', subEn: 'Hwasun, Jeonnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '남도의 대표 온천 관광지인 도곡온천지구에 위치하며, 리튬과 염화나트륨이 풍부한 양질의 유황 온천수를 가족과 편안하게 즐기기 좋습니다.', descEn: 'A peaceful thermal getaway in Dogok Onsen District, rich in therapeutic lithium and sodium-chloride sulfur minerals.', feature: '도곡온천지구 가족 온천욕', featureEn: 'Dogok Hot Springs Retreat', icon: '♨️' }
   ];
   const WINTER_SPA_MAP = new Map(WINTER_SPA_DATA.map(s => [s.id, s]));
 
@@ -4717,6 +5085,40 @@
     { id: 'pin-ski-20', num: 20, type: 'sled', region: 'gyeongbuk', nameKo: '대구 이월드 스노우월드', nameEn: 'Daegu E-World Snow World', shortKo: '이월드 스노우', shortEn: 'E-World Snow', subKo: '대구 달서구 두류공원로', subEn: 'Daegu', catKo: '눈썰매장', catEn: 'Snow Sled', feature: '130m 도심 대형 눈썰매', featureEn: '130m Downtown Snow Slide', descKo: '대구 도심 테마파크 이월드 판타지광장에 조성되는 130m 초대형 눈썰매 슬로프와 눈놀이터 겨울 명소입니다.', descEn: 'An urban winter snow attraction in Daegu’s E-World theme park offering a 130 m mega snow sled slide and snow playground.', icon: '🛷', top: 520, left: 515 }
   ];
   const SKI_SLED_MAP = new Map(SKI_SLED_DATA.map(s => [s.id, s]));
+
+  // ==========================================================
+  // 전국 야경 & 불꽃·빛축제 10선 (nightView)
+  // ==========================================================
+  const NIGHT_VIEW_DATA = [
+    { id: 'pin-night-01', num: 1, region: 'gyeonggi', icon: '🌃', nameKo: 'N서울타워 & 남산 야경', nameEn: 'N Seoul Tower & Namsan Night View', shortKo: 'N서울타워', shortEn: 'N Seoul Tower', subKo: '서울 용산구 남산공원길', subEn: 'Yongsan, Seoul', catKo: '도심·타워 야경', catEn: 'City & Tower Night View', feature: '서울 도심 360도 파노라마', featureEn: '360° Panoramic Cityscape', descKo: '해발 480m 남산 정상에서 서울 전경을 360도 파노라마로 굽어보는 대한민국 대표 랜드마크 야경 명소입니다.', descEn: 'Korea’s premier landmark overlooking Seoul’s panoramic skyline from atop Mt. Namsan.', top: 272, left: 288 },
+    { id: 'pin-night-02', num: 2, region: 'gyeonggi', icon: '🏮', nameKo: '수원 화성 방화수류정 & 화홍문 야경', nameEn: 'Suwon Hwaseong Banghwasuryujeong Night View', shortKo: '방화수류정', shortEn: 'Banghwasuryujeong', subKo: '경기 수원시 팔달구 매향동', subEn: 'Suwon, Gyeonggi', catKo: '성곽·누각 야경', catEn: 'Fortress & Pavilion Night View', feature: '달빛 연못과 은은한 성곽 불빛', featureEn: 'Moonlit Pond & Illuminated Fortress', descKo: '용연 연못에 비치는 조선 성곽 누각과 성곽길을 따라 은은하게 켜지는 달빛 조명이 환상적인 야경 명소입니다.', descEn: 'A magical night spot where historic Joseon fortress pavilions reflect across the Yongyeon pond.', top: 335, left: 268 },
+    { id: 'pin-night-03', num: 3, region: 'gyeonggi', icon: '🌉', nameKo: '송도 센트럴파크 & 트라이보울', nameEn: 'Songdo Central Park & Tri-bowl Night View', shortKo: '송도센트럴파크', shortEn: 'Songdo Park', subKo: '인천 연수구 송도동', subEn: 'Yeonsu, Incheon', catKo: '도심·수변 야경', catEn: 'Waterfront Skyline', feature: '미래도시 마천루 & 한옥 반영', featureEn: 'Futuristic Skyline & Hanok Reflection', descKo: '해수 인공호수 위로 펼쳐지는 미래지향적 초고층 빌딩과 한옥호텔의 고즈넉한 불빛이 환상적인 반영을 이룹니다.', descEn: 'Futuristic skyscrapers reflecting along seawater canals alongside traditional Korean hanok rooflines.', top: 295, left: 215 },
+    { id: 'pin-night-04', num: 4, region: 'gyeonggi', icon: '✨', nameKo: '아침고요수목원 오색별빛정원전', nameEn: 'The Garden of Morning Calm Light Festival', shortKo: '아침고요빛축제', shortEn: 'Morning Calm Lights', subKo: '경기 가평군 상면', subEn: 'Gapyeong, Gyeonggi', catKo: '빛축제·수목원', catEn: 'Botanical Light Show', feature: '10만 평 정원 은하수 조명', featureEn: '100,000 Pyeong Galaxy Illuminations', descKo: '한국 자연미를 담은 정원 위에 수만 개의 친환경 LED 전구가 불을 밝혀 겨울밤 동화 같은 은하수를 만듭니다.', descEn: 'Korea’s flagship botanical garden transformed into a winter fairytale wonderland covered in millions of jewel-toned lights.', top: 215, left: 345 },
+    { id: 'pin-night-05', num: 5, region: 'gangwon', icon: '🌃', nameKo: '춘천 구봉산 전망대 카페거리', nameEn: 'Chuncheon Gubongsan Mountain Observatory', shortKo: '구봉산전망대', shortEn: 'Gubongsan View', subKo: '강원 춘천시 동면', subEn: 'Chuncheon, Gangwon', catKo: '전망대·카페거리', catEn: 'Mountain Ridge Cafe View', feature: '해발 441m 춘천 시가지 파노라마', featureEn: 'High-Altitude City Lights', descKo: '산등성이를 따라 감각적인 전망 카페들이 모여 있어, 따뜻한 커피 한 잔과 함께 춘천 시내 야경을 감상할 수 있습니다.', descEn: 'A scenic ridge lined with aesthetic cafes overlooking the shimmering lights of Chuncheon city and lakes below.', top: 210, left: 425 },
+    { id: 'pin-night-06', num: 6, region: 'gyeongbuk', icon: '✨', nameKo: '대구 이월드 83타워 별빛축제', nameEn: 'Daegu E-World 83 Tower Starlight Festival', shortKo: '이월드 83타워', shortEn: '83 Tower Lights', subKo: '대구 달서구 두류공원로', subEn: 'Dalseo, Daegu', catKo: '타워·테마파크 야경', catEn: 'Theme Park & Tower Night', feature: '천만 개 전구 & 83타워 전망대', featureEn: '10 Million Lights & Tower Observatory', descKo: '대구 도심의 상징 83타워 전망대 야경과 유럽풍 테마파크를 물들이는 천만 개 별빛 라이팅 쇼가 펼쳐집니다.', descEn: 'Daegu’s landmark tower offering sweeping cityscape views above an expansive European-style light theme park.', top: 520, left: 515 },
+    { id: 'pin-night-07', num: 7, region: 'gyeongbuk', icon: '🌉', nameKo: '포항 영일대 해상누각 & 스페이스워크', nameEn: 'Pohang Yeongildae & Space Walk Night View', shortKo: '영일대·스페이스워크', shortEn: 'Yeongildae Night', subKo: '경북 포항시 북구', subEn: 'Buk-gu, Pohang', catKo: '해상누각·조형 야경', catEn: 'Ocean Pavilion & Space Walk', feature: '영일만 바다 위 누각 & 포스코 야경', featureEn: 'Seaborne Pavilion & Posco Lights', descKo: '바다 한가운데 떠 있는 전통 누각과 밤하늘 철제 궤도를 걷는 스페이스워크, 맞은편 포스코 불빛이 환상적입니다.', descEn: 'Korea’s first ocean pavilion Yeongildae paired with the illuminated Space Walk rollercoaster-style sky walkway.', top: 505, left: 630 },
+    { id: 'pin-night-08', num: 8, region: 'gyeongbuk', icon: '🏮', nameKo: '경주 동궁과 월지 & 월정교 야경', nameEn: 'Gyeongju Donggung & Wolji & Woljeonggyo', shortKo: '동궁과월지·월정교', shortEn: 'Donggung Palace', subKo: '경북 경주시 인왕동·교동', subEn: 'Gyeongju, Gyeongbuk', catKo: '고궁·한옥 야경', catEn: 'Historic Palace & Bridge', feature: '연못에 비치는 황금빛 신라 궁궐', featureEn: 'Golden Shilla Palace Water Reflection', descKo: '신라 왕실의 별궁 연못에 비치는 누각 반영과 남천 위에 웅장하게 서 있는 월정교의 목조 야경이 백미입니다.', descEn: 'The crown jewel of Korean historic night views, showcasing mirror-like reflections of Shilla royal pavilions.', top: 540, left: 590 },
+    { id: 'pin-night-09', num: 9, region: 'gyeongnam', icon: '🌉', nameKo: '부산 광안리 드론라이트쇼 & 광안대교', nameEn: 'Busan Gwangalli Drone Light Show & Bridge', shortKo: '광안리·광안대교', shortEn: 'Gwangalli Drone', subKo: '부산 수영구 광안해변로', subEn: 'Suyeong, Busan', catKo: '드론쇼·해상교량', catEn: 'Drone Show & Sea Bridge', feature: '상설 드론쇼 & 바다 야경', featureEn: 'Weekly Saturday Drone Show & Ocean Bridge', descKo: '광안대교 다이아몬드 브릿지의 화려한 조명과 매주 토요일 밤바다 상공을 수놓는 수백 대의 드론 아트 쇼입니다.', descEn: 'Busan’s premier night oceanfront, highlighted by the illuminated suspension bridge and weekly drone performance.', top: 645, left: 585 },
+    { id: 'pin-night-10', num: 10, region: 'jeonnam', icon: '🌉', nameKo: '여수 돌산공원 & 여수 밤바다', nameEn: 'Yeosu Dolsan Park & Romantic Ocean Night', shortKo: '여수 돌산공원', shortEn: 'Yeosu Night Sea', subKo: '전남 여수시 돌산읍', subEn: 'Yeosu, Jeonnam', catKo: '해양공원·케이블카', catEn: 'Harbor Park & Cable Car', feature: '돌산대교 & 하버 파노라마', featureEn: 'Dolsan Bridge & Harbor Panorama', descKo: '돌산공원 전망대에서 돌산대교와 해상케이블카, 여수 구도심 포구의 낭만적인 밤바다 불빛을 한눈에 담을 수 있습니다.', descEn: 'The ultimate viewpoint for Korea’s beloved Yeosu Night Sea, gazing down upon illuminated bridges and harbors.', top: 715, left: 440 }
+  ];
+  const NIGHT_VIEW_MAP = new Map(NIGHT_VIEW_DATA.map(s => [s.id, s]));
+
+  // ==========================================================
+  // 전국 오션뷰 & 설경 드라이브 코스 10선 (driveCourse)
+  // ==========================================================
+  const DRIVE_COURSE_DATA = [
+    { id: 'pin-drive-01', num: 1, region: 'gangwon', icon: '🌊', nameKo: '강릉 헌화로 해안 드라이브', nameEn: 'Gangneung Heonhwa-ro Coastal Drive', shortKo: '강릉 헌화로', shortEn: 'Heonhwa-ro Drive', subKo: '강원 강릉시 옥계면', subEn: 'Gangneung, Gangwon', catKo: '오션뷰 해안도로', catEn: 'Ocean Coastal Road', feature: '바다와 가장 가까운 해안길', featureEn: 'Closest Road to Ocean in Korea', descKo: '깎아지른 바위 절벽과 도로 바로 옆까지 하얗게 부서지는 동해 파도를 끼고 달리는 국내 최고의 바닷길입니다.', descEn: 'Korea’s closest road to the sea, carved between dramatic sea cliffs and crashing East Sea waves.', top: 245, left: 590 },
+    { id: 'pin-drive-02', num: 2, region: 'jeonnam', icon: '🌅', nameKo: '영광 백수해안도로 노을길', nameEn: 'Yeonggwang Baeksu Coastal Sunset Drive', shortKo: '백수해안도로', shortEn: 'Baeksu Coast Road', subKo: '전남 영광군 백수읍', subEn: 'Yeonggwang, Jeonnam', catKo: '노을·일몰 드라이브', catEn: 'Sunset Coastal Drive', feature: '16.8km 서해 칠산바다 절벽 노을', featureEn: '16.8km Sunset Cliff Coastal Scenic Highway', descKo: '한국의 아름다운 길 100선에 빛나는 16.8km 해안 절벽 도로로, 서해 칠산바다를 붉게 물들이는 낙조가 장관입니다.', descEn: 'A scenic 16.8 km cliff highway acclaimed as one of Korea’s most stunning coastal sunset driving routes.', top: 630, left: 245 },
+    { id: 'pin-drive-03', num: 3, region: 'gyeongbuk', icon: '🌊', nameKo: '영덕 강축해안도로 (블루로드 C코스)', nameEn: 'Yeongdeok Gangchuk Coastal Highway', shortKo: '영덕 강축해안로', shortEn: 'Yeongdeok Coast', subKo: '경북 영덕군 강구면~축산면', subEn: 'Yeongdeok, Gyeongbuk', catKo: '오션뷰 해안도로', catEn: 'Ocean Coastal Road', feature: '동해 파도 & 블루로드 드라이브', featureEn: 'Blue Road Ocean Vista Scenic Drive', descKo: '강구항에서 축산항까지 시원하게 뻗은 동해 해안선을 따라 오징어 건조대와 등대, 푸른 파도를 감상하는 코스입니다.', descEn: 'A thrilling coastal route winding past harbors, white lighthouses, and the deep azure waters of Yeongdeok.', top: 450, left: 635 },
+    { id: 'pin-drive-04', num: 4, region: 'gangwon', icon: '🏔️', nameKo: '평창 대관령 옛길 & 선자령 와인딩', nameEn: 'Daegwallyeong Historic Mountain Pass', shortKo: '대관령 옛길', shortEn: 'Daegwallyeong Pass', subKo: '강원 평창군 대관령면', subEn: 'Pyeongchang, Gangwon', catKo: '설경·고갯길 와인딩', catEn: 'Snow Pass & Winding Route', feature: '아흔아홉 구비 백두대간 설경', featureEn: 'Snowy Alpine Mountain Ridge Route', descKo: '영동과 영서를 잇던 역사 깊은 아흔아홉 굽이 고갯길로, 겨울이면 은빛 설원과 거대한 풍차 능선이 눈앞에 펼쳐집니다.', descEn: 'The historic 99-turn pass through the Baekdudaegan mountain ridge, offering breathtaking alpine winter snowscapes.', top: 228, left: 565 },
+    { id: 'pin-drive-05', num: 5, region: 'chungbuk', icon: '🏔️', nameKo: '단양 보발재 와인딩 고갯길', nameEn: 'Danyang Bobaljae Scenic Mountain Pass', shortKo: '단양 보발재', shortEn: 'Bobaljae Pass', subKo: '충북 단양군 가곡면', subEn: 'Danyang, Chungbuk', catKo: '설경·고갯길 와인딩', catEn: 'Scenic Mountain Pass', feature: '소백산 자락 굽이치는 S자 파노라마', featureEn: 'Scenic S-Curved Mountain Pass', descKo: '소백산 연화봉 아래를 굽이굽이 휘감아 도는 해발 540m 드라이브 명소로, 구인사로 이어지는 환상적인 곡선미를 자랑합니다.', descEn: 'A famous serpentine mountain road winding up Mt. Sobaeksan, offering stunning aerial perspectives and snow scenery.', top: 320, left: 515 },
+    { id: 'pin-drive-06', num: 6, region: 'gyeongnam', icon: '🌊', nameKo: '남해 물미해안도로 (미조~물건)', nameEn: 'Namhae Mulmi Coastal Highway', shortKo: '남해 물미해안로', shortEn: 'Namhae Mulmi', subKo: '경남 남해군 삼동면·미조면', subEn: 'Namhae, Gyeongnam', catKo: '오션뷰 해안도로', catEn: 'Ocean Coastal Road', feature: '쪽빛 다도해 절벽 & 독일마을 코스', featureEn: 'Emerald Archipelago Cliffs & German Village', descKo: '다랭이논과 독일마을, 기암절벽 사이로 쪽빛 남해 바다가 끊임없이 차창 밖으로 스쳐 지나가는 남도 대표 드라이브입니다.', descEn: 'One of southern Korea’s most poetic coastal roads, hugging emerald sea cliffs and charming village vistas.', top: 720, left: 475 },
+    { id: 'pin-drive-07', num: 7, region: 'gyeongnam', icon: '🏙️', nameKo: '부산 산복도로 & 황령산 순환로', nameEn: 'Busan Sanbok-doro & Hwangnyeongsan Drive', shortKo: '부산 산복도로', shortEn: 'Sanbok-doro Route', subKo: '부산 중구·동구·부산진구', subEn: 'Busan', catKo: '고지대 전망 드라이브', catEn: 'Highland Skyline Route', feature: '부산항·광안대교 한눈에 품는 고지대', featureEn: 'Harbor & Marine Bridge Skyline View', descKo: '산허리를 가로지르는 산복도로와 황령산 봉수대로 이어지는 코스로, 부산 도심과 바다, 다리가 빚어내는 입체적 풍경을 달립니다.', descEn: 'A unique hillside mountain circuit overlooking Busan Port, dense hillside communities, and marine bridges.', top: 640, left: 575 },
+    { id: 'pin-drive-08', num: 8, region: 'jeju', icon: '🌅', nameKo: '제주 신창풍차해안도로', nameEn: 'Jeju Sinchang Windmill Coastal Drive', shortKo: '신창풍차해안로', shortEn: 'Sinchang Windmill', subKo: '제주 제주시 한경면', subEn: 'Hangyeong, Jeju', catKo: '노을·일몰 드라이브', catEn: 'Sunset Windmill Drive', feature: '에메랄드 바다 위 거대 풍차 & 일몰', featureEn: 'Giant Offshore Windmills & Sunset', descKo: '제주 서쪽 에메랄드빛 바다 위에 줄지어 서 있는 거대한 해상 풍력발전기와 황금빛 노을이 이국적인 장관을 이룹니다.', descEn: 'Jeju’s signature sunset road where massive white wind turbines rise gracefully from crystal-clear coastal waters.', top: 885, left: 225 },
+    { id: 'pin-drive-09', num: 9, region: 'gyeonggi', icon: '🏔️', nameKo: '포천 산정호수 & 백운계곡 카라멜고개', nameEn: 'Pocheon Sanjeong Lake & Baegun Valley Pass', shortKo: '포천 백운고개', shortEn: 'Baegun Pass Drive', subKo: '경기 포천시 이동면', subEn: 'Pocheon, Gyeonggi', catKo: '설경·호수 드라이브', catEn: 'Winter Lake & Valley Route', feature: '겨울 빙벽과 호수, 수도권 와인딩', featureEn: 'Winter Ice Wall & Lake Mountain Pass', descKo: '호젓한 산정호수 둘레를 지나 광덕산 카라멜고개로 이어지는 와인딩 코스로, 백운계곡의 웅장한 빙벽 축제를 함께 만납니다.', descEn: 'A beloved winter weekend driving escape from northern Seoul, featuring pristine alpine lakes and frozen waterfall cliffs.', top: 175, left: 325 },
+    { id: 'pin-drive-10', num: 10, region: 'chungnam', icon: '🌉', nameKo: '태안 안면도 꽃지~영목항 원산안면대교', nameEn: 'Taean Anmyeon-do & Wonsan Bridge Highway', shortKo: '안면도 해안도로', shortEn: 'Anmyeon-do Bridge', subKo: '충남 태안군 안면읍·고남면', subEn: 'Taean, Chungnam', catKo: '해상교량·오션 드라이브', catEn: 'Coastal Highway & Bridge', feature: '울창한 안면송 숲길과 서해 낙조', featureEn: 'Pine Forest & Marine Bridge Sunset', descKo: '피톤치드 가득한 소나무 숲길을 지나 서해안 3대 낙조 꽃지해변과 원산안면대교 바다 위를 시원하게 질주하는 코스입니다.', descEn: 'Driving through famed Anmyeon pine forests towards scenic sunset beaches and the grand Wonsan-Anmyeon sea bridge.', top: 380, left: 215 }
+  ];
+  const DRIVE_COURSE_MAP = new Map(DRIVE_COURSE_DATA.map(s => [s.id, s]));
 
   // 현재 앱 상태 (다중 레이어 ON/OFF 오버레이 & 언어 & 관리자)
   const FOLIAGE_SEASON_YEAR = 2026;
@@ -4775,9 +5177,12 @@
     layers: {
       foliage: shouldEnableFoliageByDefault(), // 단풍 정보 (35선): 마지막 단풍일+15일 경과 시 기본값 해제
       kto100: false,    // 한국관광 100선 (25-26) ON/OFF
-      winterSpa: true,  // 겨울 노천 온천 (10선) ON/OFF
+      bookSpot: true,   // 랜드마크 & 감성 도서관 (10선) ON/OFF (25-26) ON/OFF
+      winterSpa: true,  // 겨울 노천 온천 (33선) ON/OFF
       sauna: true,      // 사우나·찜질방 (10선) ON/OFF
       skiSled: true,    // 전국 스키·눈썰매장 (20선) ON/OFF
+      nightView: true,  // 전국 야경 & 불꽃·빛축제 (10선) ON/OFF
+      driveCourse: true,// 전국 오션뷰 & 설경 드라이브 코스 (10선) ON/OFF
       userPlaces: true  // 사용자 추천 장소 ON/OFF
     },
     get layer() {
@@ -5343,6 +5748,86 @@
     } catch (e) {
       console.error('Error saving user places:', e);
     }
+  }
+
+  function renderNightViewPins() {
+    const container = document.getElementById('nightViewPinsContainer');
+    if (!container || container.childElementCount > 0) return;
+
+    const isEn = appState.lang === 'en';
+    const isLayerOn = Boolean(appState.layers.nightView);
+    const frag = document.createDocumentFragment();
+
+    NIGHT_VIEW_DATA.forEach(s => {
+      const safePos = typeof clampToProvinceLand === 'function'
+        ? clampToProvinceLand(s.left, s.top, s.region)
+        : { top: s.top, left: s.left };
+
+      const pinEl = document.createElement('div');
+      pinEl.className = 'pin night-pin' + (isLayerOn ? '' : ' hidden-layer');
+      pinEl.id = s.id;
+      pinEl.setAttribute('data-layer', 'nightView');
+      pinEl.setAttribute('data-region', s.region);
+      pinEl.setAttribute('data-name-ko', s.nameKo);
+      pinEl.setAttribute('data-name-en', s.nameEn);
+      pinEl.setAttribute('data-sub-ko', s.subKo);
+      pinEl.setAttribute('data-sub-en', s.subEn);
+      pinEl.setAttribute('data-cat-ko', s.catKo);
+      pinEl.setAttribute('data-cat-en', s.catEn);
+      pinEl.setAttribute('data-icon', s.icon);
+      pinEl.style.top = safePos.top + 'px';
+      pinEl.style.left = safePos.left + 'px';
+
+      const titleText = isEn ? s.shortEn : s.shortKo;
+      const badgeText = isEn ? s.featureEn : s.feature;
+      pinEl.innerHTML = `
+        <span class="pin-title">${titleText}</span>
+        <div class="pin-data"><span class="spa-pin-badge">${s.icon} ${badgeText}</span></div>
+        <div class="pin-dot"></div>
+      `;
+      frag.appendChild(pinEl);
+    });
+    container.appendChild(frag);
+  }
+
+  function renderDriveCoursePins() {
+    const container = document.getElementById('driveCoursePinsContainer');
+    if (!container || container.childElementCount > 0) return;
+
+    const isEn = appState.lang === 'en';
+    const isLayerOn = Boolean(appState.layers.driveCourse);
+    const frag = document.createDocumentFragment();
+
+    DRIVE_COURSE_DATA.forEach(s => {
+      const safePos = typeof clampToProvinceLand === 'function'
+        ? clampToProvinceLand(s.left, s.top, s.region)
+        : { top: s.top, left: s.left };
+
+      const pinEl = document.createElement('div');
+      pinEl.className = 'pin drive-pin' + (isLayerOn ? '' : ' hidden-layer');
+      pinEl.id = s.id;
+      pinEl.setAttribute('data-layer', 'driveCourse');
+      pinEl.setAttribute('data-region', s.region);
+      pinEl.setAttribute('data-name-ko', s.nameKo);
+      pinEl.setAttribute('data-name-en', s.nameEn);
+      pinEl.setAttribute('data-sub-ko', s.subKo);
+      pinEl.setAttribute('data-sub-en', s.subEn);
+      pinEl.setAttribute('data-cat-ko', s.catKo);
+      pinEl.setAttribute('data-cat-en', s.catEn);
+      pinEl.setAttribute('data-icon', s.icon);
+      pinEl.style.top = safePos.top + 'px';
+      pinEl.style.left = safePos.left + 'px';
+
+      const titleText = isEn ? s.shortEn : s.shortKo;
+      const badgeText = isEn ? s.featureEn : s.feature;
+      pinEl.innerHTML = `
+        <span class="pin-title">${titleText}</span>
+        <div class="pin-data"><span class="spa-pin-badge">${s.icon} ${badgeText}</span></div>
+        <div class="pin-dot"></div>
+      `;
+      frag.appendChild(pinEl);
+    });
+    container.appendChild(frag);
   }
 
   function renderSkiSledPins() {
@@ -6033,6 +6518,30 @@
     const adminPinActions = document.getElementById('adminPinActions');
     if (userPlaceActions) userPlaceActions.style.display = 'none';
 
+    
+    if (layer === 'bookSpot') {
+      const book = BOOK_SPOT_MAP.get(pin.id);
+      if (!book) return;
+
+      const displayFeature = isEn ? (book.featureEn || book.feature) : book.feature;
+      const displayDesc = isEn ? (book.descEn || book.descKo) : book.descKo;
+
+      badgesEl.innerHTML = `
+        <span class="detail-badge-num" style="background: #2b5876;">${isEn ? 'Library #' : '감성 도서관 #'}${book.num}</span>
+        <span class="detail-badge-cat">📚 ${isEn ? book.catEn : book.catKo}</span>
+        <span class="detail-badge-loc">📍 ${isEn ? book.subEn : book.subKo}</span>
+      `;
+
+      const titleEnHtml = (isEn || !book.nameEn) ? '' : `<span class="detail-title-en">${book.nameEn}</span>`;
+      titleEl.innerHTML = `${isEn ? book.nameEn : book.nameKo} ${titleEnHtml}`;
+      dateEl.textContent = `📚 ${isEn ? 'Signature Highlight' : '도서관 시그니처'}: ${displayFeature}`;
+      descEl.textContent = displayDesc;
+
+      const mapQuery = encodeURIComponent(book.nameKo);
+      updateMapLinks(mapQuery, book.nameKo, book.subKo);
+      return;
+    }
+
     if (layer === 'winterSpa') {
       const spa = WINTER_SPA_MAP.get(pin.id);
       if (!spa) return;
@@ -6084,6 +6593,40 @@
       `;
       titleEl.textContent = isEn ? ski.nameEn : ski.nameKo;
       subEl.textContent = `${ski.icon} ${displayFeature} · ${isEn ? ski.subEn : ski.subKo}`;
+      descEl.textContent = displayDesc;
+      descEl.style.display = 'block';
+      card.classList.add('visible');
+    } else if (layer === 'nightView') {
+      const night = NIGHT_VIEW_MAP.get(pin.id);
+      if (!night) return;
+
+      const displayFeature = isEn ? (night.featureEn || night.feature) : night.feature;
+      const displayDesc = isEn ? (night.descEn || night.descKo) : night.descKo;
+
+      badgesEl.innerHTML = `
+        <span class="detail-badge-num" style="background: #d97706;">${isEn ? 'Night View #' : '전국 야경·빛축제 #'}${night.num}</span>
+        <span class="detail-badge-cat">${night.icon} ${isEn ? night.catEn : night.catKo}</span>
+        <span class="detail-badge-loc">📍 ${isEn ? night.subEn : night.subKo}</span>
+      `;
+      titleEl.textContent = isEn ? night.nameEn : night.nameKo;
+      subEl.textContent = `${night.icon} ${displayFeature} · ${isEn ? night.subEn : night.subKo}`;
+      descEl.textContent = displayDesc;
+      descEl.style.display = 'block';
+      card.classList.add('visible');
+    } else if (layer === 'driveCourse') {
+      const drive = DRIVE_COURSE_MAP.get(pin.id);
+      if (!drive) return;
+
+      const displayFeature = isEn ? (drive.featureEn || drive.feature) : drive.feature;
+      const displayDesc = isEn ? (drive.descEn || drive.descKo) : drive.descKo;
+
+      badgesEl.innerHTML = `
+        <span class="detail-badge-num" style="background: #0284c7;">${isEn ? 'Drive Course #' : '전국 드라이브 #'}${drive.num}</span>
+        <span class="detail-badge-cat">${drive.icon} ${isEn ? drive.catEn : drive.catKo}</span>
+        <span class="detail-badge-loc">📍 ${isEn ? drive.subEn : drive.subKo}</span>
+      `;
+      titleEl.textContent = isEn ? drive.nameEn : drive.nameKo;
+      subEl.textContent = `${drive.icon} ${displayFeature} · ${isEn ? drive.subEn : drive.subKo}`;
       descEl.textContent = displayDesc;
       descEl.style.display = 'block';
       card.classList.add('visible');
@@ -6519,9 +7062,12 @@
     const layerDomMap = {
       foliage: ['tabFoliageBtn', 'foliageStatePill'],
       kto100: ['tabKto100Btn', 'kto100StatePill'],
+      bookSpot: ['tabBookSpotBtn', 'bookSpotStatePill'],
       winterSpa: ['tabWinterSpaBtn', 'winterSpaStatePill'],
       sauna: ['tabSaunaBtn', 'saunaStatePill'],
       skiSled: ['tabSkiSledBtn', 'skiSledStatePill'],
+      nightView: ['tabNightViewBtn', 'nightViewStatePill'],
+      driveCourse: ['tabDriveCourseBtn', 'driveCourseStatePill'],
       userPlaces: ['tabUserPlacesBtn', 'userPlacesStatePill']
     };
     Object.entries(layerDomMap).forEach(([key, [btnId, pillId]]) => {
@@ -6546,6 +7092,8 @@
     if (adminBannerEl) adminBannerEl.classList.toggle('active', appState.isAdmin);
 
     renderSkiSledPins();
+    renderNightViewPins();
+    renderDriveCoursePins();
     renderUserPins();
     bindPinClickListeners();
 
@@ -6695,6 +7243,32 @@
       }
     });
 
+    // 전국 야경·빛축제 핀 타이틀 및 배지 갱신
+    document.querySelectorAll('.night-pin').forEach(pin => {
+      const titleEl = pin.querySelector('.pin-title');
+      const badgeEl = pin.querySelector('.spa-pin-badge');
+      const night = NIGHT_VIEW_MAP.get(pin.id);
+      if (titleEl && night) {
+        titleEl.textContent = isEn ? night.shortEn : night.shortKo;
+      }
+      if (badgeEl && night) {
+        badgeEl.textContent = `${night.icon} ${isEn ? night.featureEn : night.feature}`;
+      }
+    });
+
+    // 전국 드라이브 코스 핀 타이틀 및 배지 갱신
+    document.querySelectorAll('.drive-pin').forEach(pin => {
+      const titleEl = pin.querySelector('.pin-title');
+      const badgeEl = pin.querySelector('.spa-pin-badge');
+      const drive = DRIVE_COURSE_MAP.get(pin.id);
+      if (titleEl && drive) {
+        titleEl.textContent = isEn ? drive.shortEn : drive.shortKo;
+      }
+      if (badgeEl && drive) {
+        badgeEl.textContent = `${drive.icon} ${isEn ? drive.featureEn : drive.feature}`;
+      }
+    });
+
     // 사용자 추천 핀 타이틀 갱신
     document.querySelectorAll('.user-pin').forEach(pin => {
       const titleEl = pin.querySelector('.pin-title');
@@ -6749,9 +7323,12 @@
     const isEn = appState.lang === 'en';
     const hasFoliage = Boolean(appState.layers.foliage);
     const hasKto = Boolean(appState.layers.kto100);
-    const hasSpa = Boolean(appState.layers.winterSpa);
+    const hasBookSpot = Boolean(appState.layers.bookSpot);
+      const hasSpa = Boolean(appState.layers.winterSpa);
     const hasSauna = Boolean(appState.layers.sauna);
     const hasSkiSled = Boolean(appState.layers.skiSled);
+    const hasNight = Boolean(appState.layers.nightView);
+    const hasDrive = Boolean(appState.layers.driveCourse);
     const hasUser = Boolean(appState.layers.userPlaces);
 
     const activeList = [];
@@ -6760,17 +7337,23 @@
     if (hasSpa) activeList.push('winterSpa');
     if (hasSauna) activeList.push('sauna');
     if (hasSkiSled) activeList.push('skiSled');
+    if (hasNight) activeList.push('nightView');
+    if (hasDrive) activeList.push('driveCourse');
     if (hasUser) activeList.push('userPlaces');
 
     // 탭 버튼 텍스트
     document.getElementById('tabFoliageLabel').textContent = isEn ? 'Autumn Foliage (35)' : '단풍 정보 (35선)';
     document.getElementById('tabKto100Label').textContent = isEn ? '100 Must-Visit Spots (25-26)' : '한국관광 100선 (25-26)';
     const winterSpaLabel = document.getElementById('tabWinterSpaLabel');
-    if (winterSpaLabel) winterSpaLabel.textContent = isEn ? 'Winter Spas (10)' : '겨울 노천온천 (10선)';
+    if (winterSpaLabel) winterSpaLabel.textContent = isEn ? 'Winter Spas (33)' : '겨울 노천온천 (33선)';
     const saunaLabel = document.getElementById('tabSaunaLabel');
     if (saunaLabel) saunaLabel.textContent = isEn ? 'Saunas & Spas (10)' : '사우나·찜질방 (10선)';
     const skiSledLabel = document.getElementById('tabSkiSledLabel');
     if (skiSledLabel) skiSledLabel.textContent = isEn ? 'Ski & Sled (20)' : '스키·눈썰매 (20선)';
+    const nightViewLabel = document.getElementById('tabNightViewLabel');
+    if (nightViewLabel) nightViewLabel.textContent = isEn ? 'Night Views (10)' : '야경·빛축제 (10선)';
+    const driveCourseLabel = document.getElementById('tabDriveCourseLabel');
+    if (driveCourseLabel) driveCourseLabel.textContent = isEn ? 'Drive Scenic (10)' : '드라이브 코스 (10선)';
     const userPlacesLabel = document.getElementById('tabUserPlacesLabel');
     if (userPlacesLabel) userPlacesLabel.textContent = isEn ? 'User Spots' : '추천 장소';
     const recommendBtn = document.getElementById('openRecommendModalBtn');
@@ -6813,13 +7396,13 @@
     if (activeList.length === 1) {
       const singleLayer = activeList[0];
       if (singleLayer === 'winterSpa') {
-        headerTitle.textContent = isEn ? '2026 Korea Nationwide Winter Outdoor Hot Springs (Top 10)' : '2026 전국 겨울 노천온천 (10선) 지도';
+        headerTitle.textContent = isEn ? '2026 Korea Nationwide Winter Outdoor Hot Springs (33)' : '2026 전국 겨울 노천온천 (33선) 지도';
         legendBar.innerHTML = isEn
           ? '<span class="legend-chip" data-cat-query="Mountain" data-legend-tag="spa-forest" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ Mountain & Forest</span><span class="legend-chip" data-cat-query="Mineral" data-legend-tag="spa-spring" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🫧 Carbonate & Sulfur</span><span class="legend-chip" data-cat-query="Seawater" data-legend-tag="spa-ocean" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌊 Seawater & Ocean</span><span class="legend-chip" data-cat-query="Resort Spa" data-legend-tag="spa-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏕️ Resort & Water Spa</span>'
           : '<span class="legend-chip" data-cat-query="산림·설경" data-legend-tag="spa-forest" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ 설경·산림 노천</span><span class="legend-chip" data-cat-query="탄산·유황" data-legend-tag="spa-spring" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🫧 탄산·유황·용출</span><span class="legend-chip" data-cat-query="해수·바다" data-legend-tag="spa-ocean" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌊 해수·바다뷰</span><span class="legend-chip" data-cat-query="리조트·스파" data-legend-tag="spa-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏕️ 리조트·워터스파</span>';
         headerHint.textContent = isEn
-          ? '🔍 Winter outdoor hot springs across Korea. Click a chip or pin to view details and map directions.'
-          : '🔍 겨울철 몸을 녹여주는 전국 대표 노천온천 10곳을 둘러보고 네이버·티맵 길찾기를 이용해보세요.';
+          ? '🔍 Explore 33 winter outdoor hot springs across Korea. Click a chip or pin to view details and map directions.'
+          : '🔍 겨울철 몸을 녹여주는 전국 대표 노천온천 33곳을 둘러보고 네이버·티맵 길찾기를 이용해보세요.';
         footerSource.textContent = isEn
           ? 'Source: Local Tourism Guides & Official Hot Springs Records'
           : '데이터 출처: 전국 주요 지자체 관광안내 및 온천·스파 공식 안내';
@@ -6845,6 +7428,28 @@
         footerSource.textContent = isEn
           ? 'Source: 2025–2026 Korea Ski & Winter Leisure Operating Directory'
           : '데이터 출처: 2025-2026 시즌 국내 운영 스키장·테마파크 눈썰매장 안내';
+      } else if (singleLayer === 'nightView') {
+        headerTitle.textContent = isEn ? '2026 Korea Night Views & Light Festivals (Top 10)' : '2026 전국 야경 & 불꽃·빛축제 (10선) 명소 지도';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="City" data-legend-tag="night-city" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌃 City & Tower</span><span class="legend-chip" data-cat-query="Light Fest" data-legend-tag="night-light" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">✨ Light Festival</span><span class="legend-chip" data-cat-query="Bridge" data-legend-tag="night-water" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌉 Ocean & Bridge</span><span class="legend-chip" data-cat-query="Palace" data-legend-tag="night-palace" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏮 Palace & Heritage</span>'
+          : '<span class="legend-chip" data-cat-query="도심·타워" data-legend-tag="night-city" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌃 도심·타워 야경</span><span class="legend-chip" data-cat-query="빛축제" data-legend-tag="night-light" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">✨ 빛축제·미디어아트</span><span class="legend-chip" data-cat-query="교량·해양" data-legend-tag="night-water" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌉 교량·해양 야경</span><span class="legend-chip" data-cat-query="고궁·한옥" data-legend-tag="night-palace" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏮 고궁·한옥 야경</span>';
+        headerHint.textContent = isEn
+          ? '🔍 Korea top 10 night views, drone shows, and light festivals. Click a pin to view details and map directions.'
+          : '🔍 인스타그램에서 가장 뜨거운 전국 대표 야경·빛축제 10곳을 확인하고 4대 지도로 바로 찾아가보세요.';
+        footerSource.textContent = isEn
+          ? 'Source: Nationwide Curated Night Tourism & Light Festivals Directory'
+          : '데이터 출처: 전국 주요 지자체 야간관광 특화도시 및 대표 빛축제 안내';
+      } else if (singleLayer === 'driveCourse') {
+        headerTitle.textContent = isEn ? '2026 Korea Scenic Ocean View & Mountain Drive Courses (Top 10)' : '전국 오션뷰 & 설경 드라이브 코스 (10선) 명소 지도';
+        legendBar.innerHTML = isEn
+          ? '<span class="legend-chip" data-cat-query="Ocean" data-legend-tag="drive-ocean" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌊 Ocean Coast</span><span class="legend-chip" data-cat-query="Mountain" data-legend-tag="drive-mountain" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ Mountain & Pass</span><span class="legend-chip" data-cat-query="Sunset" data-legend-tag="drive-sunset" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌅 Sunset & Windmill</span><span class="legend-chip" data-cat-query="Bridge" data-legend-tag="drive-bridge" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌉 Sea Bridge</span>'
+          : '<span class="legend-chip" data-cat-query="해안도로" data-legend-tag="drive-ocean" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌊 오션뷰 해안도로</span><span class="legend-chip" data-cat-query="설경·고갯길" data-legend-tag="drive-mountain" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ 설경·고갯길 와인딩</span><span class="legend-chip" data-cat-query="노을·일몰" data-legend-tag="drive-sunset" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌅 노을·풍차 드라이브</span><span class="legend-chip" data-cat-query="해상교량" data-legend-tag="drive-bridge" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌉 해상교량 드라이브</span>';
+        headerHint.textContent = isEn
+          ? '🔍 Korea top 10 scenic driving routes. Click a pin to launch one-click Naver or TMAP navigation.'
+          : '🔍 주말 나들이와 겨울 힐링을 위한 전국 대표 10대 드라이브 코스를 네이버·티맵 내비게이션으로 바로 연결하세요.';
+        footerSource.textContent = isEn
+          ? 'Source: Ministry of Land, Infrastructure and Transport Scenic Roads & Tourism Guides'
+          : '데이터 출처: 국토교통부 선정 한국의 아름다운 도로 및 지자체 명품 드라이브 코스';
       } else if (singleLayer === 'userPlaces') {
         headerTitle.textContent = isEn ? 'Traveler Recommended Hidden Gems & Spots' : '여행자 추천 나만의 힐링 명소 지도';
         legendBar.innerHTML = isEn
@@ -6893,6 +7498,8 @@
       if (hasSpa) { titleNamesKo.push('노천온천(10선)'); titleNamesEn.push('Winter Spas (10)'); }
       if (hasSauna) { titleNamesKo.push('사우나·찜질방(10선)'); titleNamesEn.push('Saunas (10)'); }
       if (hasSkiSled) { titleNamesKo.push('스키·눈썰매(20선)'); titleNamesEn.push('Ski & Sled (20)'); }
+      if (hasNight) { titleNamesKo.push('야경·빛축제(10선)'); titleNamesEn.push('Night Views (10)'); }
+      if (hasDrive) { titleNamesKo.push('드라이브(10선)'); titleNamesEn.push('Drive Scenic (10)'); }
       if (hasUser) { titleNamesKo.push('추천 장소'); titleNamesEn.push('User Spots'); }
 
       headerTitle.textContent = isEn
@@ -6953,6 +7560,7 @@
       const sources = [];
       if (hasFoliage) sources.push(isEn ? 'Forest Service (Foliage Forecast)' : '산림청 단풍 예측');
       if (hasKto) sources.push(isEn ? 'MCST·KTO (100 Must-Visit)' : '한국관광공사 100선');
+      if (hasBookSpot) sources.push(isEn ? 'National & Landmark Libraries' : '국·공립 및 랜드마크 도서관');
       if (hasSpa || hasSauna) sources.push(isEn ? 'Local Guides & Official Spa Records' : '지자체 관광가이드 및 온천·스파 공식안내');
       if (hasSkiSled) sources.push(isEn ? '2025-2026 Ski & Sled Operating Directory' : '25-26 전국 스키·눈썰매 운영안내');
       if (hasUser) sources.push(isEn ? 'User Recommendations' : '커뮤니티 추천');
@@ -7159,6 +7767,8 @@
       const isPinSpa = pinLayer === 'winterSpa';
       const isPinSauna = pinLayer === 'sauna';
       const isPinSkiSled = pinLayer === 'skiSled';
+      const isPinNight = pinLayer === 'nightView';
+      const isPinDrive = pinLayer === 'driveCourse';
       const isPinUser = pinLayer === 'userPlaces';
 
       if (isPinSpa) {
@@ -7176,10 +7786,10 @@
         rightBadgeText = spa ? `♨️ #${spa.num}` : (isEn ? '♨️ Spa' : '♨️ 온천');
         dateScore = spa ? spa.num : 50;
         legendTags.push('layer-winterSpa');
-        if (['pin-spa-01', 'pin-spa-05', 'pin-spa-07', 'pin-spa-08', 'pin-spa-10'].includes(pinId)) legendTags.push('spa-forest');
-        if (['pin-spa-03', 'pin-spa-04', 'pin-spa-06', 'pin-spa-08', 'pin-spa-10'].includes(pinId)) legendTags.push('spa-spring');
-        if (['pin-spa-02', 'pin-spa-09'].includes(pinId)) legendTags.push('spa-ocean');
-        if (['pin-spa-02', 'pin-spa-05', 'pin-spa-06', 'pin-spa-07', 'pin-spa-10'].includes(pinId)) legendTags.push('spa-resort');
+        if (['pin-spa-01', 'pin-spa-05', 'pin-spa-07', 'pin-spa-08', 'pin-spa-10', 'pin-spa-11', 'pin-spa-12', 'pin-spa-17', 'pin-spa-18', 'pin-spa-28', 'pin-spa-29', 'pin-spa-32'].includes(pinId)) legendTags.push('spa-forest');
+        if (['pin-spa-03', 'pin-spa-04', 'pin-spa-06', 'pin-spa-08', 'pin-spa-10', 'pin-spa-15', 'pin-spa-16', 'pin-spa-17', 'pin-spa-21', 'pin-spa-25', 'pin-spa-26', 'pin-spa-27', 'pin-spa-30', 'pin-spa-33'].includes(pinId)) legendTags.push('spa-spring');
+        if (['pin-spa-02', 'pin-spa-09', 'pin-spa-13', 'pin-spa-19', 'pin-spa-22', 'pin-spa-23'].includes(pinId)) legendTags.push('spa-ocean');
+        if (['pin-spa-01', 'pin-spa-02', 'pin-spa-05', 'pin-spa-06', 'pin-spa-07', 'pin-spa-10', 'pin-spa-11', 'pin-spa-14', 'pin-spa-15', 'pin-spa-18', 'pin-spa-20', 'pin-spa-21', 'pin-spa-23', 'pin-spa-24', 'pin-spa-25', 'pin-spa-28', 'pin-spa-31'].includes(pinId)) legendTags.push('spa-resort');
         searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 온천 노천온천 hot spring`.toLowerCase();
       } else if (isPinSauna) {
         const sauna = SAUNA_MAP.get(pinId);
@@ -7220,6 +7830,46 @@
         if (['pin-ski-05', 'pin-ski-08', 'pin-ski-10', 'pin-ski-11', 'pin-ski-15', 'pin-ski-16'].includes(pinId)) legendTags.push('ski-night');
         if (region === 'gangwon') legendTags.push('ski-gangwon');
         searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} ${ski && ski.type === 'sled' ? '눈썰매 눈썰매장 썰매 snow sled sledding' : '스키 스키장 스노우보드 ski resort'}`.toLowerCase();
+      } else if (isPinNight) {
+        const night = NIGHT_VIEW_MAP.get(pinId);
+        const nameKo = pin.getAttribute('data-name-ko') || '';
+        const nameEn = pin.getAttribute('data-name-en') || '';
+        const subKo = pin.getAttribute('data-sub-ko') || '';
+        const subEn = pin.getAttribute('data-sub-en') || '';
+        const feature = night ? night.feature : '';
+        const featureEn = night ? (night.featureEn || '') : '';
+        const descKo = night ? night.descKo : '';
+        const descEn = night ? (night.descEn || '') : '';
+        displayTitle = isEn ? nameEn : nameKo;
+        regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
+        rightBadgeText = night ? `${night.icon} #${night.num}` : '🌃 야경';
+        dateScore = night ? night.num : 50;
+        legendTags.push('layer-nightView');
+        if (['pin-night-01', 'pin-night-05', 'pin-night-06'].includes(pinId)) legendTags.push('night-city');
+        if (['pin-night-04'].includes(pinId)) legendTags.push('night-light');
+        if (['pin-night-03', 'pin-night-07', 'pin-night-09', 'pin-night-10'].includes(pinId)) legendTags.push('night-water');
+        if (['pin-night-02', 'pin-night-08'].includes(pinId)) legendTags.push('night-palace');
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 야경 빛축제 드론쇼 불꽃 축제 night view light festival`.toLowerCase();
+      } else if (isPinDrive) {
+        const drive = DRIVE_COURSE_MAP.get(pinId);
+        const nameKo = pin.getAttribute('data-name-ko') || '';
+        const nameEn = pin.getAttribute('data-name-en') || '';
+        const subKo = pin.getAttribute('data-sub-ko') || '';
+        const subEn = pin.getAttribute('data-sub-en') || '';
+        const feature = drive ? drive.feature : '';
+        const featureEn = drive ? (drive.featureEn || '') : '';
+        const descKo = drive ? drive.descKo : '';
+        const descEn = drive ? (drive.descEn || '') : '';
+        displayTitle = isEn ? nameEn : nameKo;
+        regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
+        rightBadgeText = drive ? `${drive.icon} #${drive.num}` : '🚗 드라이브';
+        dateScore = drive ? drive.num : 50;
+        legendTags.push('layer-driveCourse');
+        if (['pin-drive-01', 'pin-drive-03', 'pin-drive-06'].includes(pinId)) legendTags.push('drive-ocean');
+        if (['pin-drive-04', 'pin-drive-05', 'pin-drive-09'].includes(pinId)) legendTags.push('drive-mountain');
+        if (['pin-drive-02', 'pin-drive-08'].includes(pinId)) legendTags.push('drive-sunset');
+        if (['pin-drive-07', 'pin-drive-10'].includes(pinId)) legendTags.push('drive-bridge');
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 드라이브 해안도로 와인딩 노을 설경 drive course scenic road`.toLowerCase();
       } else if (isPinUser) {
         const nameKo = pin.getAttribute('data-name-ko') || '';
         const nameEn = pin.getAttribute('data-name-en') || nameKo;
@@ -7511,6 +8161,8 @@
       hasAppliedInitialFoliageSchedule = true;
     }
     renderSkiSledPins();
+    renderNightViewPins();
+    renderDriveCoursePins();
     renderUserPins();
     bindPinClickListeners();
     syncLayersUI();
