@@ -4608,16 +4608,16 @@
   // 겨울 시즌 노천 온천 8선 (+2대 명품 온천) 데이터셋
   // ==========================================================
   const WINTER_SPA_DATA = [
-    { id: 'pin-spa-01', num: 1, region: 'gangwon', nameKo: '설악 척산온천휴양촌', nameEn: 'Cheoksan Onsen Resort', subKo: '강원 속초시 노학동', subEn: 'Sokcho, Gangwon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '설악산 설경을 바라보며 즐기는 천연 온천수로, 겨울철 눈 덮인 산세를 감상할 수 있는 대표 노천탕입니다.', feature: '설악산 설경 노천탕', icon: '♨️' },
-    { id: 'pin-spa-02', num: 2, region: 'gyeongnam', nameKo: '해운대 클럽디오아시스', nameEn: 'Club D Oasis Haeundae', subKo: '부산 해운대구 달맞이길', subEn: 'Haeundae, Busan', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '해운대 백사장과 푸른 바다가 한눈에 내려다보이는 도심형 프리미엄 노천 온천 & 인피니티 풀 스파입니다.', feature: '해운대 바다뷰 도심스파', icon: '♨️' },
-    { id: 'pin-spa-03', num: 3, region: 'jeju', nameKo: '산방산 탄산온천', nameEn: 'Sanbangsan Carbonate Hot Springs', subKo: '제주 서귀포시 안덕면', subEn: 'Seogwipo, Jeju', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '웅장한 산방산을 배경으로 땅속 깊은 곳에서 솟아오르는 국내 대표 천연 탄산 노천온천입니다.', feature: '산방산 탄산노천', icon: '♨️' },
-    { id: 'pin-spa-04', num: 4, region: 'gyeongbuk', nameKo: '덕구온천 스파월드', nameEn: 'Deokgu Hot Springs Resort', subKo: '경북 울진군 북면', subEn: 'Uljin, Gyeongbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '인위적 시추 없이 지하에서 저절로 솟아나는 국내 유일의 자연용출 약알칼리성 천연 온천입니다.', feature: '국내유일 자연용출 온천', icon: '♨️' },
-    { id: 'pin-spa-05', num: 5, region: 'jeonnam', nameKo: '담양온천 리조트', nameEn: 'Damyang Resort Onsen', subKo: '전남 담양군 금성면', subEn: 'Damyang, Jeonnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '대나무 숲으로 둘러싸여 솔솔 부는 대숲 바람과 함께 삼림욕과 노천욕을 동시에 즐길 수 있는 힐링 온천입니다.', feature: '대나무 숲 노천탕', icon: '♨️' },
-    { id: 'pin-spa-06', num: 6, region: 'chungnam', nameKo: '파라다이스 스파 도고', nameEn: 'Paradise Spa Dogo', subKo: '충남 아산시 도고면', subEn: 'Asan, Chungnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '신라시대부터 이어져 온 전통 온천 지대로, 실내외 유황 온천풀과 카라반 캠핑이 결합된 온천 테마파크입니다.', feature: '전통 유황온천 워터스파', icon: '♨️' },
-    { id: 'pin-spa-07', num: 7, region: 'chungbuk', nameKo: '포레스트 리솜 해브나인 스파', nameEn: 'Forest Resom Have9 Spa', subKo: '충북 제천시 백운면', subEn: 'Jecheon, Chungbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '원시림 숲속 바위 틈에 마련된 프라이빗 스톤스파와 인피니티풀에서 사계절 자연 풍경을 누리는 감성 온천입니다.', feature: '숲속 인피니티 스톤스파', icon: '♨️' },
-    { id: 'pin-spa-08', num: 8, region: 'chungbuk', nameKo: '수안보 온천 (파크호텔)', nameEn: 'Suanbo Hot Springs', subKo: '충북 충주시 수안보면', subEn: 'Chungju, Chungbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '조선 태조가 피부병 치료를 위해 찾았던 왕의 온천으로, 소나무 숲을 마주한 야외 맥반석 노천탕이 유명합니다.', feature: '왕의 온천 맥반석 노천탕', icon: '♨️' },
-    { id: 'pin-spa-09', num: 9, region: 'gyeonggi', nameKo: '석모도 미네랄 온천', nameEn: 'Seokmodo Mineral Hot Springs', subKo: '인천 강화군 삼산면', subEn: 'Ganghwa, Incheon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '서해 바다 바로 앞에서 붉은 낙조를 바라보며 해양 암반수를 즐기는 해수 노천온천입니다.', feature: '서해 낙조 해수 노천탕', icon: '♨️' },
-    { id: 'pin-spa-10', num: 10, region: 'jeonnam', nameKo: '지리산 온천랜드', nameEn: 'Jirisan Hot Spring Land', subKo: '전남 구례군 산동면', subEn: 'Gurye, Jeonnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '지리산 자락이 병풍처럼 둘러싸인 야외 테마파크형 온천으로 천연 게르마늄 온천수를 자랑합니다.', feature: '지리산 게르마늄 노천스파', icon: '♨️' }
+    { id: 'pin-spa-01', num: 1, region: 'gangwon', nameKo: '설악 척산온천휴양촌', nameEn: 'Cheoksan Onsen Resort', subKo: '강원 속초시 노학동', subEn: 'Sokcho, Gangwon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '설악산 설경을 바라보며 즐기는 천연 온천수로, 겨울철 눈 덮인 산세를 감상할 수 있는 대표 노천탕입니다.', descEn: 'A signature outdoor hot spring fed by natural mineral water where you can soak while admiring snow-covered Seoraksan peaks in winter.', feature: '설악산 설경 노천탕', featureEn: 'Snowy Seoraksan Outdoor Bath', icon: '♨️' },
+    { id: 'pin-spa-02', num: 2, region: 'gyeongnam', nameKo: '해운대 클럽디오아시스', nameEn: 'Club D Oasis Haeundae', subKo: '부산 해운대구 달맞이길', subEn: 'Haeundae, Busan', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '해운대 백사장과 푸른 바다가 한눈에 내려다보이는 도심형 프리미엄 노천 온천 & 인피니티 풀 스파입니다.', descEn: 'A luxury urban outdoor hot spring and infinity pool spa offering panoramic views of Haeundae Beach and the deep blue sea.', feature: '해운대 바다뷰 도심스파', featureEn: 'Haeundae Ocean-View Urban Spa', icon: '♨️' },
+    { id: 'pin-spa-03', num: 3, region: 'jeju', nameKo: '산방산 탄산온천', nameEn: 'Sanbangsan Carbonate Hot Springs', subKo: '제주 서귀포시 안덕면', subEn: 'Seogwipo, Jeju', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '웅장한 산방산을 배경으로 땅속 깊은 곳에서 솟아오르는 국내 대표 천연 탄산 노천온천입니다.', descEn: 'Korea’s premier natural carbonated outdoor hot spring bubbling up from deep underground beneath majestic Mt. Sanbangsan.', feature: '산방산 탄산노천', featureEn: 'Sanbangsan Carbonate Outdoor Bath', icon: '♨️' },
+    { id: 'pin-spa-04', num: 4, region: 'gyeongbuk', nameKo: '덕구온천 스파월드', nameEn: 'Deokgu Hot Springs Resort', subKo: '경북 울진군 북면', subEn: 'Uljin, Gyeongbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '인위적 시추 없이 지하에서 저절로 솟아나는 국내 유일의 자연용출 약알칼리성 천연 온천입니다.', descEn: 'Korea’s only naturally gushing weak-alkaline hot spring that flows to the surface without artificial pumping, rich in soothing minerals.', feature: '국내유일 자연용출 온천', featureEn: 'Natural Artesian Spring', icon: '♨️' },
+    { id: 'pin-spa-05', num: 5, region: 'jeonnam', nameKo: '담양온천 리조트', nameEn: 'Damyang Resort Onsen', subKo: '전남 담양군 금성면', subEn: 'Damyang, Jeonnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '대나무 숲으로 둘러싸여 솔솔 부는 대숲 바람과 함께 삼림욕과 노천욕을 동시에 즐길 수 있는 힐링 온천입니다.', descEn: 'A tranquil healing hot spring surrounded by lush bamboo groves, offering forest bathing and open-air soaking together.', feature: '대나무 숲 노천탕', featureEn: 'Bamboo Forest Outdoor Bath', icon: '♨️' },
+    { id: 'pin-spa-06', num: 6, region: 'chungnam', nameKo: '파라다이스 스파 도고', nameEn: 'Paradise Spa Dogo', subKo: '충남 아산시 도고면', subEn: 'Asan, Chungnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '신라시대부터 이어져 온 전통 온천 지대로, 실내외 유황 온천풀과 카라반 캠핑이 결합된 온천 테마파크입니다.', descEn: 'A historic sulfur hot spring area dating back to the Silla Dynasty, featuring indoor/outdoor thermal pools and caravan glamping.', feature: '전통 유황온천 워터스파', featureEn: 'Historic Sulfur Water Spa', icon: '♨️' },
+    { id: 'pin-spa-07', num: 7, region: 'chungbuk', nameKo: '포레스트 리솜 해브나인 스파', nameEn: 'Forest Resom Have9 Spa', subKo: '충북 제천시 백운면', subEn: 'Jecheon, Chungbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '원시림 숲속 바위 틈에 마련된 프라이빗 스톤스파와 인피니티풀에서 사계절 자연 풍경을 누리는 감성 온천입니다.', descEn: 'A scenic retreat nestled in deep primeval woodland, featuring private stone baths and an infinity thermal pool with four-season forest views.', feature: '숲속 인피니티 스톤스파', featureEn: 'Forest Infinity Stone Spa', icon: '♨️' },
+    { id: 'pin-spa-08', num: 8, region: 'chungbuk', nameKo: '수안보 온천 (파크호텔)', nameEn: 'Suanbo Hot Springs', subKo: '충북 충주시 수안보면', subEn: 'Chungju, Chungbuk', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '조선 태조가 피부병 치료를 위해 찾았던 왕의 온천으로, 소나무 숲을 마주한 야외 맥반석 노천탕이 유명합니다.', descEn: 'Known as the "King’s Hot Spring" visited by King Taejo of Joseon, famous for its outdoor elvan stone bath overlooking a pine forest.', feature: '왕의 온천 맥반석 노천탕', featureEn: 'King’s Elvan Stone Outdoor Bath', icon: '♨️' },
+    { id: 'pin-spa-09', num: 9, region: 'gyeonggi', nameKo: '석모도 미네랄 온천', nameEn: 'Seokmodo Mineral Hot Springs', subKo: '인천 강화군 삼산면', subEn: 'Ganghwa, Incheon', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '서해 바다 바로 앞에서 붉은 낙조를 바라보며 해양 암반수를 즐기는 해수 노천온천입니다.', descEn: 'A coastal seawater mineral outdoor bath right beside the West Sea, renowned for soaking while watching vibrant crimson sunsets.', feature: '서해 낙조 해수 노천탕', featureEn: 'Sunset Seawater Mineral Bath', icon: '♨️' },
+    { id: 'pin-spa-10', num: 10, region: 'jeonnam', nameKo: '지리산 온천랜드', nameEn: 'Jirisan Hot Spring Land', subKo: '전남 구례군 산동면', subEn: 'Gurye, Jeonnam', catKo: '온천·스파', catEn: 'Hot Spring', descKo: '지리산 자락이 병풍처럼 둘러싸인 야외 테마파크형 온천으로 천연 게르마늄 온천수를 자랑합니다.', descEn: 'An open-air theme park hot spring framed by Mt. Jirisan’s ridges, celebrated for its natural germanium-rich thermal water.', feature: '지리산 게르마늄 노천스파', featureEn: 'Jirisan Germanium Outdoor Spa', icon: '♨️' }
   ];
   const WINTER_SPA_MAP = new Map(WINTER_SPA_DATA.map(s => [s.id, s]));
 
@@ -4639,9 +4639,61 @@
   const SAUNA_MAP = new Map(SAUNA_DATA.map(s => [s.id, s]));
 
   // 현재 앱 상태 (다중 레이어 ON/OFF 오버레이 & 언어 & 관리자)
+  const FOLIAGE_SEASON_YEAR = 2026;
+  const FOLIAGE_DEFAULT_GRACE_DAYS = 15;
+  let hasAppliedInitialFoliageSchedule = false;
+
+  function getLastFoliagePeakDate(seasonYear = FOLIAGE_SEASON_YEAR) {
+    let maxMonth = 11;
+    let maxDay = 19;
+    let foundAny = false;
+    document.querySelectorAll('.foliage-pin .pin-data span').forEach(span => {
+      const m = span.textContent.match(/(\d{1,2})\.(\d{1,2})/);
+      if (m) {
+        const mon = parseInt(m[1], 10);
+        const day = parseInt(m[2], 10);
+        if (!foundAny || mon > maxMonth || (mon === maxMonth && day > maxDay)) {
+          maxMonth = mon;
+          maxDay = day;
+          foundAny = true;
+        }
+      }
+    });
+    return new Date(seasonYear, maxMonth - 1, maxDay);
+  }
+
+  function getFoliageCutoffDate(seasonYear = FOLIAGE_SEASON_YEAR, graceDays = FOLIAGE_DEFAULT_GRACE_DAYS) {
+    const lastPeak = getLastFoliagePeakDate(seasonYear);
+    const cutoff = new Date(lastPeak.getFullYear(), lastPeak.getMonth(), lastPeak.getDate());
+    cutoff.setDate(cutoff.getDate() + graceDays);
+    return cutoff;
+  }
+
+  function getEffectiveCurrentDate() {
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      const rawDate = params.get('date');
+      if (rawDate && /^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+        const [y, m, d] = rawDate.split('-').map(Number);
+        const parsed = new Date(y, m - 1, d);
+        if (parsed.getFullYear() === y && parsed.getMonth() === m - 1 && parsed.getDate() === d) {
+          return parsed;
+        }
+      }
+    } catch (e) {}
+    return new Date();
+  }
+
+  function shouldEnableFoliageByDefault(now = getEffectiveCurrentDate()) {
+    const cutoff = getFoliageCutoffDate(FOLIAGE_SEASON_YEAR, FOLIAGE_DEFAULT_GRACE_DAYS);
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    // 마지막 단풍 날짜 + 15일(2026-12-04)이 지나면(2026-12-05~) 기본값 OFF 해제
+    return todayStart.getTime() <= cutoff.getTime();
+  }
+
   const appState = {
     layers: {
-      foliage: true,    // 단풍 정보 (35선) ON/OFF
+      foliage: shouldEnableFoliageByDefault(), // 단풍 정보 (35선): 마지막 단풍일+15일 경과 시 기본값 해제
       kto100: false,    // 한국관광 100선 (25-26) ON/OFF
       winterSpa: true,  // 겨울 노천 온천 (8선) ON/OFF
       sauna: true,      // 사우나·찜질방 (10선) ON/OFF
@@ -6476,14 +6528,18 @@
       }
     });
 
-    // 겨울 노천온천 핀 타이틀 갱신
+    // 겨울 노천온천 핀 타이틀 및 특징 배지 갱신
     document.querySelectorAll('.winter-spa-pin').forEach(pin => {
       const titleEl = pin.querySelector('.pin-title');
+      const badgeEl = pin.querySelector('.spa-pin-badge');
       const spa = WINTER_SPA_MAP.get(pin.id);
       if (titleEl && spa) {
         const shortKo = spa.nameKo.length > 8 ? spa.nameKo.slice(0, 7) + '…' : spa.nameKo;
         const shortEn = (spa.shortEn || spa.nameEn).length > 14 ? (spa.shortEn || spa.nameEn).slice(0, 13) + '…' : (spa.shortEn || spa.nameEn);
         titleEl.textContent = isEn ? shortEn : shortKo;
+      }
+      if (badgeEl && spa) {
+        badgeEl.textContent = `${spa.icon || '♨️'} ${isEn ? (spa.featureEn || spa.feature) : spa.feature}`;
       }
     });
 
@@ -6932,12 +6988,14 @@
         const subKo = pin.getAttribute('data-sub-ko') || '';
         const subEn = pin.getAttribute('data-sub-en') || '';
         const feature = spa ? spa.feature : '';
+        const featureEn = spa ? (spa.featureEn || '') : '';
         const descKo = spa ? spa.descKo : '';
+        const descEn = spa ? (spa.descEn || '') : '';
         displayTitle = isEn ? nameEn : nameKo;
         regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
-        rightBadgeText = spa ? `♨️ #${spa.num}` : '♨️ 온천';
+        rightBadgeText = spa ? `♨️ #${spa.num}` : (isEn ? '♨️ Spa' : '♨️ 온천');
         dateScore = spa ? spa.num : 50;
-        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${descKo} 온천 스파 온천스파 온천·스파 노천 노천탕 설경 설경·노천탕 탄산 유황 해수 미네랄 노천온천 hot spring outdoor bath spa`.toLowerCase();
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 온천 스파 온천스파 온천·스파 노천 노천탕 설경 설경·노천탕 탄산 유황 해수 미네랄 노천온천 hot spring outdoor bath spa`.toLowerCase();
       } else if (isPinSauna) {
         const sauna = SAUNA_MAP.get(pinId);
         const nameKo = pin.getAttribute('data-name-ko') || '';
@@ -7224,6 +7282,10 @@
 
   // 초기화 실행
   function initApp() {
+    if (!hasAppliedInitialFoliageSchedule) {
+      appState.layers.foliage = shouldEnableFoliageByDefault();
+      hasAppliedInitialFoliageSchedule = true;
+    }
     renderUserPins();
     bindPinClickListeners();
     syncLayersUI();
