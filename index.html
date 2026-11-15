@@ -6381,10 +6381,6 @@
     // 모달 텍스트 다국어 번역
     const modalTitle = document.getElementById('modalTitle');
     if (modalTitle) modalTitle.innerHTML = `<span>📍</span> <span>${isEn ? 'Recommend a Place' : '나만의 장소 추천'}</span>`;
-    const modalBriefDescLabel = document.getElementById('modalBriefDescLabel');
-    if (modalBriefDescLabel) modalBriefDescLabel.textContent = isEn ? 'Brief Description (One-line summary)' : '간단한 설명 (한줄 요약)';
-    const modalBriefDesc = document.getElementById('modalBriefDesc');
-    if (modalBriefDesc) modalBriefDesc.placeholder = isEn ? 'Brief summary of this spot (e.g. Scenic outdoor bath overlooking mountains)' : '장소의 핵심 특징을 한 줄로 소개해주세요 (예: 설악산 설경을 품은 노천탕)';
     const modalRecommendReasonLabel = document.getElementById('modalRecommendReasonLabel');
     if (modalRecommendReasonLabel) modalRecommendReasonLabel.textContent = isEn ? 'Reason for Recommendation' : '추천 이유 (방문 꿀팁 등)';
     const modalRecommendReason = document.getElementById('modalRecommendReason');
