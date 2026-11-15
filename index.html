@@ -6565,7 +6565,9 @@
 
     const searchInput = document.getElementById('spotSearchInput');
     if (searchInput && searchInput.value.trim()) {
-      onSearchSpots(searchInput.value);
+      onSearchSpots(searchInput.value, true);
+    } else {
+      document.querySelectorAll('.pin.hidden-search').forEach(p => p.classList.remove('hidden-search'));
     }
   }
 
@@ -6577,6 +6579,13 @@
   // 레이어 개별 ON/OFF 토글 함수 (선택하면 켜지고 다시 선택하면 꺼지는 다중 오버레이 방식)
   function toggleLayer(targetLayer) {
     if (!(targetLayer in appState.layers)) return;
+    if (activeLegendFilter) {
+      const searchInput = document.getElementById('spotSearchInput');
+      if (searchInput && searchInput.value.trim().toLowerCase() === activeLegendFilter.query.toLowerCase()) {
+        searchInput.value = '';
+      }
+      activeLegendFilter = null;
+    }
     appState.layers[targetLayer] = !appState.layers[targetLayer];
     syncLayersUI();
   }
@@ -6613,7 +6622,9 @@
     // 검색어가 입력되어 있었다면 재검색
     const searchInput = document.getElementById('spotSearchInput');
     if (searchInput && searchInput.value.trim()) {
-      onSearchSpots(searchInput.value);
+      onSearchSpots(searchInput.value, true);
+    } else {
+      document.querySelectorAll('.pin.hidden-search').forEach(p => p.classList.remove('hidden-search'));
     }
   }
 
@@ -6804,8 +6815,8 @@
       if (singleLayer === 'winterSpa') {
         headerTitle.textContent = isEn ? '2026 Korea Nationwide Winter Outdoor Hot Springs (Top 10)' : '2026 전국 겨울 노천온천 (10선) 지도';
         legendBar.innerHTML = isEn
-          ? '<span class="legend-chip" data-cat-query="Hot Spring" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ Hot Spring</span><span class="legend-chip" data-cat-query="Outdoor" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ Outdoor Bath</span><span class="legend-chip" data-cat-query="Carbonate" onclick="filterByLegendCategory(this.dataset.catQuery)">🫧 Carbonated</span><span class="legend-chip" data-cat-query="Mineral" onclick="filterByLegendCategory(this.dataset.catQuery)">🌊 Seawater Mineral</span>'
-          : '<span class="legend-chip" data-cat-query="온천" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ 온천·스파</span><span class="legend-chip" data-cat-query="노천" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ 설경·노천탕</span><span class="legend-chip" data-cat-query="탄산" onclick="filterByLegendCategory(this.dataset.catQuery)">🫧 탄산·유황</span><span class="legend-chip" data-cat-query="해수" onclick="filterByLegendCategory(this.dataset.catQuery)">🌊 해수 미네랄</span>';
+          ? '<span class="legend-chip" data-cat-query="Mountain" data-legend-tag="spa-forest" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ Mountain & Forest</span><span class="legend-chip" data-cat-query="Mineral" data-legend-tag="spa-spring" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🫧 Carbonate & Sulfur</span><span class="legend-chip" data-cat-query="Seawater" data-legend-tag="spa-ocean" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌊 Seawater & Ocean</span><span class="legend-chip" data-cat-query="Resort Spa" data-legend-tag="spa-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏕️ Resort & Water Spa</span>'
+          : '<span class="legend-chip" data-cat-query="산림·설경" data-legend-tag="spa-forest" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ 설경·산림 노천</span><span class="legend-chip" data-cat-query="탄산·유황" data-legend-tag="spa-spring" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🫧 탄산·유황·용출</span><span class="legend-chip" data-cat-query="해수·바다" data-legend-tag="spa-ocean" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌊 해수·바다뷰</span><span class="legend-chip" data-cat-query="리조트·스파" data-legend-tag="spa-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏕️ 리조트·워터스파</span>';
         headerHint.textContent = isEn
           ? '🔍 Winter outdoor hot springs across Korea. Click a chip or pin to view details and map directions.'
           : '🔍 겨울철 몸을 녹여주는 전국 대표 노천온천 10곳을 둘러보고 네이버·티맵 길찾기를 이용해보세요.';
@@ -6815,8 +6826,8 @@
       } else if (singleLayer === 'sauna') {
         headerTitle.textContent = isEn ? '2026 Korea Nationwide Saunas & Jjimjilbangs (Top 10)' : '전국 사우나·찜질방 (10선) 힐링 명소 지도';
         legendBar.innerHTML = isEn
-          ? '<span class="legend-chip" data-cat-query="Sauna" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 Sauna</span><span class="legend-chip" data-cat-query="Charcoal" onclick="filterByLegendCategory(this.dataset.catQuery)">🔥 Charcoal Kiln</span><span class="legend-chip" data-cat-query="Cimer" onclick="filterByLegendCategory(this.dataset.catQuery)">✨ Luxury Spa</span><span class="legend-chip" data-cat-query="Aquafield" onclick="filterByLegendCategory(this.dataset.catQuery)">🌿 Aquafield</span>'
-          : '<span class="legend-chip" data-cat-query="사우나" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 사우나·찜질</span><span class="legend-chip" data-cat-query="참숯" onclick="filterByLegendCategory(this.dataset.catQuery)">🔥 참숯불가마</span><span class="legend-chip" data-cat-query="스파" onclick="filterByLegendCategory(this.dataset.catQuery)">✨ 프리미엄 스파</span><span class="legend-chip" data-cat-query="아쿠아필드" onclick="filterByLegendCategory(this.dataset.catQuery)">🌿 힐링 테마존</span>';
+          ? '<span class="legend-chip" data-cat-query="Charcoal" data-legend-tag="sauna-charcoal" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🔥 Charcoal Kiln</span><span class="legend-chip" data-cat-query="Luxury Spa" data-legend-tag="sauna-luxury" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">✨ Luxury Spa</span><span class="legend-chip" data-cat-query="Aquafield" data-legend-tag="sauna-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌿 Aquafield & Resort</span><span class="legend-chip" data-cat-query="Thermal" data-legend-tag="sauna-mineral" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">♨️ Thermal & Seawater</span>'
+          : '<span class="legend-chip" data-cat-query="참숯불가마" data-legend-tag="sauna-charcoal" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🔥 참숯불가마</span><span class="legend-chip" data-cat-query="프리미엄 스파" data-legend-tag="sauna-luxury" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">✨ 프리미엄 스파</span><span class="legend-chip" data-cat-query="힐링 테마존" data-legend-tag="sauna-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌿 아쿠아필드·리조트</span><span class="legend-chip" data-cat-query="온천·해수" data-legend-tag="sauna-mineral" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">♨️ 온천·해수 사우나</span>';
         headerHint.textContent = isEn
           ? '🔍 Discover Korea top 10 relaxing saunas and jjimjilbangs. Click a spot to check amenities and directions.'
           : '🔍 힐링과 휴식을 위한 전국 대표 사우나·찜질방 10곳을 확인하고 4대 지도로 바로 찾아가보세요.';
@@ -6826,8 +6837,8 @@
       } else if (singleLayer === 'skiSled') {
         headerTitle.textContent = isEn ? '2025–2026 Korea Ski Resorts (13) & Major Snow Sledding Parks (7)' : '전국 스키장(13선)·대표 눈썰매장(7선) 겨울 레저 지도 (25-26 운영 기준)';
         legendBar.innerHTML = isEn
-          ? '<span class="legend-chip" data-cat-query="Ski" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ Ski Resort</span><span class="legend-chip" data-cat-query="Sled" onclick="filterByLegendCategory(this.dataset.catQuery)">🛷 Snow Sledding</span><span class="legend-chip" data-cat-query="Night" onclick="filterByLegendCategory(this.dataset.catQuery)">🌙 Night Ski</span><span class="legend-chip" data-cat-query="Gangwon" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ Gangwon Slopes</span>'
-          : '<span class="legend-chip" data-cat-query="스키" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ 전국 스키장</span><span class="legend-chip" data-cat-query="눈썰매" onclick="filterByLegendCategory(this.dataset.catQuery)">🛷 대표 눈썰매장</span><span class="legend-chip" data-cat-query="야간" onclick="filterByLegendCategory(this.dataset.catQuery)">🌙 야간·심야스키</span><span class="legend-chip" data-cat-query="평창" onclick="filterByLegendCategory(this.dataset.catQuery)">🏔️ 강원 설원</span>';
+          ? '<span class="legend-chip" data-cat-query="Ski Resort" data-legend-tag="ski-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">⛷️ Ski Resorts (13)</span><span class="legend-chip" data-cat-query="Snow Sled" data-legend-tag="sled-park" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🛷 Snow Sledding (7)</span><span class="legend-chip" data-cat-query="Night & Metro" data-legend-tag="ski-night" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌙 Night & Metro</span><span class="legend-chip" data-cat-query="Gangwon" data-legend-tag="ski-gangwon" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ Gangwon (9)</span>'
+          : '<span class="legend-chip" data-cat-query="스키장" data-legend-tag="ski-resort" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">⛷️ 전국 스키장 (13)</span><span class="legend-chip" data-cat-query="눈썰매장" data-legend-tag="sled-park" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🛷 대표 눈썰매장 (7)</span><span class="legend-chip" data-cat-query="야간·근교" data-legend-tag="ski-night" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🌙 야간·수도권</span><span class="legend-chip" data-cat-query="강원" data-legend-tag="ski-gangwon" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🏔️ 강원 설원 (9)</span>';
         headerHint.textContent = isEn
           ? '🔍 All 13 operating ski resorts & 7 top snow sledding parks in Korea (2025–2026 winter reference).'
           : '🔍 작년(2025-2026) 운영 기준 전국 스키장 13곳 전수와 대표 눈썰매장 7곳을 확인하고 길찾기를 이용해보세요.';
@@ -6837,8 +6848,8 @@
       } else if (singleLayer === 'userPlaces') {
         headerTitle.textContent = isEn ? 'Traveler Recommended Hidden Gems & Spots' : '여행자 추천 나만의 힐링 명소 지도';
         legendBar.innerHTML = isEn
-          ? '<span class="legend-chip" data-cat-query="Sauna" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 Sauna</span><span class="legend-chip" data-cat-query="Spa" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ Hot Spring</span><span class="legend-chip" data-cat-query="Cafe" onclick="filterByLegendCategory(this.dataset.catQuery)">☕ Cafe</span><span class="legend-chip" data-cat-query="User" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 Community</span>'
-          : '<span class="legend-chip" data-cat-query="사우나" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 사우나</span><span class="legend-chip" data-cat-query="온천" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ 온천</span><span class="legend-chip" data-cat-query="카페" onclick="filterByLegendCategory(this.dataset.catQuery)">☕ 카페·맛집</span><span class="legend-chip" data-cat-query="추천" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 사용자 추천</span>';
+          ? '<span class="legend-chip" data-cat-query="Sauna" data-legend-tag="user-sauna" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🧖 Sauna</span><span class="legend-chip" data-cat-query="Hot Spring" data-legend-tag="user-spa" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">♨️ Hot Spring</span><span class="legend-chip" data-cat-query="Cafe" data-legend-tag="user-cafe" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">☕ Cafe & Food</span><span class="legend-chip" data-cat-query="All Spots" data-legend-tag="user-all" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">📍 All Community</span>'
+          : '<span class="legend-chip" data-cat-query="사우나" data-legend-tag="user-sauna" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🧖 사우나</span><span class="legend-chip" data-cat-query="온천" data-legend-tag="user-spa" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">♨️ 온천</span><span class="legend-chip" data-cat-query="카페·맛집" data-legend-tag="user-cafe" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">☕ 카페·맛집</span><span class="legend-chip" data-cat-query="추천 전체" data-legend-tag="user-all" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">📍 전체 추천</span>';
         headerHint.textContent = isEn
           ? '🔍 Spots recommended by travelers. Click the thumbs up (👍) button to upvote your favorites!'
           : '🔍 사용자가 직접 추천한 명소들을 둘러보고 마음에 드는 곳에 추천(👍)을 남겨보세요.';
@@ -6915,23 +6926,23 @@
       }
       if (hasSpa) {
         legendChips.push(isEn
-          ? '<span class="legend-chip" data-cat-query="Hot Spring" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ Hot Spring</span>'
-          : '<span class="legend-chip" data-cat-query="온천" onclick="filterByLegendCategory(this.dataset.catQuery)">♨️ 노천온천</span>');
+          ? '<span class="legend-chip" data-cat-query="Hot Spring" data-legend-tag="layer-winterSpa" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">♨️ Hot Spring</span>'
+          : '<span class="legend-chip" data-cat-query="온천" data-legend-tag="layer-winterSpa" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">♨️ 노천온천</span>');
       }
       if (hasSauna) {
         legendChips.push(isEn
-          ? '<span class="legend-chip" data-cat-query="Sauna" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 Sauna</span>'
-          : '<span class="legend-chip" data-cat-query="사우나" onclick="filterByLegendCategory(this.dataset.catQuery)">🧖 사우나</span>');
+          ? '<span class="legend-chip" data-cat-query="Sauna" data-legend-tag="layer-sauna" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🧖 Sauna</span>'
+          : '<span class="legend-chip" data-cat-query="사우나" data-legend-tag="layer-sauna" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">🧖 사우나</span>');
       }
       if (hasSkiSled) {
         legendChips.push(isEn
-          ? '<span class="legend-chip" data-cat-query="Ski" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ Ski & Sled</span>'
-          : '<span class="legend-chip" data-cat-query="스키" onclick="filterByLegendCategory(this.dataset.catQuery)">⛷️ 스키·눈썰매</span>');
+          ? '<span class="legend-chip" data-cat-query="Ski" data-legend-tag="layer-skiSled" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">⛷️ Ski & Sled</span>'
+          : '<span class="legend-chip" data-cat-query="스키" data-legend-tag="layer-skiSled" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">⛷️ 스키·눈썰매</span>');
       }
       if (hasUser) {
         legendChips.push(isEn
-          ? '<span class="legend-chip" data-cat-query="User" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 User Spots</span>'
-          : '<span class="legend-chip" data-cat-query="추천" onclick="filterByLegendCategory(this.dataset.catQuery)">📍 추천장소</span>');
+          ? '<span class="legend-chip" data-cat-query="User" data-legend-tag="layer-userPlaces" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">📍 User Spots</span>'
+          : '<span class="legend-chip" data-cat-query="추천" data-legend-tag="layer-userPlaces" onclick="filterByLegendCategory(this.dataset.catQuery, this.dataset.legendTag)">📍 추천장소</span>');
       }
       legendBar.innerHTML = legendChips.join('');
 
@@ -7040,25 +7051,36 @@
     syncLegendActiveChip();
   }
 
+  let activeLegendFilter = null; // { query: string, tag: string }
+
   function syncLegendActiveChip() {
     const searchInput = document.getElementById('spotSearchInput');
     const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
     document.querySelectorAll('#legendBar .legend-chip').forEach(chip => {
       const catQ = (chip.getAttribute('data-cat-query') || '').toLowerCase();
-      chip.classList.toggle('active', Boolean(q && catQ === q));
+      const catTag = chip.getAttribute('data-legend-tag') || '';
+      const isMatch = activeLegendFilter
+        ? (activeLegendFilter.tag ? activeLegendFilter.tag === catTag : activeLegendFilter.query.toLowerCase() === catQ)
+        : Boolean(q && catQ === q);
+      chip.classList.toggle('active', isMatch);
     });
   }
 
-  function filterByLegendCategory(catQuery) {
+  function filterByLegendCategory(catQuery, legendTag = '') {
     const searchInput = document.getElementById('spotSearchInput');
     if (!searchInput) return;
-    const currentVal = searchInput.value.trim();
-    if (currentVal.toLowerCase() === catQuery.toLowerCase()) {
+    const isSameActive = activeLegendFilter
+      ? (legendTag ? activeLegendFilter.tag === legendTag : activeLegendFilter.query.toLowerCase() === catQuery.toLowerCase())
+      : (searchInput.value.trim().toLowerCase() === catQuery.toLowerCase());
+
+    if (isSameActive) {
+      activeLegendFilter = null;
       searchInput.value = '';
     } else {
+      activeLegendFilter = { query: catQuery, tag: legendTag || '' };
       searchInput.value = catQuery;
     }
-    onSearchSpots(searchInput.value);
+    onSearchSpots(searchInput.value, true);
   }
 
   function updateHeaderToggleLabel() {
@@ -7132,6 +7154,7 @@
       let rightBadgeText = '';
       let dateScore = 9999;
       let regionTagText = '';
+      const legendTags = [];
 
       const isPinSpa = pinLayer === 'winterSpa';
       const isPinSauna = pinLayer === 'sauna';
@@ -7152,7 +7175,12 @@
         regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
         rightBadgeText = spa ? `♨️ #${spa.num}` : (isEn ? '♨️ Spa' : '♨️ 온천');
         dateScore = spa ? spa.num : 50;
-        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 온천 스파 온천스파 온천·스파 노천 노천탕 설경 설경·노천탕 탄산 유황 해수 미네랄 노천온천 hot spring outdoor bath spa`.toLowerCase();
+        legendTags.push('layer-winterSpa');
+        if (['pin-spa-01', 'pin-spa-05', 'pin-spa-07', 'pin-spa-08', 'pin-spa-10'].includes(pinId)) legendTags.push('spa-forest');
+        if (['pin-spa-03', 'pin-spa-04', 'pin-spa-06', 'pin-spa-08', 'pin-spa-10'].includes(pinId)) legendTags.push('spa-spring');
+        if (['pin-spa-02', 'pin-spa-09'].includes(pinId)) legendTags.push('spa-ocean');
+        if (['pin-spa-02', 'pin-spa-05', 'pin-spa-06', 'pin-spa-07', 'pin-spa-10'].includes(pinId)) legendTags.push('spa-resort');
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 온천 노천온천 hot spring`.toLowerCase();
       } else if (isPinSauna) {
         const sauna = SAUNA_MAP.get(pinId);
         const nameKo = pin.getAttribute('data-name-ko') || '';
@@ -7165,7 +7193,12 @@
         regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
         rightBadgeText = sauna ? `🧖 #${sauna.num}` : '🧖 사우나';
         dateScore = sauna ? sauna.num : 50;
-        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${descKo} 사우나 찜질 찜질방 사우나·찜질 사우나·찜질방 불가마 참숯 참숯가마 참숯불가마 복합스파 테마스파 힐링 루프탑 오션뷰 sauna jjimjilbang spa charcoal kiln`.toLowerCase();
+        legendTags.push('layer-sauna');
+        if (['pin-sauna-01', 'pin-sauna-06', 'pin-sauna-07'].includes(pinId)) legendTags.push('sauna-charcoal');
+        if (['pin-sauna-02', 'pin-sauna-03', 'pin-sauna-04', 'pin-sauna-05'].includes(pinId)) legendTags.push('sauna-luxury');
+        if (['pin-sauna-03', 'pin-sauna-04', 'pin-sauna-09'].includes(pinId)) legendTags.push('sauna-resort');
+        if (['pin-sauna-08', 'pin-sauna-09', 'pin-sauna-10'].includes(pinId)) legendTags.push('sauna-mineral');
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${descKo} 사우나 찜질방 sauna jjimjilbang`.toLowerCase();
       } else if (isPinSkiSled) {
         const ski = SKI_SLED_MAP.get(pinId);
         const nameKo = pin.getAttribute('data-name-ko') || '';
@@ -7180,7 +7213,12 @@
         regionTagText = isEn ? (subEn.split(',')[0] || REGION_SHORT_I18N.en[region]) : (subKo.split(' ')[0] || REGION_SHORT_I18N.ko[region]);
         rightBadgeText = ski ? `${ski.icon} #${ski.num}` : '⛷️ 스키';
         dateScore = ski ? ski.num : 50;
-        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} 스키 스키장 스노우보드 보드 눈썰매 눈썰매장 썰매 슬로프 야간스키 심야스키 평창 홍천 강촌 무주 곤지암 에버랜드 ski resort snow sled sledding snowboard winter`.toLowerCase();
+        legendTags.push('layer-skiSled');
+        if (ski && ski.type === 'ski') legendTags.push('ski-resort');
+        if (ski && ski.type === 'sled') legendTags.push('sled-park');
+        if (['pin-ski-05', 'pin-ski-08', 'pin-ski-10', 'pin-ski-11', 'pin-ski-15', 'pin-ski-16'].includes(pinId)) legendTags.push('ski-night');
+        if (region === 'gangwon') legendTags.push('ski-gangwon');
+        searchCorpus = `${nameKo} ${nameEn} ${subKo} ${subEn} ${feature} ${featureEn} ${descKo} ${descEn} ${ski && ski.type === 'sled' ? '눈썰매 눈썰매장 썰매 snow sled sledding' : '스키 스키장 스노우보드 ski resort'}`.toLowerCase();
       } else if (isPinUser) {
         const nameKo = pin.getAttribute('data-name-ko') || '';
         const nameEn = pin.getAttribute('data-name-en') || nameKo;
@@ -7197,7 +7235,11 @@
         regionTagText = isEn ? REGION_SHORT_I18N.en[region] : (REGION_SHORT_I18N.ko[region] || region);
         rightBadgeText = upvotes > 0 ? `👍 ${upvotes}` : (isEn ? 'Vote' : '추천');
         dateScore = 9000 - upvotes;
-        searchCorpus = `${nameKo} ${nameEn} ${catKo} ${catEn} ${descKo} ${descEn} ${addr} ${reason} 사용자추천 사용자 추천 유저추천 추천장소 사우나 찜질 찜질방 온천 스파 카페 맛집 힐링 산책 user recommended`.toLowerCase();
+        legendTags.push('layer-userPlaces', 'user-all');
+        if (/사우나|찜질/.test(catKo)) legendTags.push('user-sauna');
+        if (/온천|스파/.test(catKo)) legendTags.push('user-spa');
+        if (/카페|맛집/.test(catKo)) legendTags.push('user-cafe');
+        searchCorpus = `${nameKo} ${nameEn} ${catKo} ${catEn} ${descKo} ${descEn} ${addr} ${reason} 사용자추천 추천장소 user recommended`.toLowerCase();
       } else if (isPinKto) {
         const num = Number(pin.getAttribute('data-kto-num'));
         const nameKo = pin.getAttribute('data-name-ko') || '';
@@ -7247,6 +7289,7 @@
       li.setAttribute('data-region', region);
       li.setAttribute('data-title', displayTitle);
       li.setAttribute('data-search-corpus', searchCorpus);
+      li.setAttribute('data-legend-tags', legendTags.join(','));
       li.setAttribute('data-all-dates', rightBadgeText);
       li.setAttribute('data-date-score', dateScore);
       li.setAttribute('data-orig-index', idx);
@@ -7305,6 +7348,11 @@
   function matchesSpot(item, q) {
     if (!q) return true;
 
+    if (activeLegendFilter && activeLegendFilter.tag) {
+      const tags = (item.getAttribute('data-legend-tags') || '').split(',').filter(Boolean);
+      return tags.includes(activeLegendFilter.tag);
+    }
+
     const corpus = (item.getAttribute('data-search-corpus') || '').toLowerCase();
     const title = (item.getAttribute('data-title') || '').toLowerCase();
 
@@ -7362,7 +7410,10 @@
     return false;
   }
 
-  function onSearchSpots(query) {
+  function onSearchSpots(query, fromLegend = false) {
+    if (!fromLegend) {
+      activeLegendFilter = null;
+    }
     const q = query.trim().toLowerCase();
     const isFiltered = q.length > 0;
     let count = 0;
