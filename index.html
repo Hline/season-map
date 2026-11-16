@@ -222,6 +222,24 @@
       opacity: 1;
       box-shadow: 0 2px 6px rgba(8, 145, 178, 0.28);
     }
+    .layer-tab.active[data-layer-btn="bookSpot"] {
+      background: #2b5876;
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(43, 88, 118, 0.28);
+    }
+    .layer-tab.active[data-layer-btn="nightView"] {
+      background: #d97706;
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.28);
+    }
+    .layer-tab.active[data-layer-btn="driveCourse"] {
+      background: #0284c7;
+      color: #ffffff;
+      opacity: 1;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.28);
+    }
     .layer-tab.active[data-layer-btn="userPlaces"] {
       background: #1e8449;
       color: #ffffff;
@@ -1109,6 +1127,24 @@
       --theme-border: #a9dfbf;
       background: #f4faf6;
     }
+    body.mode-bookSpot {
+      --theme-primary: #2b5876;
+      --theme-bg-light: #edf2f7;
+      --theme-border: #cbd5e1;
+      background: #f8fafc;
+    }
+    body.mode-nightView {
+      --theme-primary: #d97706;
+      --theme-bg-light: #fffbeb;
+      --theme-border: #fde68a;
+      background: #fffdf5;
+    }
+    body.mode-driveCourse {
+      --theme-primary: #0284c7;
+      --theme-bg-light: #f0f9ff;
+      --theme-border: #bae6fd;
+      background: #f8fafc;
+    }
 
     /* Sauna & Jjimjilbang Pin Styling */
     .sauna-pin .pin-title {
@@ -1772,26 +1808,26 @@
       <button type="button" class="layer-tab" id="tabKto100Btn" data-layer-btn="kto100" aria-pressed="false" onclick="toggleLayer('kto100')">
         <span>🇰🇷</span> <span id="tabKto100Label">한국관광 100선</span> <span class="layer-state-pill" id="kto100StatePill">OFF</span>
       </button>
-            <button type="button" class="layer-tab active" id="tabBookSpotBtn" data-layer-btn="bookSpot" aria-pressed="true" onclick="toggleLayer('bookSpot')">
-        <span>📚</span> <span id="tabBookSpotLabel">감성 도서관 (10선)</span> <span class="layer-state-pill" id="bookSpotStatePill">ON</span>
+            <button type="button" class="layer-tab" id="tabBookSpotBtn" data-layer-btn="bookSpot" aria-pressed="false" onclick="toggleLayer('bookSpot')">
+        <span>📚</span> <span id="tabBookSpotLabel">감성 도서관 (10선)</span> <span class="layer-state-pill" id="bookSpotStatePill">OFF</span>
       </button>
       <button type="button" class="layer-tab active" id="tabWinterSpaBtn" data-layer-btn="winterSpa" aria-pressed="true" onclick="toggleLayer('winterSpa')">
         <span>♨️</span> <span id="tabWinterSpaLabel">겨울 노천온천 (33선)</span> <span class="layer-state-pill" id="winterSpaStatePill">ON</span>
       </button>
-      <button type="button" class="layer-tab active" id="tabSaunaBtn" data-layer-btn="sauna" aria-pressed="true" onclick="toggleLayer('sauna')">
-        <span>🧖</span> <span id="tabSaunaLabel">사우나·찜질방 (10선)</span> <span class="layer-state-pill" id="saunaStatePill">ON</span>
+      <button type="button" class="layer-tab" id="tabSaunaBtn" data-layer-btn="sauna" aria-pressed="false" onclick="toggleLayer('sauna')">
+        <span>🧖</span> <span id="tabSaunaLabel">사우나·찜질방 (10선)</span> <span class="layer-state-pill" id="saunaStatePill">OFF</span>
       </button>
       <button type="button" class="layer-tab active" id="tabSkiSledBtn" data-layer-btn="skiSled" aria-pressed="true" onclick="toggleLayer('skiSled')">
         <span>⛷️</span> <span id="tabSkiSledLabel">스키·눈썰매 (20선)</span> <span class="layer-state-pill" id="skiSledStatePill">ON</span>
       </button>
-      <button type="button" class="layer-tab active" id="tabNightViewBtn" data-layer-btn="nightView" aria-pressed="true" onclick="toggleLayer('nightView')">
-        <span>🌃</span> <span id="tabNightViewLabel">야경·빛축제 (10선)</span> <span class="layer-state-pill" id="nightViewStatePill">ON</span>
+      <button type="button" class="layer-tab" id="tabNightViewBtn" data-layer-btn="nightView" aria-pressed="false" onclick="toggleLayer('nightView')">
+        <span>🌃</span> <span id="tabNightViewLabel">야경·빛축제 (10선)</span> <span class="layer-state-pill" id="nightViewStatePill">OFF</span>
       </button>
-      <button type="button" class="layer-tab active" id="tabDriveCourseBtn" data-layer-btn="driveCourse" aria-pressed="true" onclick="toggleLayer('driveCourse')">
-        <span>🚗</span> <span id="tabDriveCourseLabel">드라이브 코스 (10선)</span> <span class="layer-state-pill" id="driveCourseStatePill">ON</span>
+      <button type="button" class="layer-tab" id="tabDriveCourseBtn" data-layer-btn="driveCourse" aria-pressed="false" onclick="toggleLayer('driveCourse')">
+        <span>🚗</span> <span id="tabDriveCourseLabel">드라이브 코스 (10선)</span> <span class="layer-state-pill" id="driveCourseStatePill">OFF</span>
       </button>
-      <button type="button" class="layer-tab active" id="tabUserPlacesBtn" data-layer-btn="userPlaces" aria-pressed="true" onclick="toggleLayer('userPlaces')">
-        <span>📍</span> <span id="tabUserPlacesLabel">추천 장소</span> <span class="layer-state-pill" id="userPlacesStatePill">ON</span>
+      <button type="button" class="layer-tab" id="tabUserPlacesBtn" data-layer-btn="userPlaces" aria-pressed="false" onclick="toggleLayer('userPlaces')">
+        <span>📍</span> <span id="tabUserPlacesLabel">추천 장소</span> <span class="layer-state-pill" id="userPlacesStatePill">OFF</span>
       </button>
     </div>
 
@@ -5177,13 +5213,13 @@
     layers: {
       foliage: shouldEnableFoliageByDefault(), // 단풍 정보 (35선): 마지막 단풍일+15일 경과 시 기본값 해제
       kto100: false,    // 한국관광 100선 (25-26) ON/OFF
-      bookSpot: true,   // 랜드마크 & 감성 도서관 (10선) ON/OFF (25-26) ON/OFF
-      winterSpa: true,  // 겨울 노천 온천 (33선) ON/OFF
-      sauna: true,      // 사우나·찜질방 (10선) ON/OFF
-      skiSled: true,    // 전국 스키·눈썰매장 (20선) ON/OFF
-      nightView: true,  // 전국 야경 & 불꽃·빛축제 (10선) ON/OFF
-      driveCourse: true,// 전국 오션뷰 & 설경 드라이브 코스 (10선) ON/OFF
-      userPlaces: true  // 사용자 추천 장소 ON/OFF
+      bookSpot: false,  // 랜드마크 & 감성 도서관 (10선) ON/OFF
+      winterSpa: true,  // 겨울 노천 온천 (33선) ON/OFF (겨울 대표 기본 ON)
+      sauna: false,     // 사우나·찜질방 (10선) ON/OFF (원클릭 토글)
+      skiSled: true,    // 전국 스키·눈썰매장 (20선) ON/OFF (겨울 대표 기본 ON)
+      nightView: false, // 전국 야경 & 불꽃·빛축제 (10선) ON/OFF (원클릭 토글)
+      driveCourse: false,// 전국 오션뷰 & 설경 드라이브 코스 (10선) ON/OFF (원클릭 토글)
+      userPlaces: false // 사용자 추천 장소 ON/OFF (원클릭 토글)
     },
     get layer() {
       const active = Object.keys(this.layers).filter(k => this.layers[k]);
@@ -5243,10 +5279,16 @@
   }
 
   // 지도 변환 적용 함수 (역스케일링 변수로 핀 선명도 유지)
-  function applyTransform() {
+  let lastAppliedPinScale = -1;
+  function applyTransform(updateScaleVar = true) {
     mapCanvas.style.transform = `translate(${mapState.panX}px, ${mapState.panY}px) scale(${mapState.scale})`;
-    const pinScale = Math.min(Math.max(1 / mapState.scale, 0.45), 1.25);
-    document.documentElement.style.setProperty('--pin-scale', pinScale);
+    if (updateScaleVar) {
+      const pinScale = Math.min(Math.max(1 / mapState.scale, 0.45), 1.25);
+      if (pinScale !== lastAppliedPinScale) {
+        lastAppliedPinScale = pinScale;
+        document.documentElement.style.setProperty('--pin-scale', pinScale);
+      }
+    }
   }
 
   // 뷰포트 크기에 맞춰 초기 전체보기 스케일 및 중앙 좌표 계산
@@ -6897,7 +6939,7 @@
       }
       mapState.panX = mapState.startPanX + dx;
       mapState.panY = mapState.startPanY + dy;
-      applyTransform();
+      applyTransform(false);
     } else if (mapState.activeTouches.size === 2) {
       const touches = Array.from(mapState.activeTouches.values());
       const dist = Math.hypot(touches[0].x - touches[1].x, touches[0].y - touches[1].y);
@@ -7086,6 +7128,9 @@
     document.body.classList.toggle('mode-winterSpa', activeKeys.length === 1 && activeKeys[0] === 'winterSpa');
     document.body.classList.toggle('mode-sauna', activeKeys.length === 1 && activeKeys[0] === 'sauna');
     document.body.classList.toggle('mode-skiSled', activeKeys.length === 1 && activeKeys[0] === 'skiSled');
+    document.body.classList.toggle('mode-bookSpot', activeKeys.length === 1 && activeKeys[0] === 'bookSpot');
+    document.body.classList.toggle('mode-nightView', activeKeys.length === 1 && activeKeys[0] === 'nightView');
+    document.body.classList.toggle('mode-driveCourse', activeKeys.length === 1 && activeKeys[0] === 'driveCourse');
     document.body.classList.toggle('mode-userPlaces', activeKeys.length === 1 && activeKeys[0] === 'userPlaces');
 
     const adminBannerEl = document.getElementById('adminBanner');
